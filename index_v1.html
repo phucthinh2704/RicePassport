@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0" />
+		<title>RiceTrace Mekong - Minh bạch Chuỗi Cung Ứng</title>
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+			rel="stylesheet" />
+
+		<!-- Thư viện Bản đồ Leaflet.js -->
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+		<style>
+			:root {
+				--primary-green: #2e7d32;
+				--dark-green: #1b5e20;
+				--light-green: #e8f5e9;
+				--accent-gold: #f39c12;
+				--dark-text: #2c3e50;
+				--gray-bg: #f4f6f8;
+				--border-color: #e0e0e0;
+				--danger-red: #e74c3c;
+				--info-blue: #3498db;
+			}
+
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+			}
+			body {
+				background-color: var(--gray-bg);
+				color: var(--dark-text);
+				overflow-x: hidden;
+			}
+
+			header {
+				background: white;
+				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+				position: sticky;
+				top: 0;
+				z-index: 1000;
+			}
+			.nav-container {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 15px 30px;
+				max-width: 1400px;
+				margin: 0 auto;
+			}
+			.logo {
+				font-size: 22px;
+				font-weight: bold;
+				color: var(--primary-green);
+				text-decoration: none;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				cursor: pointer;
+			}
+			.nav-menu {
+				display: flex;
+				gap: 5px;
+			}
+			.nav-btn {
+				background: none;
+				border: none;
+				padding: 10px 15px;
+				font-size: 14px;
+				font-weight: 600;
+				color: var(--dark-text);
+				border-radius: 5px;
+				cursor: pointer;
+				transition: 0.3s;
+				display: flex;
+				align-items: center;
+				gap: 6px;
+			}
+			.nav-btn:hover {
+				background: var(--light-green);
+				color: var(--primary-green);
+			}
+			.nav-btn.active {
+				background: var(--primary-green);
+				color: white;
+			}
+			.data-tools {
+				display: flex;
+				gap: 10px;
+				margin-left: 20px;
+				border-left: 2px solid var(--border-color);
+				padding-left: 20px;
+			}
+
+			.page-section {
+				display: none;
+				animation: fadeIn 0.4s ease;
+			}
+			.page-section.active {
+				display: block;
+			}
+			@keyframes fadeIn {
+				from {
+					opacity: 0;
+					transform: translateY(10px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			.dashboard-layout {
+				display: flex;
+				max-width: 1400px;
+				margin: 30px auto;
+				padding: 0 20px;
+				gap: 30px;
+				min-height: 70vh;
+			}
+			.sidebar {
+				width: 260px;
+				background: white;
+				border-radius: 10px;
+				padding: 20px 0;
+				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+				height: fit-content;
+			}
+			.sidebar-menu li {
+				list-style: none;
+			}
+			.sidebar-menu a {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 15px 20px;
+				color: var(--dark-text);
+				text-decoration: none;
+				font-weight: 500;
+				border-left: 4px solid transparent;
+			}
+			.sidebar-menu a:hover,
+			.sidebar-menu a.active {
+				background: var(--light-green);
+				color: var(--primary-green);
+				border-left-color: var(--primary-green);
+			}
+
+			.main-content {
+				flex: 1;
+			}
+			.grid-cards {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: 20px;
+				margin-bottom: 30px;
+			}
+			.content-section {
+				background: white;
+				border-radius: 10px;
+				padding: 25px;
+				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+				margin-bottom: 30px;
+			}
+
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 15px;
+			}
+			th,
+			td {
+				padding: 12px;
+				text-align: left;
+				border-bottom: 1px solid var(--border-color);
+				font-size: 14px;
+			}
+			th {
+				background: var(--gray-bg);
+				font-weight: 600;
+			}
+			tr {
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+			tr:hover {
+				background-color: #f1f8e9;
+			}
+
+			.form-group {
+				margin-bottom: 15px;
+			}
+			.form-group label {
+				display: block;
+				margin-bottom: 5px;
+				font-weight: 600;
+				font-size: 14px;
+			}
+			.form-group input[type="date"],
+			.form-group select {
+				width: 100%;
+				padding: 10px;
+				border: 1px solid var(--border-color);
+				border-radius: 5px;
+				outline: none;
+			}
+
+			.btn-action {
+				padding: 10px 20px;
+				border: none;
+				border-radius: 6px;
+				cursor: pointer;
+				font-weight: bold;
+				color: white;
+				background: var(--primary-green);
+				transition: 0.2s;
+				display: inline-flex;
+				align-items: center;
+				gap: 5px;
+				justify-content: center;
+			}
+			.btn-action:hover {
+				opacity: 0.9;
+			}
+			.btn-action.small {
+				padding: 6px 12px;
+				font-size: 12px;
+			}
+			.btn-outline {
+				background: transparent;
+				border: 1px solid var(--primary-green);
+				color: var(--primary-green);
+			}
+			.btn-warning {
+				background: #f39c12;
+				color: white;
+			}
+			.btn-danger {
+				background: #e74c3c;
+				color: white;
+			}
+
+			.badge {
+				padding: 4px 8px;
+				border-radius: 12px;
+				font-size: 12px;
+				font-weight: bold;
+				display: inline-block;
+			}
+
+			/* Hiệu ứng ghi âm AI */
+			.recording {
+				animation: pulseRecord 1s infinite;
+				background-color: #ffebee;
+				border-color: #e53935;
+				color: #e53935;
+			}
+			@keyframes pulseRecord {
+				0% {
+					box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.4);
+				}
+				70% {
+					box-shadow: 0 0 0 10px rgba(229, 57, 53, 0);
+				}
+				100% {
+					box-shadow: 0 0 0 0 rgba(229, 57, 53, 0);
+				}
+			}
+
+			/* Map Legend */
+			.map-legend {
+				display: flex;
+				gap: 15px;
+				padding: 10px;
+				background: white;
+				border-top: 1px solid #eee;
+				font-size: 13px;
+				font-weight: bold;
+			}
+			.legend-item {
+				display: flex;
+				align-items: center;
+				gap: 5px;
+			}
+			.dot {
+				width: 12px;
+				height: 12px;
+				border-radius: 50%;
+				display: inline-block;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<div class="nav-container">
+				<div class="logo">
+					<i class="fa-solid fa-leaf"></i> RiceTrace Mekong
+				</div>
+				<nav class="nav-menu">
+					<button
+						class="nav-btn active"
+						onclick="nav('page-farmer')">
+						<i class="fa-solid fa-tractor"></i> Nông dân
+					</button>
+					<button
+						class="nav-btn"
+						onclick="nav('page-business')">
+						<i class="fa-solid fa-building"></i> Doanh nghiệp
+					</button>
+
+					<div class="data-tools">
+						<button
+							class="btn-action btn-outline small"
+							onclick="exportData()">
+							<i class="fa-solid fa-download"></i> Lưu dữ liệu
+						</button>
+						<button
+							class="btn-action btn-outline small"
+							onclick="
+								document.getElementById('importFile').click()
+							">
+							<i class="fa-solid fa-upload"></i> Tải dữ liệu
+						</button>
+						<input
+							type="file"
+							id="importFile"
+							style="display: none"
+							accept=".json"
+							onchange="importData(event)" />
+					</div>
+				</nav>
+			</div>
+		</header>
+
+		<!-- FARMER PORTAL -->
+		<section
+			id="page-farmer"
+			class="page-section active">
+			<div class="dashboard-layout">
+				<aside class="sidebar">
+					<ul class="sidebar-menu">
+						<li>
+							<a
+								href="#"
+								class="active"
+								><i class="fa-solid fa-pen-to-square"></i> Khai
+								báo & Nhật ký</a
+							>
+						</li>
+					</ul>
+				</aside>
+				<main class="main-content">
+					<div
+						class="grid-cards"
+						style="grid-template-columns: 1fr 2fr">
+						<div class="content-section">
+							<h3>
+								<i class="fa-solid fa-plus"></i> Tạo lô lúa
+								(Dùng AI)
+							</h3>
+							<p
+								style="
+									font-size: 12px;
+									color: #666;
+									margin-bottom: 15px;
+								">
+								Nông dân không cần gõ phím. Dùng camera hoặc
+								giọng nói.
+							</p>
+
+							<form
+								id="farmForm"
+								onsubmit="handleFormSubmit(event)">
+								<div class="form-group">
+									<label>Giống lúa</label>
+									<select id="seedType">
+										<option value="ST25">
+											ST25 (Chu kỳ 105 ngày)
+										</option>
+										<option value="OM18">
+											OM18 (Chu kỳ 95 ngày)
+										</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label>Ngày xuống giống</label>
+									<input
+										type="date"
+										id="sowDate"
+										required />
+								</div>
+
+								<!-- Tính năng giả lập AI nhận diện hình ảnh/giọng nói -->
+								<div class="form-group">
+									<label
+										>Bằng chứng vật tư (Phân
+										bón/Thuốc)</label
+									>
+									<div style="display: flex; gap: 10px">
+										<button
+											type="button"
+											class="btn-action btn-outline"
+											style="flex: 1"
+											onclick="
+												document
+													.getElementById('aiUpload')
+													.click()
+											">
+											<i class="fa-solid fa-camera"></i>
+											Chụp hóa đơn
+										</button>
+										<button
+											type="button"
+											class="btn-action btn-outline"
+											style="flex: 1"
+											id="micBtn"
+											onclick="simulateVoiceRecord()">
+											<i
+												class="fa-solid fa-microphone"></i>
+											Ghi âm
+										</button>
+										<input
+											type="file"
+											id="aiUpload"
+											accept="image/*"
+											style="display: none"
+											onchange="simulateAIProcessing()" />
+									</div>
+									<div
+										id="aiLoader"
+										style="
+											display: none;
+											margin-top: 10px;
+											font-size: 13px;
+											color: #f39c12;
+										">
+										<i
+											class="fa-solid fa-spinner fa-spin"></i>
+										AI đang phân tích dữ liệu...
+									</div>
+									<div
+										id="aiResult"
+										style="
+											margin-top: 10px;
+											font-size: 13px;
+											background: #e8f5e9;
+											padding: 10px;
+											border-radius: 5px;
+											border-left: 3px solid
+												var(--primary-green);
+											display: none;
+										">
+										<i
+											class="fa-solid fa-robot"
+											style="
+												color: var(--primary-green);
+											"></i>
+										<b>Trợ lý AI:</b> Đã nhận diện sử dụng
+										<b id="extractedData"></b> kg phân bón
+										Urea.
+									</div>
+									<!-- Input ẩn để lưu giá trị AI quét được -->
+									<input
+										type="hidden"
+										id="fertAmount"
+										value="0" />
+								</div>
+
+								<div class="form-group">
+									<label>Quản lý nước (ESG)</label>
+									<select id="waterMgmt">
+										<option value="AWD">
+											Tưới ngập khô xen kẽ (AWD) - Giảm
+											Carbon
+										</option>
+										<option value="Flood">
+											Ngập thường xuyên (Truyền thống)
+										</option>
+									</select>
+								</div>
+								<button
+									type="submit"
+									class="btn-action"
+									style="width: 100%"
+									id="submitBtn"
+									disabled>
+									<i class="fa-solid fa-cloud-arrow-up"></i>
+									Tải lên hệ thống
+								</button>
+							</form>
+						</div>
+
+						<div class="content-section">
+							<h3>Danh sách Lô Lúa (Đợi thương lái mua)</h3>
+							<table>
+								<thead>
+									<tr>
+										<th>Mã Lô</th>
+										<th>Giống Lúa</th>
+										<th>Ngày Gặt</th>
+										<th>Chỉ số ESG</th>
+										<th>Trạng thái giao dịch</th>
+									</tr>
+								</thead>
+								<tbody id="farmerTableBody"></tbody>
+							</table>
+						</div>
+					</div>
+				</main>
+			</div>
+		</section>
+
+		<!-- BUSINESS PORTAL -->
+		<section
+			id="page-business"
+			class="page-section">
+			<div class="dashboard-layout">
+				<aside class="sidebar">
+					<ul class="sidebar-menu">
+						<li>
+							<a
+								href="#"
+								class="active"
+								><i class="fa-solid fa-satellite"></i> Bản đồ
+								Vùng nguyên liệu</a
+							>
+						</li>
+					</ul>
+				</aside>
+				<main class="main-content">
+					<div
+						class="content-section"
+						style="
+							padding: 0;
+							overflow: hidden;
+							border: 2px solid var(--primary-green);
+							border-radius: 10px;
+						">
+						<!-- KHUNG BẢN ĐỒ THỰC TẾ LEAFLET -->
+						<div
+							id="realMap"
+							style="height: 450px; width: 100%"></div>
+						<div class="map-legend">
+							<div class="legend-item">
+								<span
+									class="dot"
+									style="background: #2ecc71"></span>
+								Sẵn sàng giao dịch (Trống)
+							</div>
+							<div class="legend-item">
+								<span
+									class="dot"
+									style="background: #f1c40f"></span>
+								Đang đàm phán
+							</div>
+							<div class="legend-item">
+								<span
+									class="dot"
+									style="background: #e74c3c"></span>
+								Đã chốt cọc
+							</div>
+						</div>
+					</div>
+
+					<div class="content-section">
+						<h3 style="margin-bottom: 10px">
+							Bảng thông tin trực tiếp (Click để xem Bản đồ)
+						</h3>
+						<table style="margin-top: 0">
+							<thead>
+								<tr>
+									<th>Hợp tác xã / Hộ nông dân</th>
+									<th>Sản lượng (Tấn)</th>
+									<th>Ngày Thu Hoạch</th>
+									<th>Trạng thái</th>
+									<th>Thao tác mua</th>
+								</tr>
+							</thead>
+							<tbody id="businessTableBody"></tbody>
+						</table>
+					</div>
+				</main>
+			</div>
+		</section>
+
+		<script>
+			const DB_KEY = "riceTraceData_v3";
+			let supplyMap;
+			let mapMarkers = [];
+			let markerInstances = {}; // Để map table row click với popup
+
+			function getDB() {
+				return JSON.parse(localStorage.getItem(DB_KEY)) || [];
+			}
+			function saveDB(data) {
+				localStorage.setItem(DB_KEY, JSON.stringify(data));
+				renderTables();
+			}
+
+			// --- GIẢ LẬP AI XỬ LÝ HÌNH ẢNH / GIỌNG NÓI ---
+			function simulateAIProcessing() {
+				document.getElementById("aiLoader").style.display = "block";
+				document.getElementById("aiResult").style.display = "none";
+				document.getElementById("submitBtn").disabled = true;
+
+				setTimeout(() => {
+					const randomAmount = Math.floor(Math.random() * 50) + 100; // Giả lập quét ra số 100 - 150kg
+					document.getElementById("aiLoader").style.display = "none";
+					document.getElementById("aiResult").style.display = "block";
+					document.getElementById("extractedData").innerText =
+						randomAmount;
+					document.getElementById("fertAmount").value = randomAmount;
+					document.getElementById("submitBtn").disabled = false;
+				}, 1500); // Đợi 1.5s
+			}
+
+			function simulateVoiceRecord() {
+				const micBtn = document.getElementById("micBtn");
+				if (micBtn.classList.contains("recording")) return;
+
+				micBtn.classList.add("recording");
+				micBtn.innerHTML =
+					'<i class="fa-solid fa-microphone"></i> Đang nghe...';
+
+				setTimeout(() => {
+					micBtn.classList.remove("recording");
+					micBtn.innerHTML =
+						'<i class="fa-solid fa-microphone"></i> Ghi âm';
+					simulateAIProcessing();
+				}, 2000); // Giả lập ghi âm 2s
+			}
+
+			// --- LƯU FORM ---
+			function handleFormSubmit(e) {
+				e.preventDefault();
+				const seedType = document.getElementById("seedType").value;
+				const sowDate = document.getElementById("sowDate").value;
+				const fertAmount = document.getElementById("fertAmount").value;
+				const waterMgmt = document.getElementById("waterMgmt").value;
+
+				let cycleDays = seedType === "ST25" ? 105 : 95;
+				const harvestDateObj = new Date(sowDate);
+				harvestDateObj.setDate(harvestDateObj.getDate() + cycleDays);
+
+				let carbonEmissions = fertAmount * 1.5;
+				if (waterMgmt === "AWD") carbonEmissions *= 0.7;
+
+				// Random tọa độ
+				const lat = 10.37 + (Math.random() - 0.5) * 0.1;
+				const lng = 105.43 + (Math.random() - 0.5) * 0.1;
+				const area = (Math.random() * 2 + 1).toFixed(1); // 1 - 3 Hecta
+				const yieldEst = (area * 6).toFixed(1); // Ước tính 6 tấn/ha
+
+				const newLot = {
+					id: "RP-" + Math.floor(Math.random() * 10000),
+					farmer: "Hợp Tác Xã Nông Nghiệp Xanh",
+					seedType,
+					harvestDate: harvestDateObj.toISOString().split("T")[0],
+					carbon: carbonEmissions.toFixed(1),
+					area: area,
+					yield: yieldEst,
+					status: "available", // available (Xanh), negotiating (Vàng), deposited (Đỏ)
+					lat: lat,
+					lng: lng,
+				};
+
+				const db = getDB();
+				db.push(newLot);
+				saveDB(db);
+				alert("✅ Đã tải dữ liệu lên sàn giao dịch!");
+
+				// Reset form
+				e.target.reset();
+				document.getElementById("aiResult").style.display = "none";
+				document.getElementById("submitBtn").disabled = true;
+			}
+
+			// --- THAY ĐỔI TRẠNG THÁI GIAO DỊCH (DOANH NGHIỆP) ---
+			function updateStatus(lotId, newStatus) {
+				event.stopPropagation(); // Ngăn sự kiện click vào row
+				const db = getDB();
+				const index = db.findIndex((l) => l.id === lotId);
+				if (index > -1) {
+					db[index].status = newStatus;
+					saveDB(db);
+					if (newStatus === "negotiating")
+						alert("📞 Đã gửi yêu cầu đàm phán giá đến Nông dân!");
+					if (newStatus === "deposited")
+						alert(
+							"💰 Đặt cọc thành công. Lô lúa đã được khóa (Màu đỏ)!",
+						);
+				}
+			}
+
+			// --- RENDER DỮ LIỆU & BẢN ĐỒ ---
+			function renderTables() {
+				const data = getDB();
+				const farmerTbody = document.getElementById("farmerTableBody");
+				const businessTbody =
+					document.getElementById("businessTableBody");
+
+				farmerTbody.innerHTML = "";
+				businessTbody.innerHTML = "";
+
+				// Xóa Marker cũ
+				mapMarkers.forEach((marker) => {
+					if (supplyMap) supplyMap.removeLayer(marker);
+				});
+				mapMarkers = [];
+				markerInstances = {};
+
+				data.forEach((lot) => {
+					// Config trạng thái
+					let statusText = "Sẵn sàng";
+					let statusColor = "#2ecc71";
+					let farmerStatusBadge = `<span class="badge" style="background:#e8f5e9; color:#2e7d32;">Đang chờ mua</span>`;
+
+					if (lot.status === "negotiating") {
+						statusText = "Đang đàm phán";
+						statusColor = "#f1c40f";
+						farmerStatusBadge = `<span class="badge" style="background:#fff3cd; color:#856404;">Có DN hỏi mua</span>`;
+					} else if (lot.status === "deposited") {
+						statusText = "Đã chốt cọc";
+						statusColor = "#e74c3c";
+						farmerStatusBadge = `<span class="badge" style="background:#f8d7da; color:#721c24;">Đã bán</span>`;
+					}
+
+					// Render Nông dân View
+					farmerTbody.innerHTML += `
+                    <tr>
+                        <td><strong>${lot.id}</strong></td>
+                        <td>${lot.seedType}</td>
+                        <td style="font-weight:bold;">${lot.harvestDate}</td>
+                        <td>${lot.carbon} kg CO2e</td>
+                        <td>${farmerStatusBadge}</td>
+                    </tr>
+                `;
+
+					// Nút hành động Doanh nghiệp
+					let actionBtns = "";
+					if (lot.status === "available") {
+						actionBtns = `<button class="btn-action small btn-warning" onclick="updateStatus('${lot.id}', 'negotiating')">Thương lượng</button>
+                                  <button class="btn-action small btn-danger" onclick="updateStatus('${lot.id}', 'deposited')">Chốt Cọc Ngay</button>`;
+					} else if (lot.status === "negotiating") {
+						actionBtns = `<button class="btn-action small btn-danger" onclick="updateStatus('${lot.id}', 'deposited')">Chốt Cọc Ngay</button>`;
+					} else {
+						actionBtns = `<span style="color: #e74c3c; font-weight: bold; font-size: 13px;"><i class="fa-solid fa-lock"></i> Đã bán</span>`;
+					}
+
+					// Render Doanh nghiệp View
+					businessTbody.innerHTML += `
+                    <tr onclick="focusOnMap('${lot.id}')" title="Click để xem trên bản đồ">
+                        <td>${lot.farmer}<br><small><i class="fa-solid fa-leaf"></i> Giống: ${lot.seedType}</small></td>
+                        <td><strong>~${lot.yield}</strong></td>
+                        <td style="color:var(--info-blue);">${lot.harvestDate}</td>
+                        <td><span style="color:${statusColor}; font-weight:bold;"><i class="fa-solid fa-circle" style="font-size:10px;"></i> ${statusText}</span></td>
+                        <td>${actionBtns}</td>
+                    </tr>
+                `;
+
+					// Render Map Marker (Bản đồ phân màu)
+					if (supplyMap && lot.lat && lot.lng) {
+						const customIcon = L.divIcon({
+							className: "custom-pin",
+							html: `<div style="background-color: ${statusColor}; width: 22px; height: 22px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>`,
+							iconSize: [22, 22],
+							iconAnchor: [11, 11],
+						});
+
+						const popupHtml = `
+                        <div style="font-size: 13px; line-height: 1.6; min-width: 180px;">
+                            <h4 style="color: var(--primary-green); border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 5px;">${lot.farmer}</h4>
+                            <b>Mã lô:</b> ${lot.id}<br>
+                            <b>Giống lúa:</b> ${lot.seedType}<br>
+                            <b>Sản lượng:</b> ~${lot.yield} tấn (Diện tích: ${lot.area} ha)<br>
+                            <b>Ngày gặt:</b> <span style="color:var(--info-blue);">${lot.harvestDate}</span><br>
+                            <b>Điểm ESG:</b> ${lot.carbon} kg CO2e/ha <br>
+                            <div style="margin-top:8px; padding-top:8px; border-top:1px dashed #ccc;">
+                                <b>Trạng thái:</b> <span style="color:${statusColor}; font-weight:bold;">${statusText}</span>
+                            </div>
+                        </div>
+                    `;
+						const marker = L.marker([lot.lat, lot.lng], {
+							icon: customIcon,
+						})
+							.addTo(supplyMap)
+							.bindPopup(popupHtml);
+						mapMarkers.push(marker);
+						markerInstances[lot.id] = marker; // Lưu lại để dùng khi click từ bảng
+					}
+				});
+			}
+
+			// Bấm vào bảng -> Bật Popup trên bản đồ
+			function focusOnMap(lotId) {
+				const marker = markerInstances[lotId];
+				if (marker && supplyMap) {
+					window.scrollTo({ top: 0, behavior: "smooth" });
+					supplyMap.flyTo(marker.getLatLng(), 14, {
+						animate: true,
+						duration: 1,
+					});
+					setTimeout(() => {
+						marker.openPopup();
+					}, 1000);
+				}
+			}
+
+			function exportData() {
+				const data = localStorage.getItem(DB_KEY) || "[]";
+				const a = document.createElement("a");
+				a.href = URL.createObjectURL(
+					new Blob([data], { type: "application/json" }),
+				);
+				a.download = "RiceTrace_DB.json";
+				a.click();
+			}
+
+			function importData(event) {
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					saveDB(JSON.parse(e.target.result));
+					alert("Tải dữ liệu thành công!");
+				};
+				reader.readAsText(event.target.files[0]);
+			}
+
+			function nav(pageId) {
+				document
+					.querySelectorAll(".page-section")
+					.forEach((p) => p.classList.remove("active"));
+				document.getElementById(pageId).classList.add("active");
+				document
+					.querySelectorAll(".nav-btn")
+					.forEach((b) => b.classList.remove("active"));
+				event.currentTarget.classList.add("active");
+
+				if (pageId === "page-business" && supplyMap) {
+					setTimeout(() => {
+						supplyMap.invalidateSize();
+					}, 200);
+				}
+			}
+
+			window.onload = () => {
+				supplyMap = L.map("realMap").setView([10.37, 105.43], 10);
+				L.tileLayer(
+					"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+					{ attribution: "© OpenStreetMap" },
+				).addTo(supplyMap);
+				renderTables();
+			};
+		</script>
+	</body>
+</html>
