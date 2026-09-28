@@ -20,7 +20,6 @@
 
 		<!-- Thư viện i18next qua CDN -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/23.10.0/i18next.min.js"></script>
-
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 		<style>
@@ -136,14 +135,8 @@
 				display: block;
 			}
 			@keyframes fadeIn {
-				from {
-					opacity: 0;
-					transform: translateY(8px);
-				}
-				to {
-					opacity: 1;
-					transform: translateY(0);
-				}
+				from { opacity: 0; transform: translateY(8px); }
+				to { opacity: 1; transform: translateY(0); }
 			}
 
 			.dashboard-layout {
@@ -162,13 +155,11 @@
 				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 				height: fit-content;
 			}
-			.sidebar-menu li {
-				list-style: none;
-			}
+			.sidebar-menu li { list-style: none; }
 			.sidebar-menu a {
 				display: flex;
 				align-items: center;
-				gap: 30px;
+				gap: 15px;
 				padding: 14px 20px;
 				color: var(--dark-text);
 				text-decoration: none;
@@ -183,9 +174,7 @@
 				border-left-color: var(--primary-green);
 			}
 
-			.main-content {
-				flex: 1;
-			}
+			.main-content { flex: 1; }
 			.grid-cards {
 				display: grid;
 				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -200,445 +189,244 @@
 				margin-bottom: 25px;
 			}
 
-			table {
-				width: 100%;
-				border-collapse: collapse;
-				margin-top: 15px;
-			}
-			th,
-			td {
-				padding: 13px;
-				text-align: left;
-				border-bottom: 1px solid var(--border-color);
-				font-size: 14px;
-			}
-			th {
-				background: var(--gray-bg);
-				font-weight: 600;
-				color: #4b6584;
-			}
-			tr {
-				cursor: pointer;
-				transition: background 0.15s;
-			}
-			tr:hover {
-				background-color: #f7faf7;
-			}
+            /* Bổ sung class cho thẻ Why Choose Us ở trang chủ */
+            .why-card {
+                background: white;
+                border-radius: 10px;
+                padding: 25px 15px;
+                text-align: center;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+                border-bottom: 4px solid var(--primary-green);
+                transition: transform 0.3s ease;
+            }
+            .why-card:hover { transform: translateY(-5px); }
+            .why-icon { font-size: 36px; color: var(--primary-green); margin-bottom: 15px; }
 
-			.form-group {
-				margin-bottom: 15px;
-			}
-			.form-group label {
-				display: block;
-				margin-bottom: 6px;
-				font-weight: 600;
-				font-size: 13.5px;
-				color: #34495e;
-			}
-			.form-group input,
-			.form-group select {
-				width: 100%;
-				padding: 10px 12px;
-				border: 1px solid var(--border-color);
-				border-radius: 6px;
-				outline: none;
-				font-size: 14px;
-				transition: 0.3s;
-			}
-			.highlight-autofill {
-				background-color: #e8f5e9 !important;
-				border-color: #27ae60 !important;
-			}
+			table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+			th, td { padding: 13px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 14px; }
+			th { background: var(--gray-bg); font-weight: 600; color: #4b6584; }
+			tr { cursor: pointer; transition: background 0.15s; }
+			tr:hover { background-color: #f7faf7; }
 
-			.btn-action {
-				padding: 10px 18px;
-				border: none;
-				border-radius: 6px;
-				cursor: pointer;
-				font-weight: 600;
-				color: white;
-				background: var(--primary-green);
-				transition: 0.2s;
-				display: inline-flex;
-				align-items: center;
-				gap: 6px;
-				justify-content: center;
-				font-size: 14px;
-			}
-			.btn-action:hover {
-				opacity: 0.92;
-			}
-			.btn-action.small {
-				padding: 6px 12px;
-				font-size: 12.5px;
-			}
-			.btn-outline {
-				background: transparent;
-				border: 1.5px solid var(--primary-green);
-				color: var(--primary-green);
-			}
-			.btn-warning {
-				background: #f39c12;
-				color: white;
-			}
-			.btn-danger {
-				background: #e74c3c;
-				color: white;
-			}
+			.form-group { margin-bottom: 15px; }
+			.form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13.5px; color: #34495e; }
+			.form-group input, .form-group select { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 6px; outline: none; font-size: 14px; transition: 0.3s; }
+			.highlight-autofill { background-color: #e8f5e9 !important; border-color: #27ae60 !important; }
 
-			.badge {
-				padding: 4px 10px;
-				border-radius: 12px;
-				font-size: 12px;
-				font-weight: 700;
-				display: inline-block;
-			}
+			.btn-action { padding: 10px 18px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; color: white; background: var(--primary-green); transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; justify-content: center; font-size: 14px; }
+			.btn-action:hover { opacity: 0.92; }
+			.btn-action.small { padding: 6px 12px; font-size: 12.5px; }
+			.btn-outline { background: transparent; border: 1.5px solid var(--primary-green); color: var(--primary-green); }
+			.btn-warning { background: #f39c12; color: white; }
+			.btn-danger { background: #e74c3c; color: white; }
 
-			.recording {
-				animation: pulseRecord 1s infinite;
-				background-color: #ffebee;
-				border-color: #e53935;
-				color: #e53935;
-			}
-			@keyframes pulseRecord {
-				0% {
-					box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.4);
-				}
-				70% {
-					box-shadow: 0 0 0 10px rgba(229, 57, 53, 0);
-				}
-				100% {
-					box-shadow: 0 0 0 0 rgba(229, 57, 53, 0);
-				}
-			}
+			.badge { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 700; display: inline-block; }
 
-			.map-legend {
-				display: flex;
-				gap: 20px;
-				padding: 12px 18px;
-				background: white;
-				border-top: 1px solid #eee;
-				font-size: 13px;
-				font-weight: 600;
-			}
-			.legend-item {
-				display: flex;
-				align-items: center;
-				gap: 6px;
-			}
-			.dot {
-				width: 12px;
-				height: 12px;
-				border-radius: 50%;
-				display: inline-block;
-			}
+			.recording { animation: pulseRecord 1s infinite; background-color: #ffebee; border-color: #e53935; color: #e53935; }
+			@keyframes pulseRecord { 0% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(229, 57, 53, 0); } 100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0); } }
+
+			.map-legend { display: flex; gap: 20px; padding: 12px 18px; background: white; border-top: 1px solid #eee; font-size: 13px; font-weight: 600; }
+			.legend-item { display: flex; align-items: center; gap: 6px; }
+			.dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
 
 			/* QR Modal */
-			.modal-overlay {
-				display: none;
-				position: fixed;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background: rgba(0, 0, 0, 0.6);
-				z-index: 2000;
-				justify-content: center;
-				align-items: center;
-			}
-			.modal-content {
-				background: white;
-				padding: 30px;
-				border-radius: 15px;
-				text-align: center;
-				max-width: 420px;
-				width: 90%;
-				position: relative;
-				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-			}
-			.close-modal {
-				position: absolute;
-				top: 15px;
-				right: 15px;
-				cursor: pointer;
-				font-size: 20px;
-				color: #7f8c8d;
-			}
-			.qr-image-container {
-				margin: 18px 0;
-				display: inline-block;
-				padding: 10px;
-				background: #fff;
-				border: 2px dashed var(--primary-green);
-				border-radius: 10px;
-			}
+			.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 2000; justify-content: center; align-items: center; }
+			.modal-content { background: white; padding: 30px; border-radius: 15px; text-align: center; max-width: 420px; width: 90%; position: relative; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); }
+			.close-modal { position: absolute; top: 15px; right: 15px; cursor: pointer; font-size: 20px; color: #7f8c8d; }
+			.qr-image-container { margin: 18px 0; display: inline-block; padding: 10px; background: #fff; border: 2px dashed var(--primary-green); border-radius: 10px; }
 		</style>
 	</head>
 	<body>
 		<header>
 			<div class="nav-container">
-				<div
-					class="logo"
-					onclick="nav('page-farmer')">
+				<div class="logo" onclick="nav('page-home')">
 					<i class="fa-solid fa-leaf"></i> RiceTrace Mekong
 				</div>
 				<nav class="nav-menu">
-					<button
-						class="nav-btn active"
-						id="btn-nav-farmer"
-						onclick="nav('page-farmer')">
+                    <button class="nav-btn active" id="btn-nav-home" onclick="nav('page-home')">
+						<i class="fa-solid fa-house"></i>
+						<span data-i18n="nav_home">Trang chủ</span>
+					</button>
+					<button class="nav-btn" id="btn-nav-farmer" onclick="nav('page-farmer')">
 						<i class="fa-solid fa-tractor"></i>
 						<span data-i18n="nav_farmer">Nông dân</span>
 					</button>
-					<button
-						class="nav-btn"
-						id="btn-nav-business"
-						onclick="nav('page-business')">
+					<button class="nav-btn" id="btn-nav-business" onclick="nav('page-business')">
 						<i class="fa-solid fa-building"></i>
 						<span data-i18n="nav_business">Doanh nghiệp</span>
 					</button>
 
-					<!-- NÚT CHUYỂN NGÔN NGỮ (i18next) -->
-					<button
-						class="lang-switch-btn"
-						onclick="toggleLanguage()">
+					<button class="lang-switch-btn" onclick="toggleLanguage()">
 						<i class="fa-solid fa-globe"></i>
 						<span id="currentLangLabel">EN</span>
 					</button>
 
 					<div class="data-tools">
-						<button
-							class="btn-action btn-outline small"
-							onclick="exportData()">
+						<button class="btn-action btn-outline small" onclick="exportData()">
 							<i class="fa-solid fa-download"></i>
 							<span data-i18n="btn_export">Xuất JSON</span>
 						</button>
-						<button
-							class="btn-action btn-outline small"
-							onclick="
-								document.getElementById('importFile').click()
-							">
+						<button class="btn-action btn-outline small" onclick="document.getElementById('importFile').click()">
 							<i class="fa-solid fa-upload"></i>
 							<span data-i18n="btn_import">Nhập JSON</span>
 						</button>
-						<input
-							type="file"
-							id="importFile"
-							style="display: none"
-							accept=".json"
-							onchange="importData(event)" />
+						<input type="file" id="importFile" style="display: none" accept=".json" onchange="importData(event)" />
 					</div>
 				</nav>
 			</div>
 		</header>
 
+        <!-- 0. TRANG CHỦ / GIỚI THIỆU (LANDING PAGE) -->
+        <section id="page-home" class="page-section active">
+            <div class="dashboard-layout" style="flex-direction: column; align-items: center; max-width: 1100px;">
+                
+                <!-- Hero / Giới thiệu công ty -->
+                <div class="content-section" style="width: 100%; text-align: center; padding: 50px 30px;">
+                    <h1 style="color: var(--primary-green); margin-bottom: 20px; font-size: 36px;">
+                        <i class="fa-solid fa-leaf"></i> <span data-i18n="home_intro_title">Giới thiệu RiceTrace Mekong</span>
+                    </h1>
+                    <p style="font-size: 17px; line-height: 1.8; color: #555; max-width: 900px; margin: 0 auto;" data-i18n="home_intro_desc">
+                        RiceTrace Mekong là nền tảng số hóa vùng trồng và kết nối trực tiếp nông dân Đồng bằng sông Cửu Long với doanh nghiệp xuất khẩu. Thông qua "Hộ chiếu số" (Rice Passport), chúng tôi minh bạch hóa dữ liệu canh tác, xóa bỏ trung gian để giúp doanh nghiệp chủ động nguồn hàng đạt chuẩn và nông dân bán lúa đúng giá trị.
+                    </p>
+                </div>
+
+                <!-- Lý do chọn chúng tôi -->
+                <div style="width: 100%; text-align: center; margin-bottom: 20px;">
+                    <h2 style="color: var(--dark-text); font-size: 28px;" data-i18n="home_why_title">Tại sao chọn chúng tôi?</h2>
+                </div>
+                <div style="width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 25px; margin-bottom: 20px;">
+                    <div class="why-card">
+                        <i class="fa-solid fa-shield-halved why-icon"></i>
+                        <h4 style="font-size: 16px; color: var(--dark-text);" data-i18n="home_why_1">Minh bạch tuyệt đối</h4>
+                    </div>
+                    <div class="why-card">
+                        <i class="fa-solid fa-clock-rotate-left why-icon"></i>
+                        <h4 style="font-size: 16px; color: var(--dark-text);" data-i18n="home_why_2">Chủ động nguồn cung sớm 60 ngày</h4>
+                    </div>
+                    <div class="why-card">
+                        <i class="fa-solid fa-earth-americas why-icon"></i>
+                        <h4 style="font-size: 16px; color: var(--dark-text);" data-i18n="home_why_3">Sẵn sàng chinh phục thị trường khó tính (EU, Mỹ)</h4>
+                    </div>
+                    <div class="why-card">
+                        <i class="fa-solid fa-chart-line why-icon"></i>
+                        <h4 style="font-size: 16px; color: var(--dark-text);" data-i18n="home_why_4">Hệ sinh thái tăng lợi nhuận kép</h4>
+                    </div>
+                </div>
+
+                <!-- Câu chuyện nhà nông -->
+                <div class="content-section" style="width: 100%; background: var(--light-green); border-left: 6px solid var(--primary-green); padding: 40px;">
+                    <h3 style="margin-bottom: 20px; color: var(--dark-green); font-size: 22px;">
+                        <i class="fa-solid fa-quote-left" style="color: rgba(46, 125, 50, 0.3); font-size: 28px; margin-right: 10px;"></i>
+                        <span data-i18n="home_story_title">Câu chuyện nhà nông</span>
+                    </h3>
+                    <p style="font-style: italic; line-height: 1.9; font-size: 16px; color: #2c3e50; margin-bottom: 20px;" data-i18n="home_story_content">
+                        "Làm ruộng ngặt lắm chú ơi! Cả vụ gồng gánh sâu bệnh, tới chừng trúng mùa thì lại lo 'được mùa mất giá'. Sợ nhất là sát ngày gặt, thương lái cứ neo ghe đè giá, viện đủ lý do để bẻ cọc ép mình bán rẻ. 
+                        Lúc nghe giới thiệu cái web này tui thấy hay quá! Lúa mình xịt thuốc gì, bón phân chi đều ghi rõ trên 'Hộ chiếu số', doanh nghiệp nhìn vô là tin liền. Bán được trực tiếp cho công ty, không qua cò lái nữa, vừa đỡ đau đầu lại cầm đồng tiền xứng đáng với công sức bỏ ra."
+                    </p>
+                    <p style="font-weight: bold; color: var(--primary-green); text-align: right; font-size: 15px;" data-i18n="home_story_author">
+                        - Chú Ba Trung (Nông dân xã Vĩnh Hanh, tỉnh An Giang)
+                    </p>
+                </div>
+
+                <!-- Nút kêu gọi hành động điều hướng -->
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <button class="btn-action" style="padding: 15px 30px; font-size: 16px; margin-right: 15px;" onclick="nav('page-farmer')">
+                        <i class="fa-solid fa-seedling"></i> <span data-i18n="home_btn_farmer">Tham gia Khai báo Lô Lúa</span>
+                    </button>
+                    <button class="btn-action btn-outline" style="padding: 15px 30px; font-size: 16px; background: white;" onclick="nav('page-business')">
+                        <i class="fa-solid fa-magnifying-glass-location"></i> <span data-i18n="home_btn_business">Tìm Nguồn Cung Ngay</span>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
 		<!-- 1. FARMER PORTAL -->
-		<section
-			id="page-farmer"
-			class="page-section active">
+		<section id="page-farmer" class="page-section">
 			<div class="dashboard-layout">
 				<aside class="sidebar">
 					<ul class="sidebar-menu">
 						<li>
-							<a
-								href="#"
-								class="active">
+							<a href="#" class="active">
 								<i class="fa-solid fa-pen-to-square"></i>
-								<span data-i18n="sidebar_farmer_log"
-									>Khai báo & Nhật ký</span
-								>
+								<span data-i18n="sidebar_farmer_log">Khai báo & Nhật ký</span>
 							</a>
 						</li>
 					</ul>
 				</aside>
 				<main class="main-content">
-					<div
-						class="grid-cards"
-						style="grid-template-columns: 1.1fr 1.9fr">
-						<!-- AI Entry Form -->
+					<div class="grid-cards" style="grid-template-columns: 1.1fr 1.9fr">
 						<div class="content-section">
 							<h3>
-								<i
-									class="fa-solid fa-wand-magic-sparkles"
-									style="color: var(--accent-gold)"></i>
-								<span data-i18n="ai_form_title"
-									>Nhật Ký Tự Động Bằng AI</span
-								>
+								<i class="fa-solid fa-wand-magic-sparkles" style="color: var(--accent-gold)"></i>
+								<span data-i18n="ai_form_title">Nhật Ký Tự Động Bằng AI</span>
 							</h3>
-							<p
-								style="
-									font-size: 13px;
-									color: #7f8c8d;
-									margin-top: 4px;
-									margin-bottom: 18px;
-								"
-								data-i18n="ai_form_desc">
-								Nông dân không cần gõ phím. Chụp ảnh hóa đơn
-								hoặc đọc ghi âm để AI tự trích xuất dữ liệu.
+							<p style="font-size: 13px; color: #7f8c8d; margin-top: 4px; margin-bottom: 18px;" data-i18n="ai_form_desc">
+								Nông dân không cần gõ phím. Chụp ảnh hóa đơn hoặc đọc ghi âm để AI tự trích xuất dữ liệu.
 							</p>
 
-							<div
-								style="
-									display: flex;
-									gap: 10px;
-									margin-bottom: 18px;
-								">
-								<button
-									type="button"
-									class="btn-action btn-outline"
-									style="flex: 1"
-									onclick="
-										document
-											.getElementById('aiUpload')
-											.click()
-									">
+							<div style="display: flex; gap: 10px; margin-bottom: 18px;">
+								<button type="button" class="btn-action btn-outline" style="flex: 1" onclick="document.getElementById('aiUpload').click()">
 									<i class="fa-solid fa-camera"></i>
-									<span data-i18n="btn_upload_bill"
-										>Chụp hóa đơn</span
-									>
+									<span data-i18n="btn_upload_bill">Chụp hóa đơn</span>
 								</button>
-								<button
-									type="button"
-									class="btn-action btn-outline"
-									style="flex: 1"
-									id="micBtn"
-									onclick="simulateVoiceRecord()">
+								<button type="button" class="btn-action btn-outline" style="flex: 1" id="micBtn" onclick="simulateVoiceRecord()">
 									<i class="fa-solid fa-microphone"></i>
-									<span
-										id="micLabel"
-										data-i18n="btn_voice_record"
-										>Ghi âm (Đọc)</span
-									>
+									<span id="micLabel" data-i18n="btn_voice_record">Ghi âm (Đọc)</span>
 								</button>
-								<input
-									type="file"
-									id="aiUpload"
-									accept="image/*"
-									style="display: none"
-									onchange="simulateAIProcessing()" />
+								<input type="file" id="aiUpload" accept="image/*" style="display: none" onchange="simulateAIProcessing()" />
 							</div>
 
-							<!-- AI Loader -->
-							<div
-								id="aiLoader"
-								style="
-									display: none;
-									margin-bottom: 15px;
-									font-size: 13px;
-									color: var(--accent-gold);
-									font-weight: 600;
-								">
+							<div id="aiLoader" style="display: none; margin-bottom: 15px; font-size: 13px; color: var(--accent-gold); font-weight: 600;">
 								<i class="fa-solid fa-spinner fa-spin"></i>
-								<span data-i18n="ai_extracting"
-									>Trợ lý AI đang đọc chứng từ và tính
-									toán...</span
-								>
+								<span data-i18n="ai_extracting">Trợ lý AI đang đọc chứng từ và tính toán...</span>
 							</div>
 
-							<!-- AI Result Notification -->
-							<div
-								id="aiResult"
-								style="
-									margin-bottom: 16px;
-									font-size: 13px;
-									background: var(--light-green);
-									padding: 12px;
-									border-radius: 6px;
-									border-left: 4px solid var(--primary-green);
-									display: none;
-								">
-								<i
-									class="fa-solid fa-robot"
-									style="color: var(--primary-green)"></i>
+							<div id="aiResult" style="margin-bottom: 16px; font-size: 13px; background: var(--light-green); padding: 12px; border-radius: 6px; border-left: 4px solid var(--primary-green); display: none;">
+								<i class="fa-solid fa-robot" style="color: var(--primary-green)"></i>
 								<span id="aiResultText"></span>
 							</div>
 
-							<form
-								id="farmForm"
-								onsubmit="handleFormSubmit(event)">
+							<form id="farmForm" onsubmit="handleFormSubmit(event)">
 								<div class="form-group">
-									<label data-i18n="form_seed"
-										>Giống lúa</label
-									>
-									<select
-										id="seedType"
-										required>
-										<option value="ST25">
-											ST25 (Chu kỳ 105 ngày)
-										</option>
-										<option value="OM18">
-											OM18 (Chu kỳ 95 ngày)
-										</option>
+									<label data-i18n="form_seed">Giống lúa</label>
+									<select id="seedType" required>
+										<option value="ST25">ST25 (Chu kỳ 105 ngày)</option>
+										<option value="OM18">OM18 (Chu kỳ 95 ngày)</option>
 									</select>
 								</div>
 								<div class="form-group">
-									<label data-i18n="form_sowing_date"
-										>Ngày xuống giống</label
-									>
-									<input
-										type="date"
-										id="sowDate"
-										required />
+									<label data-i18n="form_sowing_date">Ngày xuống giống</label>
+									<input type="date" id="sowDate" required />
 								</div>
 								<div class="form-group">
-									<label data-i18n="form_fertilizer"
-										>Lượng phân bón Urea (kg/ha)</label
-									>
-									<input
-										type="number"
-										id="fertAmount"
-										placeholder="120"
-										required />
+									<label data-i18n="form_fertilizer">Lượng phân bón Urea (kg/ha)</label>
+									<input type="number" id="fertAmount" placeholder="120" required />
 								</div>
 								<div class="form-group">
-									<label data-i18n="form_water"
-										>Quản lý nước (Tiêu chuẩn ESG)</label
-									>
+									<label data-i18n="form_water">Quản lý nước (Tiêu chuẩn ESG)</label>
 									<select id="waterMgmt">
-										<option
-											value="AWD"
-											data-i18n="water_awd">
-											Tưới ngập khô xen kẽ AWD (Giảm
-											Carbon)
-										</option>
-										<option
-											value="Flood"
-											data-i18n="water_flood">
-											Ngập liên tục (Phát thải cao)
-										</option>
+										<option value="AWD" data-i18n="water_awd">Tưới ngập khô xen kẽ AWD (Giảm Carbon)</option>
+										<option value="Flood" data-i18n="water_flood">Ngập liên tục (Phát thải cao)</option>
 									</select>
 								</div>
-								<button
-									type="submit"
-									class="btn-action"
-									style="width: 100%; margin-top: 5px">
+								<button type="submit" class="btn-action" style="width: 100%; margin-top: 5px">
 									<i class="fa-solid fa-cloud-arrow-up"></i>
-									<span data-i18n="btn_submit_lot"
-										>Khai Báo & Đưa Lên Bản Đồ</span
-									>
+									<span data-i18n="btn_submit_lot">Khai Báo & Đưa Lên Bản Đồ</span>
 								</button>
 							</form>
 						</div>
 
-						<!-- Farmer's Lots Table -->
 						<div class="content-section">
-							<h3 data-i18n="farmer_table_title">
-								Danh sách Lô Lúa (Chờ Doanh Nghiệp Thu Mua)
-							</h3>
+							<h3 data-i18n="farmer_table_title">Danh sách Lô Lúa (Chờ Doanh Nghiệp Thu Mua)</h3>
 							<table>
 								<thead>
 									<tr>
 										<th data-i18n="th_lot_id">Mã Lô</th>
 										<th data-i18n="th_seed">Giống Lúa</th>
-										<th data-i18n="th_harvest_date">
-											Ngày Gặt
-										</th>
-										<th data-i18n="th_carbon">
-											Dấu Chân Carbon
-										</th>
-										<th data-i18n="th_status">
-											Trạng Thái
-										</th>
+										<th data-i18n="th_harvest_date">Ngày Gặt</th>
+										<th data-i18n="th_carbon">Dấu Chân Carbon</th>
+										<th data-i18n="th_status">Trạng Thái</th>
 									</tr>
 								</thead>
 								<tbody id="farmerTableBody"></tbody>
@@ -650,81 +438,36 @@
 		</section>
 
 		<!-- 2. BUSINESS PORTAL -->
-		<section
-			id="page-business"
-			class="page-section">
+		<section id="page-business" class="page-section">
 			<div class="dashboard-layout">
 				<aside class="sidebar">
 					<ul class="sidebar-menu">
 						<li>
-							<a
-								href="#"
-								class="active">
+							<a href="#" class="active">
 								<i class="fa-solid fa-satellite"></i>
-								<span data-i18n="sidebar_business_map"
-									>Bản đồ Vùng Nguyên Liệu</span
-								>
+								<span data-i18n="sidebar_business_map">Bản đồ Vùng Nguyên Liệu</span>
 							</a>
 						</li>
 					</ul>
 				</aside>
 				<main class="main-content">
-					<div
-						class="content-section"
-						style="
-							padding: 0;
-							overflow: hidden;
-							border: 2px solid var(--primary-green);
-							border-radius: 10px;
-						">
-						<div
-							id="realMap"
-							style="height: 450px; width: 100%"></div>
+					<div class="content-section" style="padding: 0; overflow: hidden; border: 2px solid var(--primary-green); border-radius: 10px;">
+						<div id="realMap" style="height: 450px; width: 100%"></div>
 						<div class="map-legend">
-							<div class="legend-item">
-								<span
-									class="dot"
-									style="background: #2ecc71"></span>
-								<span data-i18n="map_legend_ready"
-									>Sẵn sàng giao dịch</span
-								>
-							</div>
-							<div class="legend-item">
-								<span
-									class="dot"
-									style="background: #f1c40f"></span>
-								<span data-i18n="map_legend_nego"
-									>Đang đàm phán</span
-								>
-							</div>
-							<div class="legend-item">
-								<span
-									class="dot"
-									style="background: #e74c3c"></span>
-								<span data-i18n="map_legend_depo"
-									>Đã chốt cọc</span
-								>
-							</div>
+							<div class="legend-item"><span class="dot" style="background: #2ecc71"></span><span data-i18n="map_legend_ready">Sẵn sàng giao dịch</span></div>
+							<div class="legend-item"><span class="dot" style="background: #f1c40f"></span><span data-i18n="map_legend_nego">Đang đàm phán</span></div>
+							<div class="legend-item"><span class="dot" style="background: #e74c3c"></span><span data-i18n="map_legend_depo">Đã chốt cọc</span></div>
 						</div>
 					</div>
 
 					<div class="content-section">
-						<h3
-							style="margin-bottom: 8px"
-							data-i18n="business_table_title">
-							Bảng Nguồn Cung Trực Tiếp (Click dòng để phóng to
-							trên Bản đồ)
-						</h3>
+						<h3 style="margin-bottom: 8px" data-i18n="business_table_title">Bảng Nguồn Cung Trực Tiếp (Click dòng để phóng to trên Bản đồ)</h3>
 						<table>
 							<thead>
 								<tr>
-									<th data-i18n="th_farmer">
-										Hợp Tác Xã / Nông Dân
-									</th>
+									<th data-i18n="th_farmer">Hợp Tác Xã / Nông Dân</th>
 									<th data-i18n="th_yield">Sản Lượng</th>
-									<th data-i18n="th_harvest_date">
-										Ngày Gặt
-									</th>
+									<th data-i18n="th_harvest_date">Ngày Gặt</th>
 									<th data-i18n="th_status">Trạng Thái</th>
 									<th data-i18n="th_actions">Thao Tác Mua</th>
 								</tr>
@@ -737,65 +480,58 @@
 		</section>
 
 		<!-- QR CODE MODAL -->
-		<div
-			id="qrModal"
-			class="modal-overlay">
+		<div id="qrModal" class="modal-overlay">
 			<div class="modal-content">
-				<i
-					class="fa-solid fa-times close-modal"
-					onclick="closeQRModal()"></i>
-				<h3
-					style="color: var(--primary-green)"
-					data-i18n="qr_modal_title">
-					Hộ Chiếu Lúa Gạo Kỹ Thuật Số
-				</h3>
-				<p
-					style="font-size: 13px; color: #7f8c8d; margin-top: 4px"
-					id="qrLotTitle"></p>
+				<i class="fa-solid fa-times close-modal" onclick="closeQRModal()"></i>
+				<h3 style="color: var(--primary-green)" data-i18n="qr_modal_title">Hộ Chiếu Lúa Gạo Kỹ Thuật Số</h3>
+				<p style="font-size: 13px; color: #7f8c8d; margin-top: 4px" id="qrLotTitle"></p>
 				<div class="qr-image-container">
-					<img
-						id="qrImage"
-						src=""
-						alt="QR Code"
-						width="220"
-						height="220" />
+					<img id="qrImage" src="" alt="QR Code" width="220" height="220" />
 				</div>
-				<div
-					style="
-						text-align: left;
-						font-size: 13px;
-						background: var(--gray-bg);
-						padding: 12px;
-						border-radius: 8px;
-						line-height: 1.6;
-					"
-					id="qrDetails"></div>
+				<div style="text-align: left; font-size: 13px; background: var(--gray-bg); padding: 12px; border-radius: 8px; line-height: 1.6;" id="qrDetails"></div>
 			</div>
 		</div>
 
 		<script>
+            // Định nghĩa DB_KEY ngay từ đầu
+            const DB_KEY = "riceTraceData_i18n_v2";
+
 			// ==========================================
 			// 1. TẬP TRUNG TỪ ĐIỂN i18next (JSON RESOURCES)
 			// ==========================================
 			const resources = {
 				vi: {
 					translation: {
+                        nav_home: "Trang chủ",
 						nav_farmer: "Nông dân",
 						nav_business: "Doanh nghiệp",
 						btn_export: "Xuất JSON",
 						btn_import: "Nhập JSON",
+
+                        // Phần Landing Page
+                        home_intro_title: "Giới thiệu RiceTrace Mekong",
+                        home_intro_desc: "RiceTrace Mekong là nền tảng số hóa vùng trồng và kết nối trực tiếp nông dân Đồng bằng sông Cửu Long với doanh nghiệp xuất khẩu. Thông qua 'Hộ chiếu số' (Rice Passport), chúng tôi minh bạch hóa dữ liệu canh tác, xóa bỏ trung gian để giúp doanh nghiệp chủ động nguồn hàng đạt chuẩn và nông dân bán lúa đúng giá trị.",
+                        home_why_title: "Tại sao chọn chúng tôi?",
+                        home_why_1: "Minh bạch tuyệt đối",
+                        home_why_2: "Chủ động nguồn cung sớm 60 ngày",
+                        home_why_3: "Sẵn sàng chinh phục thị trường khó tính (EU, Mỹ)",
+                        home_why_4: "Hệ sinh thái tăng lợi nhuận kép",
+                        home_story_title: "Câu chuyện nhà nông",
+                        home_story_content: "\"Làm ruộng ngặt lắm chú ơi! Cả vụ gồng gánh sâu bệnh, tới chừng trúng mùa thì lại lo 'được mùa mất giá'. Sợ nhất là sát ngày gặt, thương lái cứ neo ghe đè giá, viện đủ lý do để bẻ cọc ép mình bán rẻ.<br><br>Lúc nghe giới thiệu cái web này tui thấy hay quá! Lúa mình xịt thuốc gì, bón phân chi đều ghi rõ trên 'Hộ chiếu số', doanh nghiệp nhìn vô là tin liền. Bán được trực tiếp cho công ty, không qua cò lái nữa, vừa đỡ đau đầu lại cầm đồng tiền xứng đáng với công sức bỏ ra.\"",
+                        home_story_author: "- Chú Ba Trung (Nông dân xã Vĩnh Hanh, tỉnh An Giang)",
+                        home_btn_farmer: "Tham gia Khai báo Lô Lúa",
+                        home_btn_business: "Tìm Nguồn Cung Ngay",
+
+                        // Phần Portal
 						sidebar_farmer_log: "Khai báo & Nhật ký",
 						sidebar_business_map: "Bản đồ Nguồn cung",
 						ai_form_title: "Nhật Ký Tự Động Bằng AI",
-						ai_form_desc:
-							"Nông dân không cần gõ phím. Chụp ảnh hóa đơn hoặc đọc ghi âm để AI tự trích xuất dữ liệu.",
+						ai_form_desc: "Nông dân không cần gõ phím. Chụp ảnh hóa đơn hoặc đọc ghi âm để AI tự trích xuất dữ liệu.",
 						btn_upload_bill: "Chụp hóa đơn",
 						btn_voice_record: "Ghi âm (Đọc)",
 						ai_listening: "Đang lắng nghe...",
-						ai_extracting:
-							"Trợ lý AI đang đọc chứng từ và tính toán...",
-						ai_extracted_msg:
-							"Trợ lý AI: Đã tự động điền {{amount}}kg phân Urea và thiết lập tưới AWD giảm phát thải.",
+						ai_extracting: "Trợ lý AI đang đọc chứng từ và tính toán...",
+						ai_extracted_msg: "Trợ lý AI: Đã tự động điền {{amount}}kg phân Urea và thiết lập tưới AWD giảm phát thải.",
 						form_seed: "Giống lúa",
 						form_sowing_date: "Ngày xuống giống",
 						form_fertilizer: "Lượng phân bón Urea (kg/ha)",
@@ -803,10 +539,8 @@
 						water_awd: "Tưới ngập khô xen kẽ AWD (Giảm Carbon)",
 						water_flood: "Ngập liên tục (Phát thải cao)",
 						btn_submit_lot: "Khai Báo & Đưa Lên Bản Đồ",
-						farmer_table_title:
-							"Danh sách Lô Lúa (Chờ Doanh Nghiệp Thu Mua)",
-						business_table_title:
-							"Bảng Nguồn Cung Trực Tiếp (Click dòng để phóng to trên Bản đồ)",
+						farmer_table_title: "Danh sách Lô Lúa (Chờ Doanh Nghiệp Thu Mua)",
+						business_table_title: "Bảng Nguồn Cung Trực Tiếp (Click dòng để phóng to trên Bản đồ)",
 						th_lot_id: "Mã Lô",
 						th_seed: "Giống Lúa",
 						th_harvest_date: "Ngày Gặt",
@@ -828,46 +562,53 @@
 						btn_deposit: "Chốt cọc",
 						btn_view_qr: "Hộ chiếu QR",
 						qr_modal_title: "Hộ Chiếu Lúa Gạo Kỹ Thuật Số",
-						default_coop_name:
-							"Hợp Tác Xã Nông Nghiệp Thoại Sơn (An Giang)",
-						alert_submit_success:
-							"✅ Đã tải dữ liệu lô lúa lên hệ thống minh bạch!",
-						alert_nego_sent:
-							"📞 Đã gửi đề xuất thương lượng trực tiếp đến Nông dân!",
-						alert_depo_success:
-							"💰 Đặt cọc thành công! Lô lúa đã được giữ chỗ cho Doanh nghiệp.",
+						default_coop_name: "Hợp Tác Xã Nông Nghiệp Thoại Sơn (An Giang)",
+						alert_submit_success: "✅ Đã tải dữ liệu lô lúa lên hệ thống minh bạch!",
+						alert_nego_sent: "📞 Đã gửi đề xuất thương lượng trực tiếp đến Nông dân!",
+						alert_depo_success: "💰 Đặt cọc thành công! Lô lúa đã được giữ chỗ cho Doanh nghiệp.",
 					},
 				},
 				en: {
 					translation: {
+                        nav_home: "Home",
 						nav_farmer: "Farmer Portal",
 						nav_business: "Business Portal",
 						btn_export: "Export JSON",
 						btn_import: "Import JSON",
+
+                        // Landing Page Translation
+                        home_intro_title: "About RiceTrace Mekong",
+                        home_intro_desc: "RiceTrace Mekong is a digital farming platform connecting Mekong Delta farmers directly with export enterprises. Through the 'Digital Rice Passport', we ensure cultivation data transparency and eliminate middlemen, helping businesses secure qualified sourcing and allowing farmers to sell at true value.",
+                        home_why_title: "Why Choose Us?",
+                        home_why_1: "Absolute Transparency",
+                        home_why_2: "Proactive Sourcing 60 Days Ahead",
+                        home_why_3: "Ready for Strict Markets (EU, US)",
+                        home_why_4: "Dual-Profit Ecosystem",
+                        home_story_title: "Farmer's Story",
+                        home_story_content: "\"Farming is tough, son! We bear the burden of pests all season, and even when the harvest is good, we fear 'good harvest, bad price'. The scariest part is near harvest day, when traders anchor their boats and force the price down, making excuses to break the deposit and squeeze us into selling cheap.<br><br>When I heard about this web platform, I thought it was amazing! Whatever pesticides or fertilizers we use are clearly recorded on the 'Digital Passport', and companies trust it right away. Selling directly to the company, bypassing brokers, saves me headaches and earns me money worthy of my hard work.\"",
+                        home_story_author: "- Mr. Ba Trung (Farmer in Vinh Hanh commune, An Giang province)",
+                        home_btn_farmer: "Join & Declare Rice Lots",
+                        home_btn_business: "Find Sourcing Now",
+
+                        // Portal Translation
 						sidebar_farmer_log: "Farming Logbook",
 						sidebar_business_map: "Sourcing Map",
 						ai_form_title: "AI-Powered Logbook",
-						ai_form_desc:
-							"Hands-free farming input. Take a receipt photo or use voice input for automated AI extraction.",
+						ai_form_desc: "Hands-free farming input. Take a receipt photo or use voice input for automated AI extraction.",
 						btn_upload_bill: "Scan Receipt",
 						btn_voice_record: "Voice Input",
 						ai_listening: "Listening...",
-						ai_extracting:
-							"AI is parsing receipts and computing emissions...",
-						ai_extracted_msg:
-							"AI Assistant: Auto-populated {{amount}}kg Urea fertilizer with low-emission AWD protocol.",
+						ai_extracting: "AI is parsing receipts and computing emissions...",
+						ai_extracted_msg: "AI Assistant: Auto-populated {{amount}}kg Urea fertilizer with low-emission AWD protocol.",
 						form_seed: "Rice Variety",
 						form_sowing_date: "Sowing Date",
 						form_fertilizer: "Urea Fertilizer (kg/ha)",
 						form_water: "Water Management (ESG Standard)",
-						water_awd:
-							"Alternate Wetting & Drying - AWD (Low Carbon)",
+						water_awd: "Alternate Wetting & Drying - AWD (Low Carbon)",
 						water_flood: "Continuous Flooding (High Emissions)",
 						btn_submit_lot: "Declare & Publish to Sourcing Map",
-						farmer_table_title:
-							"Registered Rice Lots (Open for Sourcing)",
-						business_table_title:
-							"Live Sourcing Directory (Click row to zoom on Map)",
+						farmer_table_title: "Registered Rice Lots (Open for Sourcing)",
+						business_table_title: "Live Sourcing Directory (Click row to zoom on Map)",
 						th_lot_id: "Lot ID",
 						th_seed: "Rice Variety",
 						th_harvest_date: "Harvest Date",
@@ -889,14 +630,10 @@
 						btn_deposit: "Place Deposit",
 						btn_view_qr: "QR Passport",
 						qr_modal_title: "Digital Rice Passport",
-						default_coop_name:
-							"Thoai Son Agri Cooperative (An Giang)",
-						alert_submit_success:
-							"✅ Farming lot data successfully published to the registry!",
-						alert_nego_sent:
-							"📞 Direct procurement negotiation request sent to the farmer!",
-						alert_depo_success:
-							"💰 Deposit confirmed! This lot is exclusively locked for your enterprise.",
+						default_coop_name: "Thoai Son Agri Cooperative (An Giang)",
+						alert_submit_success: "✅ Farming lot data successfully published to the registry!",
+						alert_nego_sent: "📞 Direct procurement negotiation request sent to the farmer!",
+						alert_depo_success: "💰 Deposit confirmed! This lot is exclusively locked for your enterprise.",
 					},
 				},
 			};
@@ -904,11 +641,9 @@
 			// ==========================================
 			// 2. KHỞI TẠO i18next
 			// ==========================================
-			const savedLanguage =
-				localStorage.getItem("ricetrace_lang") || "vi";
+			const savedLanguage = localStorage.getItem("ricetrace_lang") || "vi";
 
-			i18next.init(
-				{
+			i18next.init({
 					lng: savedLanguage,
 					fallbackLng: "vi",
 					resources: resources,
@@ -918,30 +653,26 @@
 				},
 			);
 
-			// Hàm quét và dịch toàn bộ thẻ HTML có thuộc tính data-i18n
 			function updateContent() {
 				document.querySelectorAll("[data-i18n]").forEach((el) => {
 					const key = el.getAttribute("data-i18n");
-					el.innerText = i18next.t(key);
+					el.innerHTML = i18next.t(key); // Dùng innerHTML để giữ nguyên định dạng <br> ở câu chuyện nhà nông
 				});
-				document.getElementById("currentLangLabel").innerText =
-					i18next.language === "vi" ? "EN" : "VI";
+				document.getElementById("currentLangLabel").innerText = i18next.language === "vi" ? "EN" : "VI";
 			}
 
-			// Chuyển đổi ngôn ngữ
 			function toggleLanguage() {
 				const nextLang = i18next.language === "vi" ? "en" : "vi";
 				i18next.changeLanguage(nextLang, () => {
 					localStorage.setItem("ricetrace_lang", nextLang);
 					updateContent();
-					renderTables(); // Cập nhật lại các bảng động và Popup bản đồ
+					renderTables();
 				});
 			}
 
 			// ==========================================
 			// 3. LOGIC XỬ LÝ DỮ LIỆU & BẢN ĐỒ
 			// ==========================================
-			const DB_KEY = "riceTraceData_i18n_v1";
 			let supplyMap;
 			let mapMarkers = [];
 			let markerInstances = {};
@@ -949,7 +680,6 @@
 			function getDB() {
 				const data = localStorage.getItem(DB_KEY);
 				if (!data) {
-					// Khởi tạo sẵn 2 lô lúa mẫu tại An Giang
 					const initData = [
 						{
 							id: "RP-1082",
@@ -987,18 +717,14 @@
 				renderTables();
 			}
 
-			// Mô phỏng AI bóc tách thông tin từ Hóa đơn/Giọng nói và nội suy biến bằng i18next
 			function processAIExtraction() {
 				document.getElementById("aiLoader").style.display = "block";
 				document.getElementById("aiResult").style.display = "none";
 
 				setTimeout(() => {
 					document.getElementById("aiLoader").style.display = "none";
-
 					const randomAmount = 120;
-					// Sử dụng tính năng nội suy biến của i18next: {{amount}}
-					document.getElementById("aiResultText").innerText =
-						i18next.t("ai_extracted_msg", { amount: randomAmount });
+					document.getElementById("aiResultText").innerText = i18next.t("ai_extracted_msg", { amount: randomAmount });
 					document.getElementById("aiResult").style.display = "block";
 
 					const seedEl = document.getElementById("seedType");
@@ -1015,17 +741,12 @@
 
 					[seedEl, sowEl, fertEl, waterEl].forEach((el) => {
 						el.classList.add("highlight-autofill");
-						setTimeout(
-							() => el.classList.remove("highlight-autofill"),
-							2200,
-						);
+						setTimeout(() => el.classList.remove("highlight-autofill"), 2200);
 					});
 				}, 1600);
 			}
 
-			function simulateAIProcessing() {
-				processAIExtraction();
-			}
+			function simulateAIProcessing() { processAIExtraction(); }
 
 			function simulateVoiceRecord() {
 				const micBtn = document.getElementById("micBtn");
@@ -1046,9 +767,7 @@
 				e.preventDefault();
 				const seedType = document.getElementById("seedType").value;
 				const sowDate = document.getElementById("sowDate").value;
-				const fertAmount = parseFloat(
-					document.getElementById("fertAmount").value,
-				);
+				const fertAmount = parseFloat(document.getElementById("fertAmount").value);
 				const waterMgmt = document.getElementById("waterMgmt").value;
 
 				const cycleDays = seedType === "ST25" ? 105 : 95;
@@ -1080,7 +799,6 @@
 				db.unshift(newLot);
 				saveDB(db);
 
-				// alert(i18next.t("alert_submit_success"));
 				Swal.fire({
 					icon: "success",
 					text: i18next.t("alert_submit_success"),
@@ -1097,10 +815,6 @@
 				if (index > -1) {
 					db[index].status = newStatus;
 					saveDB(db);
-					// if (newStatus === "negotiating")
-					// 	alert(i18next.t("alert_nego_sent"));
-					// if (newStatus === "deposited")
-					// 	alert(i18next.t("alert_depo_success"));
 					if (newStatus === "negotiating") {
 						Swal.fire({
 							icon: "info",
@@ -1118,7 +832,6 @@
 				}
 			}
 
-			// Tạo mã QR hiển thị Text thuần (Không bị lỗi 404 trang web khi dùng điện thoại quét)
 			function viewQR(lotId) {
 				event.stopPropagation();
 				const db = getDB();
@@ -1126,38 +839,29 @@
 				if (lot) {
 					const farmerName = i18next.t(lot.farmerKey);
 					const qrText = `${i18next.t("qr_modal_title").toUpperCase()}\n------------------------------------\n${i18next.t("th_lot_id")}: ${lot.id}\n${i18next.t("th_farmer")}: ${farmerName}\n${i18next.t("th_seed")}: ${lot.seedType}\n${i18next.t("th_harvest_date")}: ${lot.harvestDate}\n${i18next.t("th_carbon")}: ${lot.carbon} kg CO2e/ha\nESG Standard: PASSED`;
-
 					const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrText)}`;
 
-					document.getElementById("qrLotTitle").innerText =
-						`${i18next.t("th_lot_id")}: ${lot.id}`;
+					document.getElementById("qrLotTitle").innerText = `${i18next.t("th_lot_id")}: ${lot.id}`;
 					document.getElementById("qrImage").src = qrUrl;
 					document.getElementById("qrDetails").innerHTML = `
                     <p><strong>${i18next.t("th_farmer")}:</strong> ${farmerName}</p>
                     <p><strong>${i18next.t("th_seed")}:</strong> ${lot.seedType}</p>
                     <p><strong>${i18next.t("th_harvest_date")}:</strong> ${lot.harvestDate}</p>
-                    <p><strong>${i18next.t("th_carbon")}:</strong> ${lot.carbon} kg CO2e/ha (Low Carbon)</p>
-                `;
+                    <p><strong>${i18next.t("th_carbon")}:</strong> ${lot.carbon} kg CO2e/ha (Low Carbon)</p>`;
 					document.getElementById("qrModal").style.display = "flex";
 				}
 			}
-			function closeQRModal() {
-				document.getElementById("qrModal").style.display = "none";
-			}
+			function closeQRModal() { document.getElementById("qrModal").style.display = "none"; }
 
-			// Render toàn bộ dữ liệu bảng & Marker bản đồ theo ngôn ngữ hiện tại
 			function renderTables() {
 				const data = getDB();
 				const farmerTbody = document.getElementById("farmerTableBody");
-				const businessTbody =
-					document.getElementById("businessTableBody");
+				const businessTbody = document.getElementById("businessTableBody");
 
 				farmerTbody.innerHTML = "";
 				businessTbody.innerHTML = "";
 
-				mapMarkers.forEach((marker) => {
-					if (supplyMap) supplyMap.removeLayer(marker);
-				});
+				mapMarkers.forEach((marker) => { if (supplyMap) supplyMap.removeLayer(marker); });
 				mapMarkers = [];
 				markerInstances = {};
 
@@ -1176,7 +880,6 @@
 						farmerStatusBadge = `<span class="badge" style="background:#f8d7da; color:#721c24;">${i18next.t("badge_sold")}</span>`;
 					}
 
-					// Render bảng nông dân
 					farmerTbody.innerHTML += `<tr>
                     <td><strong>${lot.id}</strong></td>
                     <td>${lot.seedType}</td>
@@ -1185,7 +888,6 @@
                     <td>${farmerStatusBadge}</td>
                 </tr>`;
 
-					// Nút hành động tương ứng trạng thái
 					let actionBtns = "";
 					if (lot.status === "available") {
 						actionBtns = `
@@ -1206,7 +908,6 @@
 
 					const farmerDisplayName = i18next.t(lot.farmerKey);
 
-					// Render bảng doanh nghiệp
 					businessTbody.innerHTML += `<tr onclick="focusOnMap('${lot.id}')">
                     <td><strong>${farmerDisplayName}</strong><br><small style="color:#7f8c8d;">${i18next.t("th_seed")}: ${lot.seedType}</small></td>
                     <td><strong>~${lot.yield} Tons</strong></td>
@@ -1215,7 +916,6 @@
                     <td>${actionBtns}</td>
                 </tr>`;
 
-					// Đính ghim bản đồ Leaflet có màu tương ứng
 					if (supplyMap && lot.lat && lot.lng) {
 						const customIcon = L.divIcon({
 							className: "custom-pin",
@@ -1237,11 +937,7 @@
                             </div>
                         </div>
                     `;
-						const marker = L.marker([lot.lat, lot.lng], {
-							icon: customIcon,
-						})
-							.addTo(supplyMap)
-							.bindPopup(popupHtml);
+						const marker = L.marker([lot.lat, lot.lng], { icon: customIcon }).addTo(supplyMap).bindPopup(popupHtml);
 						mapMarkers.push(marker);
 						markerInstances[lot.id] = marker;
 					}
@@ -1252,22 +948,15 @@
 				const marker = markerInstances[lotId];
 				if (marker && supplyMap) {
 					window.scrollTo({ top: 0, behavior: "smooth" });
-					supplyMap.flyTo(marker.getLatLng(), 14, {
-						animate: true,
-						duration: 1.2,
-					});
-					setTimeout(() => {
-						marker.openPopup();
-					}, 1200);
+					supplyMap.flyTo(marker.getLatLng(), 14, { animate: true, duration: 1.2 });
+					setTimeout(() => { marker.openPopup(); }, 1200);
 				}
 			}
 
 			function exportData() {
 				const data = localStorage.getItem(DB_KEY) || "[]";
 				const a = document.createElement("a");
-				a.href = URL.createObjectURL(
-					new Blob([data], { type: "application/json" }),
-				);
+				a.href = URL.createObjectURL(new Blob([data], { type: "application/json" }));
 				a.download = "RiceTrace_DataBackup.json";
 				a.click();
 			}
@@ -1277,12 +966,6 @@
 				if (!file) return;
 				const reader = new FileReader();
 				reader.onload = (e) => {
-					// try {
-					// 	saveDB(JSON.parse(e.target.result));
-					// 	alert("Import successful!");
-					// } catch (err) {
-					// 	alert("Invalid JSON file!");
-					// }
 					try {
 						saveDB(JSON.parse(e.target.result));
 						Swal.fire({
@@ -1304,28 +987,17 @@
 			}
 
 			function nav(pageId) {
-				document
-					.querySelectorAll(".page-section")
-					.forEach((p) => p.classList.remove("active"));
+				document.querySelectorAll(".page-section").forEach((p) => p.classList.remove("active"));
 				document.getElementById(pageId).classList.add("active");
 
-				document
-					.querySelectorAll(".nav-btn")
-					.forEach((b) => b.classList.remove("active"));
-				if (pageId === "page-farmer")
-					document
-						.getElementById("btn-nav-farmer")
-						.classList.add("active");
-				if (pageId === "page-business")
-					document
-						.getElementById("btn-nav-business")
-						.classList.add("active");
+				document.querySelectorAll(".nav-btn").forEach((b) => b.classList.remove("active"));
+                
+                if (pageId === "page-home") document.getElementById("btn-nav-home").classList.add("active");
+				if (pageId === "page-farmer") document.getElementById("btn-nav-farmer").classList.add("active");
+				if (pageId === "page-business") document.getElementById("btn-nav-business").classList.add("active");
 
-				// Khắc phục lỗi render bản đồ khi container bị ẩn
 				if (pageId === "page-business" && supplyMap) {
-					setTimeout(() => {
-						supplyMap.invalidateSize();
-					}, 200);
+					setTimeout(() => { supplyMap.invalidateSize(); }, 200);
 				}
 			}
 
@@ -1333,16 +1005,12 @@
 			// 4. KICKSTART ỨNG DỤNG KHI TẢI TRANG
 			// ==========================================
 			window.onload = () => {
-				// Khởi tạo bản đồ trung tâm An Giang
 				supplyMap = L.map("realMap").setView([10.375, 105.435], 11);
-				L.tileLayer(
-					"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-					{
-						attribution: "© OpenStreetMap contributors",
-					},
-				).addTo(supplyMap);
+				L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+					attribution: "© OpenStreetMap contributors",
+				}).addTo(supplyMap);
 
-				renderTables();
+				renderTables(); // Được gọi an toàn sau khi đã khai báo DB_KEY
 			};
 		</script>
 	</body>
