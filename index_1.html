@@ -58,7 +58,7 @@
 				margin: 0 auto;
 			}
 			.logo {
-				font-size: 22px;
+				font-size: 20px;
 				font-weight: bold;
 				color: var(--primary-green);
 				text-decoration: none;
@@ -67,12 +67,16 @@
 				gap: 5px;
 				cursor: pointer;
 			}
-			/* Chỉnh lại kích thước logo ảnh cho vừa vặn thanh menu */
+
 			.logo img {
-				height: 120px;
+				height: 80px;
 				width: auto;
 				object-fit: contain;
 				border-radius: 4px;
+
+				transform: scale(1.35);
+				transform-origin: left center;
+				margin-right: 18px;
 			}
 
 			.nav-menu {
