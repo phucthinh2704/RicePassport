@@ -7,7 +7,9 @@
 			content="width=device-width, initial-scale=1.0" />
 		<title>RiceTrace Mekong - Traceability & ESG Platform</title>
 
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+			rel="stylesheet" />
 
 		<link
 			rel="stylesheet"
@@ -531,18 +533,25 @@
 			}
 			.faq-answer {
 				max-height: 0;
+				opacity: 0;
 				overflow: hidden;
-				transition: max-height 0.35s ease;
 				padding: 0 20px;
 				font-size: 14.5px;
 				line-height: 1.7;
 				color: #4b6584;
 				background: #fff;
+				border-top: 1px solid transparent;
+				transition:
+					max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+					padding 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+					opacity 0.25s ease,
+					border-color 0.25s ease;
 			}
 			.faq-item.active .faq-answer {
+				opacity: 1;
 				padding: 16px 20px;
-				max-height: 400px;
-				border-top: 1px solid var(--border-color);
+				max-height: 300px;
+				border-top-color: var(--border-color);
 			}
 
 			.site-footer {
@@ -1826,11 +1835,13 @@
 						home_intro_desc:
 							"RiceTrace Mekong là nền tảng số hóa vùng trồng và kết nối trực tiếp nông dân Đồng bằng sông Cửu Long với doanh nghiệp xuất khẩu. Thông qua 'Hộ chiếu số' (Rice Passport), chúng tôi minh bạch hóa dữ liệu canh tác, xóa bỏ trung gian để giúp doanh nghiệp chủ động nguồn hàng đạt chuẩn và nông dân bán lúa đúng giá trị.",
 						home_why_title: "Tại sao chọn chúng tôi?",
-						home_why_1: "Minh bạch tuyệt đối, rõ ràng và đáng tin cậy",
+						home_why_1:
+							"Minh bạch tuyệt đối, rõ ràng và đáng tin cậy",
 						home_why_2: "Chủ động nguồn cung sớm 60 ngày",
 						home_why_3:
 							"Sẵn sàng chinh phục thị trường khó tính (EU, Mỹ)",
-						home_why_4: "Hệ sinh thái tăng trưởng lợi nhuận kép bền vững",
+						home_why_4:
+							"Hệ sinh thái tăng trưởng lợi nhuận kép bền vững",
 						home_story_title: "Câu chuyện nhà nông",
 						home_story_content:
 							"\"Làm ruộng ngặt lắm chú ơi! Cả vụ gồng gánh sâu bệnh, tới chừng trúng mùa thì lại lo 'được mùa mất giá'. Sợ nhất là sát ngày gặt, thương lái cứ neo ghe đè giá, viện đủ lý do để bẻ cọc ép mình bán rẻ.<br><br>Lúc nghe giới thiệu cái web này tui thấy hay quá! Lúa mình xịt thuốc gì, bón phân chi đều ghi rõ trên 'Hộ chiếu số', doanh nghiệp nhìn vô là tin liền. Bán được trực tiếp cho công ty, không qua cò lái nữa, vừa đỡ đau đầu lại cầm đồng tiền xứng đáng với công sức bỏ ra.\"",
@@ -2275,10 +2286,20 @@
 				e.target.reset();
 			}
 
-			// Đóng/mở câu hỏi FAQ
 			function toggleFaq(el) {
 				const item = el.parentElement;
-				item.classList.toggle("active");
+				const answer = el.nextElementSibling;
+				const isOpen = item.classList.contains("active");
+
+				if (isOpen) {
+					answer.style.maxHeight = answer.scrollHeight + "px";
+					answer.offsetHeight; 
+					item.classList.remove("active");
+					answer.style.maxHeight = "0px";
+				} else {
+					item.classList.add("active");
+					answer.style.maxHeight = (answer.scrollHeight + 32) + "px";
+				}
 			}
 
 			function updateStatus(lotId, newStatus) {
