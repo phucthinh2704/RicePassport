@@ -7,9 +7,7 @@
 			content="width=device-width, initial-scale=1.0" />
 		<title>RiceTrace Mekong - Traceability & ESG Platform</title>
 
-		<link
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-			rel="stylesheet" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
 
 		<link
 			rel="stylesheet"
@@ -41,6 +39,9 @@
 				background-color: var(--gray-bg);
 				color: var(--dark-text);
 				overflow-x: hidden;
+				display: flex;
+				flex-direction: column;
+				min-height: 100vh;
 			}
 
 			header {
@@ -56,6 +57,8 @@
 				align-items: center;
 				max-width: 1400px;
 				margin: 0 auto;
+				padding: 0 20px;
+				gap: 15px;
 			}
 			.logo {
 				font-size: 22px;
@@ -65,6 +68,7 @@
 				display: flex;
 				align-items: center;
 				cursor: pointer;
+				flex-shrink: 0;
 			}
 
 			.logo img {
@@ -72,17 +76,69 @@
 				width: auto;
 				object-fit: contain;
 				border-radius: 4px;
-
 				transform: scale(2.35);
 				transform-origin: left center;
 				margin-left: 60px;
+				margin-right: 110px;
 				margin-top: 7px;
+				transition: all 0.3s ease;
 			}
 
 			.nav-menu {
 				display: flex;
 				gap: 8px;
 				align-items: center;
+				flex-wrap: wrap;
+				justify-content: flex-end;
+			}
+
+			@media (max-width: 1250px) {
+				.logo img {
+					transform: scale(1.75);
+					margin-left: 20px;
+					margin-right: 70px;
+				}
+				.nav-btn {
+					padding: 8px 12px;
+					font-size: 13px;
+				}
+				.data-tools {
+					margin-left: 8px;
+					padding-left: 8px;
+				}
+			}
+
+			@media (max-width: 992px) {
+				.nav-container {
+					flex-direction: column;
+					padding: 12px 15px;
+					gap: 10px;
+				}
+				.logo img {
+					height: 60px;
+					transform: scale(1.6);
+					transform-origin: center center;
+					margin: 5px 0;
+				}
+				.nav-menu {
+					justify-content: center;
+					width: 100%;
+				}
+			}
+
+			@media (max-width: 576px) {
+				.logo img {
+					height: 50px;
+					transform: scale(1.35);
+				}
+				.data-tools {
+					border-left: none;
+					margin-left: 0;
+					padding-left: 0;
+					width: 100%;
+					justify-content: center;
+					margin-top: 5px;
+				}
 			}
 			.nav-btn {
 				background: none;
@@ -138,6 +194,7 @@
 			.page-section {
 				display: none;
 				animation: fadeIn 0.35s ease;
+				flex: 1;
 			}
 			.page-section.active {
 				display: block;
@@ -159,7 +216,7 @@
 				margin: 25px auto;
 				padding: 0 20px;
 				gap: 25px;
-				min-height: 75vh;
+				min-height: 70vh;
 			}
 			.sidebar {
 				width: 225px;
@@ -217,7 +274,7 @@
 				transition: transform 0.3s ease;
 			}
 			.why-card:hover {
-				transform: translateY(-5px);
+				transform: translateY(-8px);
 			}
 			.why-icon {
 				font-size: 36px;
@@ -261,7 +318,8 @@
 				color: #34495e;
 			}
 			.form-group input,
-			.form-group select {
+			.form-group select,
+			.form-group textarea {
 				width: 100%;
 				padding: 10px 12px;
 				border: 1px solid var(--border-color);
@@ -269,6 +327,11 @@
 				outline: none;
 				font-size: 14px;
 				transition: 0.3s;
+			}
+			.form-group input:focus,
+			.form-group select:focus,
+			.form-group textarea:focus {
+				border-color: var(--primary-green);
 			}
 			.highlight-autofill {
 				background-color: #e8f5e9 !important;
@@ -358,7 +421,6 @@
 				display: inline-block;
 			}
 
-			/* QR Modal */
 			.modal-overlay {
 				display: none;
 				position: fixed;
@@ -397,6 +459,204 @@
 				border: 2px dashed var(--primary-green);
 				border-radius: 10px;
 			}
+
+			.contact-grid {
+				display: grid;
+				grid-template-columns: 1fr 1.6fr;
+				gap: 30px;
+				width: 100%;
+				margin-bottom: 30px;
+			}
+			@media (max-width: 850px) {
+				.contact-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+			.direct-contact-item {
+				display: flex;
+				align-items: flex-start;
+				gap: 15px;
+				margin-bottom: 22px;
+			}
+			.direct-contact-icon {
+				width: 44px;
+				height: 44px;
+				border-radius: 50%;
+				background: var(--light-green);
+				color: var(--primary-green);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 18px;
+				flex-shrink: 0;
+			}
+
+			.faq-item {
+				border: 1px solid var(--border-color);
+				border-radius: 8px;
+				margin-bottom: 12px;
+				overflow: hidden;
+				background: #fff;
+				transition: 0.2s;
+			}
+			.faq-question {
+				padding: 16px 20px;
+				font-weight: 600;
+				font-size: 15px;
+				color: var(--dark-text);
+				cursor: pointer;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				background: #fafafa;
+				transition: background 0.2s;
+			}
+			.faq-question:hover {
+				background: var(--light-green);
+				color: var(--primary-green);
+			}
+			.faq-question i {
+				transition: transform 0.3s ease;
+				color: var(--primary-green);
+			}
+			.faq-item.active {
+				border-color: var(--primary-green);
+			}
+			.faq-item.active .faq-question {
+				background: var(--light-green);
+				color: var(--dark-green);
+			}
+			.faq-item.active .faq-question i {
+				transform: rotate(180deg);
+			}
+			.faq-answer {
+				max-height: 0;
+				overflow: hidden;
+				transition: max-height 0.35s ease;
+				padding: 0 20px;
+				font-size: 14.5px;
+				line-height: 1.7;
+				color: #4b6584;
+				background: #fff;
+			}
+			.faq-item.active .faq-answer {
+				padding: 16px 20px;
+				max-height: 400px;
+				border-top: 1px solid var(--border-color);
+			}
+
+			.site-footer {
+				background: #192a20;
+				color: #ecf0f1;
+				padding: 55px 20px 20px;
+				margin-top: auto;
+			}
+			.footer-container {
+				max-width: 1400px;
+				margin: 0 auto;
+				display: grid;
+				grid-template-columns: 1.4fr 1fr 1.2fr;
+				gap: 40px;
+				padding-bottom: 35px;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+			}
+			@media (max-width: 850px) {
+				.footer-container {
+					grid-template-columns: 1fr;
+				}
+			}
+			.footer-brand h3 {
+				color: #2ecc71;
+				font-size: 22px;
+				margin-bottom: 12px;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+			.footer-brand p {
+				color: #bdc3c7;
+				font-size: 14.5px;
+				line-height: 1.6;
+				margin-bottom: 20px;
+				max-width: 380px;
+			}
+			.social-links {
+				display: flex;
+				gap: 12px;
+			}
+			.social-icon {
+				width: 38px;
+				height: 38px;
+				border-radius: 50%;
+				background: rgba(255, 255, 255, 0.1);
+				color: white;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				text-decoration: none;
+				font-weight: bold;
+				font-size: 14px;
+				transition: 0.25s;
+			}
+			.social-icon:hover {
+				background: var(--primary-green);
+				transform: translateY(-3px);
+			}
+			.footer-links h4,
+			.footer-contact h4 {
+				color: white;
+				font-size: 16px;
+				margin-bottom: 18px;
+				position: relative;
+			}
+			.footer-links ul {
+				list-style: none;
+			}
+			.footer-links li {
+				margin-bottom: 11px;
+			}
+			.footer-links a {
+				color: #bdc3c7;
+				text-decoration: none;
+				font-size: 14px;
+				transition: 0.2s;
+				cursor: pointer;
+			}
+			.footer-links a:hover {
+				color: #2ecc71;
+				padding-left: 5px;
+			}
+			.footer-contact p {
+				color: #bdc3c7;
+				font-size: 14px;
+				margin-bottom: 12px;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+			.footer-bottom {
+				max-width: 1400px;
+				margin: 20px auto 0;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				font-size: 13px;
+				color: #95a5a6;
+				flex-wrap: wrap;
+				gap: 15px;
+			}
+			.footer-bottom-links {
+				display: flex;
+				gap: 20px;
+			}
+			.footer-bottom-links a {
+				color: #95a5a6;
+				text-decoration: none;
+				transition: 0.2s;
+			}
+			.footer-bottom-links a:hover {
+				color: white;
+			}
 		</style>
 	</head>
 	<body>
@@ -408,7 +668,6 @@
 					<img
 						src="./logo/Landscape.png"
 						alt="Logo" />
-					<!-- RiceTrace Mekong -->
 				</div>
 				<nav class="nav-menu">
 					<button
@@ -431,6 +690,13 @@
 						onclick="nav('page-business')">
 						<i class="fa-solid fa-building"></i>
 						<span data-i18n="nav_business">Doanh nghiệp</span>
+					</button>
+					<button
+						class="nav-btn"
+						id="btn-nav-contact"
+						onclick="nav('page-contact')">
+						<i class="fa-solid fa-envelope-open-text"></i>
+						<span data-i18n="nav_contact">Liên hệ & FAQ</span>
 					</button>
 
 					<button
@@ -466,6 +732,7 @@
 			</div>
 		</header>
 
+		<!-- 0. TRANG CHỦ -->
 		<section
 			id="page-home"
 			class="page-section active">
@@ -536,7 +803,7 @@
 						<h4
 							style="font-size: 16px; color: var(--dark-text)"
 							data-i18n="home_why_1">
-							Minh bạch tuyệt đối
+							Minh bạch tuyệt đối, rõ ràng và đáng tin cậy
 						</h4>
 					</div>
 					<div class="why-card">
@@ -560,7 +827,7 @@
 						<h4
 							style="font-size: 16px; color: var(--dark-text)"
 							data-i18n="home_why_4">
-							Hệ sinh thái tăng lợi nhuận kép
+							Hệ sinh thái tăng trưởng lợi nhuận kép bền vững
 						</h4>
 					</div>
 				</div>
@@ -652,6 +919,7 @@
 			</div>
 		</section>
 
+		<!-- 1. FARMER PORTAL -->
 		<section
 			id="page-farmer"
 			class="page-section">
@@ -864,6 +1132,7 @@
 			</div>
 		</section>
 
+		<!-- 2. BUSINESS PORTAL -->
 		<section
 			id="page-business"
 			class="page-section">
@@ -950,6 +1219,455 @@
 			</div>
 		</section>
 
+		<!-- 3. TRANG LIÊN HỆ & FAQ -->
+		<section
+			id="page-contact"
+			class="page-section">
+			<div
+				class="dashboard-layout"
+				style="
+					flex-direction: column;
+					align-items: center;
+					max-width: 1150px;
+				">
+				<!-- 1. Hero Section -->
+				<div
+					class="content-section"
+					style="
+						width: 100%;
+						text-align: center;
+						padding: 45px 30px;
+						background: linear-gradient(
+							135deg,
+							#1b5e20 0%,
+							#2e7d32 100%
+						);
+						color: white;
+					">
+					<h1
+						style="margin-bottom: 15px; font-size: 32px"
+						data-i18n="contact_hero_title">
+						Kết nối cùng RiceTrace Mekong - Nâng tầm giá trị hạt gạo
+					</h1>
+					<p
+						style="
+							font-size: 16px;
+							line-height: 1.6;
+							max-width: 800px;
+							margin: 0 auto;
+							color: #e8f5e9;
+						"
+						data-i18n="contact_hero_sub">
+						Dù bạn là Nông dân muốn tăng thu nhập hay Doanh nghiệp
+						đang tìm kiếm vùng nguyên liệu đạt chuẩn xuất khẩu,
+						chúng tôi luôn sẵn sàng hỗ trợ.
+					</p>
+				</div>
+
+				<!-- 2 & 3. Direct Contact + Lead Generation Form -->
+				<div class="contact-grid">
+					<!-- Thông tin liên hệ trực tiếp -->
+					<div
+						class="content-section"
+						style="margin-bottom: 0">
+						<h3
+							style="
+								color: var(--primary-green);
+								margin-bottom: 20px;
+								font-size: 20px;
+							"
+							data-i18n="contact_direct_title">
+							Thông tin liên hệ trực tiếp
+						</h3>
+
+						<div class="direct-contact-item">
+							<div class="direct-contact-icon">
+								<i class="fa-solid fa-location-dot"></i>
+							</div>
+							<div>
+								<h4
+									style="margin-bottom: 4px; font-size: 15px"
+									data-i18n="contact_hq_label">
+									Trụ sở chính
+								</h4>
+								<p
+									style="color: #555; font-size: 14px"
+									data-i18n="contact_hq_val">
+									TP. Long Xuyên, Tỉnh An Giang
+								</p>
+							</div>
+						</div>
+
+						<div class="direct-contact-item">
+							<div class="direct-contact-icon">
+								<i class="fa-solid fa-envelope"></i>
+							</div>
+							<div>
+								<h4 style="margin-bottom: 4px; font-size: 15px">
+									Email
+								</h4>
+								<p style="color: #555; font-size: 14px">
+									contact@ricetrace.vn<br />sales@ricetrace.vn
+								</p>
+							</div>
+						</div>
+
+						<div class="direct-contact-item">
+							<div class="direct-contact-icon">
+								<i class="fa-solid fa-phone-volume"></i>
+							</div>
+							<div>
+								<h4 style="margin-bottom: 4px; font-size: 15px">
+									Hotline / Zalo OA
+								</h4>
+								<p style="color: #555; font-size: 14px">
+									+84 XXXXXXXXX
+								</p>
+							</div>
+						</div>
+
+						<div
+							style="
+								margin-top: 30px;
+								padding: 20px;
+								background: var(--light-green);
+								border-radius: 8px;
+								border-left: 4px solid var(--primary-green);
+							">
+							<h4
+								style="
+									color: var(--dark-green);
+									margin-bottom: 6px;
+									font-size: 15px;
+								">
+								RICETRACE MEKONG
+							</h4>
+							<p
+								style="
+									font-size: 13.5px;
+									font-style: italic;
+									color: #2c3e50;
+									line-height: 1.6;
+								"
+								data-i18n="footer_slogan">
+								Nơi mỗi hạt gạo đều có câu chuyện, và mỗi người
+								nông dân đều được ghi nhận.
+							</p>
+						</div>
+					</div>
+
+					<!-- Biểu mẫu đăng ký tư vấn -->
+					<div
+						class="content-section"
+						style="margin-bottom: 0">
+						<h3
+							style="
+								color: var(--primary-green);
+								margin-bottom: 6px;
+								font-size: 20px;
+							"
+							data-i18n="contact_form_title">
+							Đăng ký tư vấn & Hợp tác
+						</h3>
+						<p
+							style="
+								font-size: 13px;
+								color: #7f8c8d;
+								margin-bottom: 20px;
+							"
+							data-i18n="contact_form_commit">
+							Cam kết: Chúng tôi sẽ liên hệ lại qua Zalo/SĐT trong
+							vòng 24h.
+						</p>
+
+						<form
+							id="leadForm"
+							onsubmit="handleContactSubmit(event)">
+							<div
+								style="
+									display: grid;
+									grid-template-columns: 1fr 1fr;
+									gap: 15px;
+								">
+								<div class="form-group">
+									<label data-i18n="contact_f_name"
+										>Họ và Tên / Tên Doanh nghiệp *</label
+									>
+									<input
+										type="text"
+										id="leadName"
+										required
+										placeholder="Nguyễn Văn A / Công ty B" />
+								</div>
+								<div class="form-group">
+									<label data-i18n="contact_f_phone"
+										>Số điện thoại / Zalo *</label
+									>
+									<input
+										type="tel"
+										id="leadPhone"
+										required
+										placeholder="09xx xxx xxx" />
+								</div>
+							</div>
+
+							<div
+								style="
+									display: grid;
+									grid-template-columns: 1fr 1fr;
+									gap: 15px;
+								">
+								<div class="form-group">
+									<label data-i18n="contact_f_role"
+										>Bạn là ai? *</label
+									>
+									<select
+										id="leadRole"
+										required>
+										<option
+											value="farmer"
+											data-i18n="role_farmer">
+											Nông dân / Hợp tác xã
+										</option>
+										<option
+											value="sme"
+											data-i18n="role_sme">
+											Doanh nghiệp thu mua / Xuất khẩu
+											(SMEs)
+										</option>
+										<option
+											value="partner"
+											data-i18n="role_partner">
+											Nhà cung cấp dịch vụ (Drone, Vật tư,
+											Logistics...)
+										</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label data-i18n="contact_f_region"
+										>Khu vực canh tác / Thu mua *</label
+									>
+									<input
+										type="text"
+										id="leadRegion"
+										list="mekongRegions"
+										required
+										placeholder="An Giang, Đồng Tháp, Cần Thơ..." />
+									<datalist id="mekongRegions">
+										<option value="An Giang"></option>
+										<option value="Đồng Tháp"></option>
+										<option value="Cần Thơ"></option>
+										<option value="Kiên Giang"></option>
+										<option value="Sóc Trăng"></option>
+										<option value="Long An"></option>
+									</datalist>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label data-i18n="contact_f_need"
+									>Nhu cầu của bạn là gì? *</label
+								>
+								<select
+									id="leadNeed"
+									required>
+									<option
+										value="passport"
+										data-i18n="need_passport">
+										Tạo Rice Passport (Hộ chiếu số) cho lúa
+									</option>
+									<option
+										value="sourcing"
+										data-i18n="need_sourcing">
+										Tìm kiếm vùng nguyên liệu đạt chuẩn
+									</option>
+									<option
+										value="partner"
+										data-i18n="need_partner">
+										Trở thành đối tác
+									</option>
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label data-i18n="contact_f_msg"
+									>Lời nhắn bổ sung (Không bắt buộc)</label
+								>
+								<textarea
+									id="leadMsg"
+									rows="3"
+									placeholder="Ghi chú thêm về diện tích, sản lượng cần mua..."></textarea>
+							</div>
+
+							<button
+								type="submit"
+								class="btn-action"
+								style="
+									width: 100%;
+									padding: 13px;
+									font-size: 15px;
+								">
+								<i class="fa-solid fa-paper-plane"></i>
+								<span data-i18n="contact_btn_submit"
+									>Nhận Tư Vấn Miễn Phí Ngay</span
+								>
+							</button>
+						</form>
+					</div>
+				</div>
+
+				<!-- 4. Câu hỏi thường gặp (FAQ Section) -->
+				<div
+					class="content-section"
+					style="width: 100%; padding: 35px">
+					<div style="text-align: center; margin-bottom: 25px">
+						<h2
+							style="color: var(--primary-green); font-size: 26px"
+							data-i18n="faq_title">
+							Câu hỏi thường gặp (FAQ)
+						</h2>
+						<p
+							style="
+								color: #7f8c8d;
+								font-size: 14px;
+								margin-top: 5px;
+							"
+							data-i18n="faq_subtitle">
+							Giải đáp nhanh các thắc mắc về quy trình, chi phí và
+							cam kết minh bạch tại RiceTrace Mekong
+						</p>
+					</div>
+
+					<div class="faq-list">
+						<div class="faq-item active">
+							<div
+								class="faq-question"
+								onclick="toggleFaq(this)">
+								<span data-i18n="faq_q1"
+									>1. RiceTrace Mekong có trực tiếp thu mua
+									lúa của nông dân không?</span
+								>
+								<i class="fa-solid fa-chevron-down"></i>
+							</div>
+							<div
+								class="faq-answer"
+								data-i18n="faq_a1">
+								Không. RiceTrace Mekong là nền tảng công nghệ số
+								hóa vùng trồng và kết nối trực tiếp
+								(Marketplace). Chúng tôi cung cấp công cụ "Rice
+								Passport" để nông dân chứng minh chất lượng lúa,
+								từ đó kết nối thẳng đến các Doanh nghiệp thu mua
+								(SMEs) trên nền tảng mà không cần qua nhiều tầng
+								thương lái trung gian, giúp nông dân bán được
+								giá cao hơn và không lo bị bẻ cọc.
+							</div>
+						</div>
+
+						<div class="faq-item">
+							<div
+								class="faq-question"
+								onclick="toggleFaq(this)">
+								<span data-i18n="faq_q2"
+									>2. Tôi là nông dân không rành công nghệ,
+									việc ghi nhật ký sản xuất có khó
+									không?</span
+								>
+								<i class="fa-solid fa-chevron-down"></i>
+							</div>
+							<div
+								class="faq-answer"
+								data-i18n="faq_a2">
+								Rất đơn giản. Ứng dụng RiceTrace được thiết kế
+								tối giản, dễ thao tác trên điện thoại thông
+								minh. Trong giai đoạn đầu, đội ngũ kỹ sư nông
+								nghiệp và nhân viên hiện trường (field agents)
+								tại An Giang sẽ trực tiếp xuống đồng để hướng
+								dẫn, đồng hành và hỗ trợ bà con nhập liệu cho
+								đến khi thành thạo.
+							</div>
+						</div>
+
+						<div class="faq-item">
+							<div
+								class="faq-question"
+								onclick="toggleFaq(this)">
+								<span data-i18n="faq_q3"
+									>3. Doanh nghiệp của tôi có được đảm bảo
+									nguồn lúa trên RiceTrace đạt chuẩn xuất khẩu
+									(EU, Mỹ) không?</span
+								>
+								<i class="fa-solid fa-chevron-down"></i>
+							</div>
+							<div
+								class="faq-answer"
+								data-i18n="faq_a3">
+								Có. Điểm khác biệt của RiceTrace là cơ chế Xác
+								thực 3 bên (Tri-Verification). Dữ liệu nhật ký
+								canh tác không chỉ do nông dân tự nhập mà còn
+								được đối chiếu, xác nhận bởi Kỹ sư khuyến nông
+								địa phương và Hóa đơn vật tư đầu vào. Hệ thống
+								sẽ cấp mã QR (Rice Passport) minh bạch về dư
+								lượng, giống lúa và quy trình, giúp doanh nghiệp
+								an tâm đặt cọc sớm và đủ điều kiện xuất khẩu.
+							</div>
+						</div>
+
+						<div class="faq-item">
+							<div
+								class="faq-question"
+								onclick="toggleFaq(this)">
+								<span data-i18n="faq_q4"
+									>4. Chi phí để sử dụng nền tảng RiceTrace là
+									bao nhiêu?</span
+								>
+								<i class="fa-solid fa-chevron-down"></i>
+							</div>
+							<div
+								class="faq-answer"
+								data-i18n="faq_a4">
+								<b>Đối với Nông dân:</b> Được miễn phí sử dụng
+								ứng dụng trong thời gian đầu (Pilot) để tạo lập
+								dữ liệu vùng trồng.<br />
+								<b>Đối với Doanh nghiệp (SMEs):</b> Chúng tôi áp
+								dụng mô hình Trả phí gói (Subscription) theo năm
+								để truy cập "Bản đồ vùng nguyên liệu" (Rice
+								Sourcing Map), kết hợp phí hoa hồng (1-2%) trên
+								các giao dịch thành công. Khách hàng đăng ký
+								trong giai đoạn Pilot tại An Giang sẽ được ưu
+								đãi giảm 30% chi phí năm đầu tiên.
+							</div>
+						</div>
+
+						<div class="faq-item">
+							<div
+								class="faq-question"
+								onclick="toggleFaq(this)">
+								<span data-i18n="faq_q5"
+									>5. Nếu có rủi ro về thời tiết hoặc dịch
+									bệnh làm ảnh hưởng đến sản lượng, hệ thống
+									sẽ xử lý thế nào?</span
+								>
+								<i class="fa-solid fa-chevron-down"></i>
+							</div>
+							<div
+								class="faq-answer"
+								data-i18n="faq_a5">
+								Dữ liệu trên Rice Passport được cập nhật theo
+								thời gian thực (Real-time). Khi có biến động về
+								thời tiết hay cảnh báo dịch bệnh từ kỹ sư nông
+								nghiệp, tình trạng lô ruộng sẽ được cập nhật
+								ngay trên hệ thống. Điều này giúp Doanh nghiệp
+								thu mua nắm bắt tình hình sớm để điều chỉnh kế
+								hoạch gom hàng, đồng thời hỗ trợ Nông dân có
+								phương án xử lý kịp thời để bảo vệ năng suất.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- QR MODAL -->
 		<div
 			id="qrModal"
 			class="modal-overlay">
@@ -986,6 +1704,106 @@
 			</div>
 		</div>
 
+		<!-- FOOTER TOÀN TRANG -->
+		<footer class="site-footer">
+			<div class="footer-container">
+				<div class="footer-brand">
+					<h3><i class="fa-solid fa-leaf"></i> RICETRACE MEKONG</h3>
+					<p data-i18n="footer_slogan">
+						Nơi mỗi hạt gạo đều có câu chuyện, và mỗi người nông dân
+						đều được ghi nhận.
+					</p>
+					<div class="social-links">
+						<a
+							href="#"
+							class="social-icon"
+							title="Facebook"
+							><i class="fa-brands fa-facebook-f"></i
+						></a>
+						<a
+							href="#"
+							class="social-icon"
+							title="Zalo OA"
+							>Zalo</a
+						>
+					</div>
+				</div>
+
+				<div class="footer-links">
+					<h4 data-i18n="footer_quick_links">Liên kết nhanh</h4>
+					<ul>
+						<li>
+							<a
+								onclick="nav('page-home')"
+								data-i18n="nav_home"
+								>Trang chủ</a
+							>
+						</li>
+						<li>
+							<a
+								onclick="nav('page-farmer')"
+								data-i18n="footer_link_farmer"
+								>Dành cho Nông dân (Hướng dẫn tạo Rice
+								Passport)</a
+							>
+						</li>
+						<li>
+							<a
+								onclick="nav('page-business')"
+								data-i18n="footer_link_biz"
+								>Dành cho Doanh nghiệp (Truy cập Sourcing
+								Map)</a
+							>
+						</li>
+						<li>
+							<a
+								onclick="nav('page-contact')"
+								data-i18n="nav_contact"
+								>Liên hệ & FAQ</a
+							>
+						</li>
+					</ul>
+				</div>
+
+				<div class="footer-contact">
+					<h4 data-i18n="contact_direct_title">Thông tin liên hệ</h4>
+					<p>
+						<span>📍</span>
+						<span data-i18n="footer_addr"
+							>Trụ sở chính: TP. Long Xuyên, Tỉnh An Giang</span
+						>
+					</p>
+					<p>
+						<span>✉️</span>
+						<span
+							>Email: contact@ricetrace.vn /
+							sales@ricetrace.vn</span
+						>
+					</p>
+					<p>
+						<span>📞</span>
+						<span>Hotline/Zalo OA: +84 XXXXXXXXX</span>
+					</p>
+				</div>
+			</div>
+
+			<div class="footer-bottom">
+				<div>© 2026 RiceTrace Mekong. All Rights Reserved.</div>
+				<div class="footer-bottom-links">
+					<a
+						href="#"
+						data-i18n="footer_privacy"
+						>Chính sách bảo mật (Privacy Policy)</a
+					>
+					<a
+						href="#"
+						data-i18n="footer_terms"
+						>Điều khoản sử dụng (Terms of Service)</a
+					>
+				</div>
+			</div>
+		</footer>
+
 		<script>
 			// Định nghĩa DB_KEY ngay từ đầu
 			const DB_KEY = "riceTraceData_i18n_v2";
@@ -999,6 +1817,7 @@
 						nav_home: "Trang chủ",
 						nav_farmer: "Nông dân",
 						nav_business: "Doanh nghiệp",
+						nav_contact: "Liên hệ & FAQ",
 						btn_export: "Xuất JSON",
 						btn_import: "Nhập JSON",
 
@@ -1007,11 +1826,11 @@
 						home_intro_desc:
 							"RiceTrace Mekong là nền tảng số hóa vùng trồng và kết nối trực tiếp nông dân Đồng bằng sông Cửu Long với doanh nghiệp xuất khẩu. Thông qua 'Hộ chiếu số' (Rice Passport), chúng tôi minh bạch hóa dữ liệu canh tác, xóa bỏ trung gian để giúp doanh nghiệp chủ động nguồn hàng đạt chuẩn và nông dân bán lúa đúng giá trị.",
 						home_why_title: "Tại sao chọn chúng tôi?",
-						home_why_1: "Minh bạch tuyệt đối",
+						home_why_1: "Minh bạch tuyệt đối, rõ ràng và đáng tin cậy",
 						home_why_2: "Chủ động nguồn cung sớm 60 ngày",
 						home_why_3:
 							"Sẵn sàng chinh phục thị trường khó tính (EU, Mỹ)",
-						home_why_4: "Hệ sinh thái tăng lợi nhuận kép",
+						home_why_4: "Hệ sinh thái tăng trưởng lợi nhuận kép bền vững",
 						home_story_title: "Câu chuyện nhà nông",
 						home_story_content:
 							"\"Làm ruộng ngặt lắm chú ơi! Cả vụ gồng gánh sâu bệnh, tới chừng trúng mùa thì lại lo 'được mùa mất giá'. Sợ nhất là sát ngày gặt, thương lái cứ neo ghe đè giá, viện đủ lý do để bẻ cọc ép mình bán rẻ.<br><br>Lúc nghe giới thiệu cái web này tui thấy hay quá! Lúa mình xịt thuốc gì, bón phân chi đều ghi rõ trên 'Hộ chiếu số', doanh nghiệp nhìn vô là tin liền. Bán được trực tiếp cho công ty, không qua cò lái nữa, vừa đỡ đau đầu lại cầm đồng tiền xứng đáng với công sức bỏ ra.\"",
@@ -1073,6 +1892,59 @@
 							"📞 Đã gửi đề xuất thương lượng trực tiếp đến Nông dân!",
 						alert_depo_success:
 							"💰 Đặt cọc thành công! Lô lúa đã được giữ chỗ cho Doanh nghiệp.",
+
+						// Phần Trang Liên hệ & FAQ & Footer
+						contact_hero_title:
+							"Kết nối cùng RiceTrace Mekong - Nâng tầm giá trị hạt gạo",
+						contact_hero_sub:
+							"Dù bạn là Nông dân muốn tăng thu nhập hay Doanh nghiệp đang tìm kiếm vùng nguyên liệu đạt chuẩn xuất khẩu, chúng tôi luôn sẵn sàng hỗ trợ.",
+						contact_direct_title: "Thông tin liên hệ trực tiếp",
+						contact_hq_label: "Trụ sở chính",
+						contact_hq_val: "TP. Long Xuyên, Tỉnh An Giang",
+						contact_form_title: "Biểu mẫu đăng ký tư vấn",
+						contact_form_commit:
+							"Cam kết: Chúng tôi sẽ liên hệ lại qua Zalo/SĐT trong vòng 24h.",
+						contact_f_name: "Họ và Tên / Tên Doanh nghiệp *",
+						contact_f_phone: "Số điện thoại / Zalo *",
+						contact_f_role: "Bạn là ai? *",
+						role_farmer: "Nông dân / Hợp tác xã",
+						role_sme: "Doanh nghiệp thu mua / Xuất khẩu (SMEs)",
+						role_partner:
+							"Nhà cung cấp dịch vụ (Drone, Vật tư, Logistics...)",
+						contact_f_region: "Khu vực canh tác / Thu mua *",
+						contact_f_need: "Nhu cầu của bạn là gì? *",
+						need_passport:
+							"Tạo Rice Passport (Hộ chiếu số) cho lúa",
+						need_sourcing: "Tìm kiếm vùng nguyên liệu đạt chuẩn",
+						need_partner: "Trở thành đối tác",
+						contact_f_msg: "Lời nhắn bổ sung (Không bắt buộc)",
+						contact_btn_submit: "Nhận Tư Vấn Miễn Phí Ngay",
+						alert_contact_ok:
+							"🎉 Đã gửi thông tin đăng ký! Đội ngũ RiceTrace Mekong sẽ liên hệ với bạn qua Zalo/SĐT trong vòng 24h.",
+						faq_title: "Câu hỏi thường gặp (FAQ)",
+						faq_subtitle:
+							"Giải đáp nhanh các thắc mắc về quy trình, chi phí và cam kết minh bạch tại RiceTrace Mekong",
+						faq_q1: "1. RiceTrace Mekong có trực tiếp thu mua lúa của nông dân không?",
+						faq_a1: 'Không. RiceTrace Mekong là nền tảng công nghệ số hóa vùng trồng và kết nối trực tiếp (Marketplace). Chúng tôi cung cấp công cụ "Rice Passport" để nông dân chứng minh chất lượng lúa, từ đó kết nối thẳng đến các Doanh nghiệp thu mua (SMEs) trên nền tảng mà không cần qua nhiều tầng thương lái trung gian, giúp nông dân bán được giá cao hơn và không lo bị bẻ cọc.',
+						faq_q2: "2. Tôi là nông dân không rành công nghệ, việc ghi nhật ký sản xuất có khó không?",
+						faq_a2: "Rất đơn giản. Ứng dụng RiceTrace được thiết kế tối giản, dễ thao tác trên điện thoại thông minh. Trong giai đoạn đầu, đội ngũ kỹ sư nông nghiệp và nhân viên hiện trường (field agents) tại An Giang sẽ trực tiếp xuống đồng để hướng dẫn, đồng hành và hỗ trợ bà con nhập liệu cho đến khi thành thạo.",
+						faq_q3: "3. Doanh nghiệp của tôi có được đảm bảo nguồn lúa trên RiceTrace đạt chuẩn xuất khẩu (EU, Mỹ) không?",
+						faq_a3: "Có. Điểm khác biệt của RiceTrace là cơ chế Xác thực 3 bên (Tri-Verification). Dữ liệu nhật ký canh tác không chỉ do nông dân tự nhập mà còn được đối chiếu, xác nhận bởi Kỹ sư khuyến nông địa phương và Hóa đơn vật tư đầu vào. Hệ thống sẽ cấp mã QR (Rice Passport) minh bạch về dư lượng, giống lúa và quy trình, giúp doanh nghiệp an tâm đặt cọc sớm và đủ điều kiện xuất khẩu.",
+						faq_q4: "4. Chi phí để sử dụng nền tảng RiceTrace là bao nhiêu?",
+						faq_a4: '<b>Đối với Nông dân:</b> Được miễn phí sử dụng ứng dụng trong thời gian đầu (Pilot) để tạo lập dữ liệu vùng trồng.<br><b>Đối với Doanh nghiệp (SMEs):</b> Chúng tôi áp dụng mô hình Trả phí gói (Subscription) theo năm để truy cập "Bản đồ vùng nguyên liệu" (Rice Sourcing Map), kết hợp phí hoa hồng (1-2%) trên các giao dịch thành công. Khách hàng đăng ký trong giai đoạn Pilot tại An Giang sẽ được ưu đãi giảm 30% chi phí năm đầu tiên.',
+						faq_q5: "5. Nếu có rủi ro về thời tiết hoặc dịch bệnh làm ảnh hưởng đến sản lượng, hệ thống sẽ xử lý thế nào?",
+						faq_a5: "Dữ liệu trên Rice Passport được cập nhật theo thời gian thực (Real-time). Khi có biến động về thời tiết hay cảnh báo dịch bệnh từ kỹ sư nông nghiệp, tình trạng lô ruộng sẽ được cập nhật ngay trên hệ thống. Điều này giúp Doanh nghiệp thu mua nắm bắt tình hình sớm để điều chỉnh kế hoạch gom hàng, đồng thời hỗ trợ Nông dân có phương án xử lý kịp thời để bảo vệ năng suất.",
+						footer_slogan:
+							"Nơi mỗi hạt gạo đều có câu chuyện, và mỗi người nông dân đều được ghi nhận.",
+						footer_quick_links: "Liên kết nhanh",
+						footer_link_farmer:
+							"Dành cho Nông dân (Hướng dẫn tạo Rice Passport)",
+						footer_link_biz:
+							"Dành cho Doanh nghiệp (Truy cập Sourcing Map)",
+						footer_addr:
+							"Trụ sở chính: TP. Long Xuyên, Tỉnh An Giang",
+						footer_privacy: "Chính sách bảo mật (Privacy Policy)",
+						footer_terms: "Điều khoản sử dụng (Terms of Service)",
 					},
 				},
 				en: {
@@ -1080,6 +1952,7 @@
 						nav_home: "Home",
 						nav_farmer: "Farmer Portal",
 						nav_business: "Business Portal",
+						nav_contact: "Contact & FAQ",
 						btn_export: "Export JSON",
 						btn_import: "Import JSON",
 
@@ -1154,6 +2027,58 @@
 							"📞 Direct procurement negotiation request sent to the farmer!",
 						alert_depo_success:
 							"💰 Deposit confirmed! This lot is exclusively locked for your enterprise.",
+
+						// Contact & FAQ & Footer Translation
+						contact_hero_title:
+							"Connect with RiceTrace Mekong - Elevating Rice Value",
+						contact_hero_sub:
+							"Whether you are a Farmer looking to increase income or an Enterprise seeking export-standard sourcing regions, we are ready to support you.",
+						contact_direct_title: "Direct Contact Information",
+						contact_hq_label: "Headquarters",
+						contact_hq_val: "Long Xuyen City, An Giang Province",
+						contact_form_title: "Consultation Registration Form",
+						contact_form_commit:
+							"Commitment: We will contact you via Zalo/Phone within 24 hours.",
+						contact_f_name: "Full Name / Company Name *",
+						contact_f_phone: "Phone Number / Zalo *",
+						contact_f_role: "Who are you? *",
+						role_farmer: "Farmer / Cooperative",
+						role_sme: "Purchasing / Export Enterprise (SMEs)",
+						role_partner:
+							"Service Provider (Drone, Supplies, Logistics...)",
+						contact_f_region: "Farming / Purchasing Region *",
+						contact_f_need: "What is your need? *",
+						need_passport:
+							"Create Rice Passport (Digital Passport) for rice",
+						need_sourcing: "Find qualified sourcing regions",
+						need_partner: "Become a partner",
+						contact_f_msg: "Additional Message (Optional)",
+						contact_btn_submit: "Get Free Consultation Now",
+						alert_contact_ok:
+							"🎉 Registration submitted! Our team will contact you via Zalo/Phone within 24 hours.",
+						faq_title: "Frequently Asked Questions (FAQ)",
+						faq_subtitle:
+							"Quick answers about processes, pricing, and transparency commitments at RiceTrace Mekong",
+						faq_q1: "1. Does RiceTrace Mekong directly purchase rice from farmers?",
+						faq_a1: 'No. RiceTrace Mekong is a digital plantation platform and direct marketplace. We provide the "Rice Passport" tool for farmers to prove rice quality, connecting them directly to purchasing enterprises (SMEs) without middlemen, helping farmers sell at higher prices without fear of broken deposits.',
+						faq_q2: "2. I am a farmer not tech-savvy, is recording the farming logbook difficult?",
+						faq_a2: "Very simple. The RiceTrace app is minimalist and easy to use on smartphones. Initially, our agricultural engineers and field agents in An Giang will directly visit the fields to guide and support farmers until they are proficient.",
+						faq_q3: "3. Is my enterprise guaranteed that rice on RiceTrace meets export standards (EU, US)?",
+						faq_a3: "Yes. RiceTrace's differentiator is our Tri-Verification mechanism. Farming logs are not only entered by farmers but also cross-checked and verified by local agricultural extension engineers and input supply invoices. The system issues a transparent QR code (Rice Passport) on residues, varieties, and processes.",
+						faq_q4: "4. How much does it cost to use the RiceTrace platform?",
+						faq_a4: '<b>For Farmers:</b> Free to use during the initial Pilot phase to establish plantation data.<br><b>For Enterprises (SMEs):</b> We apply an annual Subscription model to access the "Rice Sourcing Map", combined with a 1-2% commission fee on successful transactions. Pilot registrants in An Giang receive a 30% discount for the first year.',
+						faq_q5: "5. If weather or pest risks affect yield, how does the system handle it?",
+						faq_a5: "Data on the Rice Passport is updated in real-time. When weather fluctuations or pest warnings occur from agricultural engineers, the lot status is immediately updated. This helps purchasing enterprises grasp the situation early to adjust plans and supports farmers with timely solutions.",
+						footer_slogan:
+							"Where every grain of rice has a story, and every farmer is recognized.",
+						footer_quick_links: "Quick Links",
+						footer_link_farmer: "For Farmers (Rice Passport Guide)",
+						footer_link_biz:
+							"For Enterprises (Access Sourcing Map)",
+						footer_addr:
+							"Headquarters: Long Xuyen City, An Giang Province",
+						footer_privacy: "Privacy Policy",
+						footer_terms: "Terms of Service",
 					},
 				},
 			};
@@ -1178,7 +2103,7 @@
 			function updateContent() {
 				document.querySelectorAll("[data-i18n]").forEach((el) => {
 					const key = el.getAttribute("data-i18n");
-					el.innerHTML = i18next.t(key); // Dùng innerHTML để giữ nguyên định dạng <br> ở câu chuyện nhà nông
+					el.innerHTML = i18next.t(key);
 				});
 				document.getElementById("currentLangLabel").innerText =
 					i18next.language === "vi" ? "EN" : "VI";
@@ -1337,6 +2262,23 @@
 				});
 				e.target.reset();
 				document.getElementById("aiResult").style.display = "none";
+			}
+
+			// Xử lý gửi form tư vấn ở trang Liên hệ
+			function handleContactSubmit(e) {
+				e.preventDefault();
+				Swal.fire({
+					icon: "success",
+					text: i18next.t("alert_contact_ok"),
+					confirmButtonColor: "#2e7d32",
+				});
+				e.target.reset();
+			}
+
+			// Đóng/mở câu hỏi FAQ
+			function toggleFaq(el) {
+				const item = el.parentElement;
+				item.classList.toggle("active");
 			}
 
 			function updateStatus(lotId, newStatus) {
@@ -1556,6 +2498,12 @@
 					document
 						.getElementById("btn-nav-business")
 						.classList.add("active");
+				if (pageId === "page-contact")
+					document
+						.getElementById("btn-nav-contact")
+						.classList.add("active");
+
+				window.scrollTo({ top: 0, behavior: "smooth" });
 
 				if (pageId === "page-business" && supplyMap) {
 					setTimeout(() => {
@@ -1576,7 +2524,7 @@
 					},
 				).addTo(supplyMap);
 
-				renderTables(); // Được gọi an toàn sau khi đã khai báo DB_KEY
+				renderTables();
 			};
 		</script>
 	</body>

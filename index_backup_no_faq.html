@@ -7,18 +7,15 @@
 			content="width=device-width, initial-scale=1.0" />
 		<title>RiceTrace Mekong - Traceability & ESG Platform</title>
 
-		<!-- Font Awesome -->
 		<link
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
 			rel="stylesheet" />
 
-		<!-- Leaflet.js Map -->
 		<link
 			rel="stylesheet"
 			href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-		<!-- Thư viện i18next qua CDN -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/23.10.0/i18next.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -57,7 +54,6 @@
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				padding: 15px 30px;
 				max-width: 1400px;
 				margin: 0 auto;
 			}
@@ -68,9 +64,21 @@
 				text-decoration: none;
 				display: flex;
 				align-items: center;
-				gap: 10px;
 				cursor: pointer;
 			}
+
+			.logo img {
+				height: 80px;
+				width: auto;
+				object-fit: contain;
+				border-radius: 4px;
+
+				transform: scale(2.35);
+				transform-origin: left center;
+				margin-left: 60px;
+				margin-top: 7px;
+			}
+
 			.nav-menu {
 				display: flex;
 				gap: 8px;
@@ -199,7 +207,6 @@
 				margin-bottom: 25px;
 			}
 
-			/* Bổ sung class cho thẻ Why Choose Us ở trang chủ */
 			.why-card {
 				background: white;
 				border-radius: 10px;
@@ -398,7 +405,10 @@
 				<div
 					class="logo"
 					onclick="nav('page-home')">
-					<i class="fa-solid fa-leaf"></i> RiceTrace Mekong
+					<img
+						src="./logo/Landscape.png"
+						alt="Logo" />
+					<!-- RiceTrace Mekong -->
 				</div>
 				<nav class="nav-menu">
 					<button
@@ -456,7 +466,6 @@
 			</div>
 		</header>
 
-		<!-- 0. TRANG CHỦ / GIỚI THIỆU (LANDING PAGE) -->
 		<section
 			id="page-home"
 			class="page-section active">
@@ -467,7 +476,6 @@
 					align-items: center;
 					max-width: 1100px;
 				">
-				<!-- Hero / Giới thiệu công ty -->
 				<div
 					class="content-section"
 					style="width: 100%; text-align: center; padding: 50px 30px">
@@ -500,7 +508,6 @@
 					</p>
 				</div>
 
-				<!-- Lý do chọn chúng tôi -->
 				<div
 					style="
 						width: 100%;
@@ -558,7 +565,6 @@
 					</div>
 				</div>
 
-				<!-- Câu chuyện nhà nông -->
 				<div
 					class="content-section"
 					style="
@@ -615,7 +621,6 @@
 					</p>
 				</div>
 
-				<!-- Nút kêu gọi hành động điều hướng -->
 				<div style="text-align: center; margin-bottom: 40px">
 					<button
 						class="btn-action"
@@ -647,7 +652,6 @@
 			</div>
 		</section>
 
-		<!-- 1. FARMER PORTAL -->
 		<section
 			id="page-farmer"
 			class="page-section">
@@ -860,7 +864,6 @@
 			</div>
 		</section>
 
-		<!-- 2. BUSINESS PORTAL -->
 		<section
 			id="page-business"
 			class="page-section">
@@ -947,7 +950,6 @@
 			</div>
 		</section>
 
-		<!-- QR CODE MODAL -->
 		<div
 			id="qrModal"
 			class="modal-overlay">
