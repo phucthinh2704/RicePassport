@@ -787,6 +787,189 @@
 				color: #7f8c8d;
 				font-size: 13.5px;
 			}
+			.simulation-intro {
+				line-height: 1.7;
+				color: #52616b;
+				margin: 8px 0 18px;
+			}
+			.simulation-grid {
+				display: grid;
+				grid-template-columns: minmax(280px, 0.9fr) minmax(360px, 1.5fr);
+				gap: 20px;
+				align-items: start;
+			}
+			.simulation-fields {
+				display: grid;
+				gap: 14px;
+			}
+			.simulation-field-row {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				grid-template-areas:
+					"label1 label2"
+					"input1 input2";
+				column-gap: 14px;
+				row-gap: 6px;
+			}
+			.simulation-field-row.single {
+				grid-template-columns: minmax(0, 1fr);
+				grid-template-areas:
+					"label1"
+					"input1";
+			}
+			.simulation-field-row label {
+				display: block;
+				margin: 0;
+				font-size: 13.5px;
+				font-weight: 600;
+				color: #34495e;
+				line-height: 1.35;
+			}
+			.simulation-field-row .simulation-label-one {
+				grid-area: label1;
+			}
+			.simulation-field-row .simulation-label-two {
+				grid-area: label2;
+			}
+			.simulation-field-row input {
+				width: 100%;
+				padding: 10px 12px;
+				border: 1px solid var(--border-color);
+				border-radius: 6px;
+				outline: none;
+				font-size: 14px;
+				transition: 0.3s;
+				font-variant-numeric: tabular-nums;
+			}
+			.simulation-field-row .simulation-input-one {
+				grid-area: input1;
+			}
+			.simulation-field-row .simulation-input-two {
+				grid-area: input2;
+			}
+			.simulation-field-row input:focus {
+				border-color: var(--primary-green);
+			}
+			.simulation-field-row input[aria-invalid="true"] {
+				border-color: #e74c3c;
+			}
+			.simulation-note {
+				padding: 13px 15px;
+				border-left: 4px solid var(--accent-gold);
+				border-radius: 6px;
+				background: #fff8e8;
+				color: #684d1d;
+				font-size: 13px;
+				line-height: 1.6;
+				margin-bottom: 20px;
+			}
+			.simulation-results {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 14px;
+			}
+			.simulation-metric {
+				background: #f8faf8;
+				border: 1px solid #e5ece5;
+				border-radius: 9px;
+				padding: 16px;
+				min-width: 0;
+			}
+			.simulation-metric-label {
+				font-size: 13px;
+				color: #60706a;
+				line-height: 1.45;
+				margin-bottom: 8px;
+			}
+			.simulation-metric-value {
+				font-size: clamp(18px, 2vw, 24px);
+				font-weight: 800;
+				color: var(--dark-green);
+				font-variant-numeric: tabular-nums;
+				word-break: break-word;
+			}
+			.simulation-metric-detail {
+				font-size: 12px;
+				color: #7f8c8d;
+				margin-top: 6px;
+				line-height: 1.45;
+			}
+			.simulation-chart {
+				margin-top: 20px;
+				padding: 18px;
+				border: 1px solid var(--border-color);
+				border-radius: 9px;
+			}
+			.simulation-chart h4 {
+				margin-bottom: 15px;
+				font-size: 15px;
+			}
+			.simulation-bar-row {
+				display: grid;
+				grid-template-columns: minmax(125px, 0.8fr) minmax(100px, 2fr) auto;
+				gap: 10px;
+				align-items: center;
+				margin: 12px 0;
+				font-size: 12px;
+			}
+			.simulation-bar-track {
+				height: 13px;
+				background: #edf1ed;
+				border-radius: 99px;
+				overflow: hidden;
+			}
+			.simulation-bar {
+				height: 100%;
+				min-width: 0;
+				border-radius: inherit;
+				transition: width 0.25s ease;
+			}
+			.simulation-bar.traditional {
+				background: #95a5a6;
+			}
+			.simulation-bar.platform {
+				background: var(--primary-green);
+			}
+			.simulation-bar-value {
+				font-weight: 700;
+				white-space: nowrap;
+				font-variant-numeric: tabular-nums;
+			}
+			.simulation-error {
+				display: none;
+				padding: 12px 14px;
+				margin-bottom: 14px;
+				border-radius: 6px;
+				background: #fff0f0;
+				color: #a93226;
+				font-size: 13px;
+			}
+			@media (max-width: 850px) {
+				.simulation-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+			@media (max-width: 576px) {
+				.simulation-results {
+					grid-template-columns: 1fr;
+				}
+				.simulation-field-row {
+					grid-template-columns: minmax(0, 1fr);
+					grid-template-areas:
+						"label1"
+						"input1"
+						"label2"
+						"input2";
+				}
+				.simulation-bar-row {
+					grid-template-columns: 1fr auto;
+					gap: 5px 10px;
+				}
+				.simulation-bar-track {
+					grid-column: 1 / -1;
+					grid-row: 2;
+				}
+			}
 		</style>
 	</head>
 	<body>
@@ -820,6 +1003,13 @@
 						onclick="nav('page-business')">
 						<i class="fa-solid fa-building"></i>
 						<span data-i18n="nav_business">Doanh nghiệp</span>
+					</button>
+					<button
+						class="nav-btn"
+						id="btn-nav-economics"
+						onclick="nav('page-economics')">
+						<i class="fa-solid fa-chart-pie"></i>
+						<span data-i18n="nav_economics">Mô phỏng kinh tế</span>
 					</button>
 					<button
 						class="nav-btn"
@@ -1485,6 +1675,97 @@
 			</div>
 		</section>
 
+		<!-- 3. ECONOMIC SIMULATION -->
+		<section id="page-economics" class="page-section">
+			<div class="dashboard-layout" style="max-width: 1250px">
+				<main class="main-content">
+					<div class="content-section">
+						<h1 style="color: var(--primary-green); font-size: 28px" data-i18n="econ_title">
+							Mô phỏng hiệu quả kinh tế của RiceTrace
+						</h1>
+						<p class="simulation-intro" data-i18n="econ_intro">
+							Điều chỉnh giả định để so sánh khoản thu từ bán lúa qua kênh truyền thống và qua nền tảng RiceTrace trong một vụ của HTX Thoại Sơn, An Giang.
+						</p>
+						<div class="simulation-note" role="note" data-i18n="econ_disclaimer">
+							Dữ liệu dưới đây hoàn toàn là giả định minh họa, không phải kết quả khảo sát hay giá thị trường. Hãy thay bằng dữ liệu có nguồn khi dùng để kết luận trong luận văn.
+						</div>
+						<div class="simulation-grid">
+							<div class="content-section" style="margin-bottom: 0; padding: 20px">
+								<h3 style="margin-bottom: 16px" data-i18n="econ_inputs_title">Giả định kịch bản</h3>
+								<div class="simulation-fields">
+									<div class="simulation-field-row">
+										<label class="simulation-label-one" for="econVolume" data-i18n="econ_volume">Sản lượng vụ (tấn)</label>
+										<label class="simulation-label-two" for="econReferencePrice" data-i18n="econ_reference_price">Giá tham chiếu (VND/kg)</label>
+										<input class="simulation-input-one" id="econVolume" type="number" min="0" step="1" inputmode="decimal" />
+										<input class="simulation-input-two" id="econReferencePrice" type="number" min="1" step="100" inputmode="decimal" />
+									</div>
+									<div class="simulation-field-row">
+										<label class="simulation-label-one" for="econPlatformShare" data-i18n="econ_platform_share">Tỷ lệ sản lượng qua RiceTrace (%)</label>
+										<label class="simulation-label-two" for="econPricePremium" data-i18n="econ_price_premium">Mức giá trực tiếp cao hơn (%)</label>
+										<input class="simulation-input-one" id="econPlatformShare" type="number" min="0" max="100" step="1" inputmode="decimal" />
+										<input class="simulation-input-two" id="econPricePremium" type="number" min="0" max="100" step="0.5" inputmode="decimal" />
+								</div>
+									<div class="simulation-field-row">
+										<label class="simulation-label-one" for="econTraditionalCost" data-i18n="econ_traditional_cost">Chi phí bán hàng truyền thống (VND/tấn)</label>
+										<label class="simulation-label-two" for="econPlatformCost" data-i18n="econ_platform_cost">Chi phí bán hàng qua nền tảng (VND/tấn)</label>
+										<input class="simulation-input-one" id="econTraditionalCost" type="number" min="0" step="10000" inputmode="decimal" />
+										<input class="simulation-input-two" id="econPlatformCost" type="number" min="0" step="10000" inputmode="decimal" />
+								</div>
+									<div class="simulation-field-row single">
+										<label class="simulation-label-one" for="econCommission" data-i18n="econ_commission">Hoa hồng doanh nghiệp trả (%)</label>
+										<input class="simulation-input-one" id="econCommission" type="number" min="0" max="100" step="0.1" inputmode="decimal" />
+									</div>
+								</div>
+								<button type="button" class="btn-action btn-outline small" onclick="resetEconomicSimulation()">
+									<i class="fa-solid fa-rotate-left"></i>
+									<span data-i18n="econ_reset">Khôi phục kịch bản mẫu</span>
+								</button>
+							</div>
+							<div class="content-section" style="margin-bottom: 0; padding: 20px">
+								<h3 style="margin-bottom: 16px" data-i18n="econ_results_title">Kết quả so sánh</h3>
+								<div id="econError" class="simulation-error" role="alert"></div>
+								<div id="econResults">
+									<div class="simulation-results">
+										<div class="simulation-metric">
+											<div class="simulation-metric-label" data-i18n="econ_traditional_income">Thu ròng nông dân · kênh truyền thống</div>
+											<div class="simulation-metric-value" id="econTraditionalIncome">—</div>
+										</div>
+										<div class="simulation-metric">
+											<div class="simulation-metric-label" data-i18n="econ_platform_income">Thu ròng nông dân · kịch bản RiceTrace</div>
+											<div class="simulation-metric-value" id="econPlatformIncome">—</div>
+										</div>
+										<div class="simulation-metric">
+											<div class="simulation-metric-label" data-i18n="econ_income_change">Chênh lệch thu ròng</div>
+											<div class="simulation-metric-value" id="econIncomeChange">—</div>
+											<div class="simulation-metric-detail" id="econIncomeChangePct">—</div>
+										</div>
+										<div class="simulation-metric">
+											<div class="simulation-metric-label" data-i18n="econ_buyer_cost">Chi phí mua hàng doanh nghiệp · kịch bản RiceTrace</div>
+											<div class="simulation-metric-value" id="econBuyerCost">—</div>
+											<div class="simulation-metric-detail"><span data-i18n="econ_fee_included">Đã gồm hoa hồng nền tảng</span>: <span id="econCommissionValue">—</span></div>
+										</div>
+									</div>
+									<div class="simulation-chart">
+										<h4 data-i18n="econ_chart_title">So sánh thu ròng nông dân</h4>
+										<div class="simulation-bar-row">
+											<span data-i18n="econ_traditional_short">Kênh truyền thống</span>
+											<div class="simulation-bar-track" aria-hidden="true"><div id="econTraditionalBar" class="simulation-bar traditional"></div></div>
+											<span id="econTraditionalBarValue" class="simulation-bar-value">—</span>
+										</div>
+										<div class="simulation-bar-row">
+											<span data-i18n="econ_platform_short">Kịch bản RiceTrace</span>
+											<div class="simulation-bar-track" aria-hidden="true"><div id="econPlatformBar" class="simulation-bar platform"></div></div>
+											<span id="econPlatformBarValue" class="simulation-bar-value">—</span>
+										</div>
+									</div>
+								<div class="simulation-metric-detail" style="margin-top: 14px"><span data-i18n="econ_break_even">Mức chênh giá trực tiếp hòa vốn theo mỗi tấn</span>: <strong id="econBreakEven">—</strong></div>
+							</div>
+						</div>
+					</div>
+				</main>
+			</div>
+		</section>
+
 		<!-- 3. TRANG LIÊN HỆ & FAQ -->
 		<section
 			id="page-contact"
@@ -1951,16 +2232,17 @@
 					<span
 						class="hero-tag"
 						data-i18n="resource_hero_tag"
-						>NGHIÊN CỨU ĐIỂN HÌNH (CASE STUDY)</span
+						>KỊCH BẢN MÔ PHỎNG</span
 					>
 					<h1 data-i18n="resource_hero_title">
-						RICETRACE MEKONG GIÚP HTX LÚA GẠO AN GIANG TĂNG 20% GIÁ
-						TRỊ NHỜ TRUY XUẤT NGUỒN GỐC VÀ LƯU KHO THÔNG MINH
+						KỊCH BẢN MÔ PHỎNG: SO SÁNH THU RÒNG KHI HTX AN GIANG KẾT NỐI
+						TRỰC TIẾP VỚI DOANH NGHIỆP
 					</h1>
 					<p data-i18n="resource_hero_desc">
-						Khám phá cách hệ sinh thái RiceTrace Mekong giúp nông
-						dân bán lúa giá cao, doanh nghiệp an tâm về nguồn gốc và
-						tối ưu chi phí kho bãi.
+						Kịch bản minh họa để so sánh thu ròng và chi phí giao dịch
+						khi HTX kết nối trực tiếp với doanh nghiệp. Các con số cần
+						được thay bằng dữ liệu có nguồn trước khi dùng làm kết quả
+						nghiên cứu.
 					</p>
 				</div>
 
@@ -2281,6 +2563,16 @@
 		<script>
 			// Định nghĩa DB_KEY ngay từ đầu
 			const DB_KEY = "riceTraceData_i18n_v2";
+			const ECONOMIC_SIM_KEY = "riceTraceEconomicSimulation_v1";
+			const ECONOMIC_SIM_DEFAULTS = {
+				volumeTons: 100,
+				referencePrice: 6500,
+				platformSharePct: 60,
+				pricePremiumPct: 5,
+				traditionalCostPerTon: 150000,
+				platformCostPerTon: 50000,
+				buyerCommissionPct: 1.5,
+			};
 
 			// ==========================================
 			// 1. TẬP TRUNG TỪ ĐIỂN i18next (JSON RESOURCES)
@@ -2291,6 +2583,7 @@
 						nav_home: "Trang chủ",
 						nav_farmer: "Nông dân",
 						nav_business: "Doanh nghiệp",
+						nav_economics: "Mô phỏng kinh tế",
 						nav_contact: "Liên hệ & FAQ",
 						nav_resource: "Tài Nguyên",
 						btn_export: "Xuất JSON",
@@ -2310,11 +2603,11 @@
 						home_pillar_4: "Ứng dụng công nghệ vào nông nghiệp",
 
 						// Phần Tài Nguyên (Case Study)
-						resource_hero_tag: "NGHIÊN CỨU ĐIỂN HÌNH (CASE STUDY)",
+						resource_hero_tag: "KỊCH BẢN MÔ PHỎNG",
 						resource_hero_title:
-							"RICETRACE MEKONG GIÚP HTX LÚA GẠO AN GIANG TĂNG 20% GIÁ TRỊ NHỜ TRUY XUẤT NGUỒN GỐC VÀ LƯU KHO THÔNG MINH",
+							"KỊCH BẢN MÔ PHỎNG: SO SÁNH THU RÒNG KHI HTX AN GIANG KẾT NỐI TRỰC TIẾP VỚI DOANH NGHIỆP",
 						resource_hero_desc:
-							"Khám phá cách hệ sinh thái RiceTrace Mekong giúp nông dân bán lúa giá cao, doanh nghiệp an tâm về nguồn gốc và tối ưu chi phí kho bãi.",
+							"Kịch bản minh họa để so sánh thu ròng và chi phí giao dịch khi HTX kết nối trực tiếp với doanh nghiệp. Các con số cần được thay bằng dữ liệu có nguồn trước khi dùng làm kết quả nghiên cứu.",
 						tab_all: "Tất cả danh mục",
 						tab_price: "Giá lúa & Thị trường",
 						tab_trace: "Truy xuất nguồn gốc",
@@ -2352,6 +2645,45 @@
 						home_btn_business: "Tìm Nguồn Cung Ngay",
 
 						// Phần Portal
+						econ_title: "Mô phỏng hiệu quả kinh tế RiceTrace",
+						econ_intro:
+							"Điều chỉnh giả định để so sánh khoản thu từ bán lúa qua kênh truyền thống và qua nền tảng RiceTrace trong một vụ của HTX Thoại Sơn, An Giang.",
+						econ_disclaimer:
+							"Dữ liệu dưới đây hoàn toàn là giả định minh họa, không phải kết quả khảo sát hay giá thị trường. Hãy thay bằng dữ liệu có nguồn khi dùng để kết luận trong luận văn.",
+						econ_inputs_title: "Giả định kịch bản",
+						econ_volume: "Sản lượng vụ (tấn)",
+						econ_reference_price: "Giá tham chiếu (VND/kg)",
+						econ_platform_share: "Tỷ lệ sản lượng qua RiceTrace (%)",
+						econ_price_premium: "Mức giá trực tiếp cao hơn (%)",
+						econ_traditional_cost:
+							"Chi phí bán hàng truyền thống (VND/tấn)",
+						econ_platform_cost:
+							"Chi phí bán hàng qua nền tảng (VND/tấn)",
+						econ_commission: "Hoa hồng doanh nghiệp trả (%)",
+						econ_reset: "Khôi phục kịch bản mẫu",
+						econ_results_title: "Kết quả so sánh",
+						econ_traditional_income:
+							"Thu ròng nông dân · kênh truyền thống",
+						econ_platform_income:
+							"Thu ròng nông dân · kịch bản RiceTrace",
+						econ_income_change: "Chênh lệch thu ròng",
+						econ_buyer_cost:
+							"Chi phí mua hàng doanh nghiệp · kịch bản RiceTrace",
+						econ_fee_included: "Đã gồm hoa hồng nền tảng",
+						econ_chart_title: "So sánh thu ròng nông dân",
+						econ_traditional_short: "Kênh truyền thống",
+						econ_platform_short: "Kịch bản RiceTrace",
+						econ_break_even:
+							"Mức chênh giá trực tiếp hòa vốn theo mỗi tấn",
+						econ_change_percent: "so với kênh truyền thống",
+						econ_validation_error:
+							"Vui lòng nhập số hợp lệ: sản lượng không âm, giá tham chiếu lớn hơn 0, chi phí không âm và các tỷ lệ từ 0 đến 100%.",
+						econ_calculation_error:
+							"Các giá trị quá lớn để tính toán chính xác. Vui lòng giảm sản lượng, giá hoặc chi phí.",
+						econ_zero_volume:
+							"Chưa thể tính tỷ lệ thay đổi khi sản lượng bằng 0.",
+						econ_zero_baseline:
+							"Không thể tính tỷ lệ thay đổi khi thu ròng cơ sở bằng 0.",
 						sidebar_farmer_log: "Khai báo & Nhật ký",
 						sidebar_business_map: "Bản đồ Nguồn cung",
 						ai_form_title: "Nhật Ký Tự Động Bằng AI",
@@ -2464,6 +2796,7 @@
 						nav_home: "Home",
 						nav_farmer: "Farmer Portal",
 						nav_business: "Business Portal",
+						nav_economics: "Economic Simulation",
 						nav_contact: "Contact & FAQ",
 						nav_resource: "Resources",
 						btn_export: "Export JSON",
@@ -2484,11 +2817,11 @@
 						home_pillar_4: "Applying Technology in Agriculture",
 
 						// Resources (Case Study)
-						resource_hero_tag: "CASE STUDY",
+						resource_hero_tag: "SIMULATION SCENARIO",
 						resource_hero_title:
-							"RICETRACE MEKONG HELPS AN GIANG RICE COOP INCREASE VALUE BY 20% THROUGH TRACEABILITY AND SMART WAREHOUSING",
+							"SIMULATION SCENARIO: COMPARING NET RICE SALES PROCEEDS WHEN AN AN GIANG COOPERATIVE SELLS DIRECTLY TO BUYERS",
 						resource_hero_desc:
-							"Discover how the RiceTrace Mekong ecosystem helps farmers sell rice at premium prices, ensures sourcing peace of mind for businesses, and optimizes warehouse costs.",
+							"An illustrative scenario for comparing net proceeds and transaction costs when a cooperative connects directly with buyers. Replace these assumptions with sourced data before using them as research findings.",
 						tab_all: "All Categories",
 						tab_price: "Rice Prices & Market",
 						tab_trace: "Traceability",
@@ -2523,6 +2856,45 @@
 						home_btn_business: "Find Sourcing Now",
 
 						// Portal Translation
+						econ_title: "RiceTrace Economic Simulation",
+						econ_intro:
+							"Adjust the assumptions to compare rice-sale proceeds through a traditional channel and RiceTrace for one crop season at Thoai Son Cooperative, An Giang.",
+						econ_disclaimer:
+							"All figures below are illustrative assumptions, not survey results or market prices. Replace them with sourced data before drawing conclusions in a thesis.",
+						econ_inputs_title: "Scenario Assumptions",
+						econ_volume: "Seasonal volume (tons)",
+						econ_reference_price: "Reference price (VND/kg)",
+						econ_platform_share: "Volume sold through RiceTrace (%)",
+						econ_price_premium: "Direct-sale price premium (%)",
+						econ_traditional_cost:
+							"Traditional selling costs (VND/ton)",
+						econ_platform_cost:
+							"Platform-channel selling costs (VND/ton)",
+						econ_commission: "Buyer-paid commission (%)",
+						econ_reset: "Restore sample scenario",
+						econ_results_title: "Comparison Results",
+						econ_traditional_income:
+							"Farmer net proceeds · traditional channel",
+						econ_platform_income:
+							"Farmer net proceeds · RiceTrace scenario",
+						econ_income_change: "Change in net proceeds",
+						econ_buyer_cost:
+							"Buyer procurement cost · RiceTrace scenario",
+						econ_fee_included: "Includes platform commission",
+						econ_chart_title: "Farmer Net Proceeds Comparison",
+						econ_traditional_short: "Traditional channel",
+						econ_platform_short: "RiceTrace scenario",
+						econ_break_even:
+							"Break-even direct-price premium per ton",
+						econ_change_percent: "versus traditional channel",
+						econ_validation_error:
+							"Enter valid numbers: volume and costs must be non-negative, reference price must be above zero, and percentages must be from 0 to 100%.",
+						econ_calculation_error:
+							"Values are too large to calculate accurately. Reduce the volume, price, or costs.",
+						econ_zero_volume:
+							"The percentage change cannot be calculated when volume is zero.",
+						econ_zero_baseline:
+							"The percentage change cannot be calculated when baseline net proceeds are zero.",
 						sidebar_farmer_log: "Farming Logbook",
 						sidebar_business_map: "Sourcing Map",
 						ai_form_title: "AI-Powered Logbook",
@@ -2664,6 +3036,7 @@
 					localStorage.setItem("ricetrace_lang", nextLang);
 					updateContent();
 					renderTables();
+						updateEconomicSimulation();
 				});
 			}
 
@@ -2888,6 +3261,271 @@
 				document.getElementById("qrModal").style.display = "none";
 			}
 
+			function isValidEconomicScenario(scenario) {
+				return (
+					Number.isFinite(scenario.volumeTons) &&
+					scenario.volumeTons >= 0 &&
+					Number.isFinite(scenario.referencePrice) &&
+					scenario.referencePrice > 0 &&
+					Number.isFinite(scenario.platformSharePct) &&
+					scenario.platformSharePct >= 0 &&
+					scenario.platformSharePct <= 100 &&
+					Number.isFinite(scenario.pricePremiumPct) &&
+					scenario.pricePremiumPct >= 0 &&
+					scenario.pricePremiumPct <= 100 &&
+					Number.isFinite(scenario.traditionalCostPerTon) &&
+					scenario.traditionalCostPerTon >= 0 &&
+					Number.isFinite(scenario.platformCostPerTon) &&
+					scenario.platformCostPerTon >= 0 &&
+					Number.isFinite(scenario.buyerCommissionPct) &&
+					scenario.buyerCommissionPct >= 0 &&
+					scenario.buyerCommissionPct <= 100
+				);
+			}
+
+			function loadEconomicScenario() {
+				try {
+					const saved = JSON.parse(
+						localStorage.getItem(ECONOMIC_SIM_KEY) || "null",
+					);
+					if (saved && typeof saved === "object" && !Array.isArray(saved)) {
+						const scenario = {
+							...ECONOMIC_SIM_DEFAULTS,
+							...saved,
+						};
+						if (isValidEconomicScenario(scenario)) return scenario;
+					}
+				} catch (error) {
+					// Use the sample scenario if saved browser data is unreadable.
+				}
+				return { ...ECONOMIC_SIM_DEFAULTS };
+			}
+
+			function readEconomicScenario() {
+				const readNumber = (id) => {
+					const value = document.getElementById(id).value.trim();
+					return value === "" ? Number.NaN : Number(value);
+				};
+				return {
+					volumeTons: readNumber("econVolume"),
+					referencePrice: readNumber("econReferencePrice"),
+					platformSharePct: readNumber("econPlatformShare"),
+					pricePremiumPct: readNumber("econPricePremium"),
+					traditionalCostPerTon: readNumber("econTraditionalCost"),
+					platformCostPerTon: readNumber("econPlatformCost"),
+					buyerCommissionPct: readNumber("econCommission"),
+				};
+			}
+
+			function setEconomicInputs(scenario) {
+				document.getElementById("econVolume").value = scenario.volumeTons;
+				document.getElementById("econReferencePrice").value =
+					scenario.referencePrice;
+				document.getElementById("econPlatformShare").value =
+					scenario.platformSharePct;
+				document.getElementById("econPricePremium").value =
+					scenario.pricePremiumPct;
+				document.getElementById("econTraditionalCost").value =
+					scenario.traditionalCostPerTon;
+				document.getElementById("econPlatformCost").value =
+					scenario.platformCostPerTon;
+				document.getElementById("econCommission").value =
+					scenario.buyerCommissionPct;
+			}
+
+			function initializeEconomicSimulation() {
+				setEconomicInputs(loadEconomicScenario());
+				[
+					"econVolume",
+					"econReferencePrice",
+					"econPlatformShare",
+					"econPricePremium",
+					"econTraditionalCost",
+					"econPlatformCost",
+					"econCommission",
+				].forEach((id) => {
+					document
+						.getElementById(id)
+						.addEventListener("input", updateEconomicSimulation);
+				});
+				renderEconomicSimulation();
+			}
+
+			function resetEconomicSimulation() {
+				setEconomicInputs(ECONOMIC_SIM_DEFAULTS);
+				updateEconomicSimulation();
+			}
+
+			function updateEconomicSimulation() {
+				const scenario = readEconomicScenario();
+				const fieldIds = [
+					"econVolume",
+					"econReferencePrice",
+					"econPlatformShare",
+					"econPricePremium",
+					"econTraditionalCost",
+					"econPlatformCost",
+					"econCommission",
+				];
+				const valid = isValidEconomicScenario(scenario);
+				const fieldValidity = {
+					econVolume:
+						Number.isFinite(scenario.volumeTons) &&
+						scenario.volumeTons >= 0,
+					econReferencePrice:
+						Number.isFinite(scenario.referencePrice) &&
+						scenario.referencePrice > 0,
+					econPlatformShare:
+						Number.isFinite(scenario.platformSharePct) &&
+						scenario.platformSharePct >= 0 &&
+						scenario.platformSharePct <= 100,
+					econPricePremium:
+						Number.isFinite(scenario.pricePremiumPct) &&
+						scenario.pricePremiumPct >= 0 &&
+						scenario.pricePremiumPct <= 100,
+					econTraditionalCost:
+						Number.isFinite(scenario.traditionalCostPerTon) &&
+						scenario.traditionalCostPerTon >= 0,
+					econPlatformCost:
+						Number.isFinite(scenario.platformCostPerTon) &&
+						scenario.platformCostPerTon >= 0,
+					econCommission:
+						Number.isFinite(scenario.buyerCommissionPct) &&
+						scenario.buyerCommissionPct >= 0 &&
+						scenario.buyerCommissionPct <= 100,
+				};
+				fieldIds.forEach((id) => {
+					document
+						.getElementById(id)
+						.setAttribute(
+							"aria-invalid",
+						fieldValidity[id] ? "false" : "true",
+						);
+				});
+
+				if (!valid) {
+					document.getElementById("econError").innerText =
+						i18next.t("econ_validation_error");
+					document.getElementById("econError").style.display = "block";
+					document.getElementById("econResults").style.display = "none";
+					return;
+				}
+
+				try {
+					localStorage.setItem(
+						ECONOMIC_SIM_KEY,
+						JSON.stringify(scenario),
+					);
+				} catch (error) {
+					// Keep the interactive calculation available when storage is blocked.
+				}
+				document.getElementById("econError").style.display = "none";
+				document.getElementById("econResults").style.display = "block";
+				renderEconomicSimulation(scenario);
+			}
+
+			function renderEconomicSimulation(scenario = readEconomicScenario()) {
+				if (!isValidEconomicScenario(scenario)) return;
+
+				const locale = i18next.language === "vi" ? "vi-VN" : "en-US";
+				const moneyFormatter = new Intl.NumberFormat(locale, {
+					maximumFractionDigits: 0,
+				});
+				const percentFormatter = new Intl.NumberFormat(locale, {
+					maximumFractionDigits: 2,
+				});
+				const formatMoney = (value) =>
+					`${moneyFormatter.format(Math.round(value))} VND`;
+				const formatPercent = (value, signed = false) =>
+					`${signed && value > 0 ? "+" : ""}${percentFormatter.format(value)}%`;
+
+				const volume = scenario.volumeTons;
+				const referencePricePerTon = scenario.referencePrice * 1000;
+				const platformShare = scenario.platformSharePct / 100;
+				const premium = scenario.pricePremiumPct / 100;
+				const commissionRate = scenario.buyerCommissionPct / 100;
+				const traditionalIncome =
+					volume *
+					(referencePricePerTon - scenario.traditionalCostPerTon);
+				const platformIncome =
+					volume *
+					((1 - platformShare) *
+						(referencePricePerTon - scenario.traditionalCostPerTon) +
+						platformShare *
+							(referencePricePerTon * (1 + premium) -
+								scenario.platformCostPerTon));
+				const incomeChange = platformIncome - traditionalIncome;
+				const platformVolume = volume * platformShare;
+				const platformSalesValue =
+					platformVolume * referencePricePerTon * (1 + premium);
+				const commissionValue = platformSalesValue * commissionRate;
+				const buyerProcurementCost =
+					(volume - platformVolume) * referencePricePerTon +
+					platformSalesValue +
+					commissionValue;
+				const breakEvenPremium =
+					((scenario.platformCostPerTon -
+						scenario.traditionalCostPerTon) /
+						referencePricePerTon) *
+					100;
+				if (
+					![
+						traditionalIncome,
+						platformIncome,
+						incomeChange,
+						buyerProcurementCost,
+						commissionValue,
+						breakEvenPremium,
+					].every(Number.isFinite)
+				) {
+					document.getElementById("econError").innerText =
+						i18next.t("econ_calculation_error");
+					document.getElementById("econError").style.display = "block";
+					document.getElementById("econResults").style.display = "none";
+					return;
+				}
+
+				document.getElementById("econError").style.display = "none";
+				document.getElementById("econResults").style.display = "block";
+
+				document.getElementById("econTraditionalIncome").innerText =
+					formatMoney(traditionalIncome);
+				document.getElementById("econPlatformIncome").innerText =
+					formatMoney(platformIncome);
+				document.getElementById("econIncomeChange").innerText =
+					`${incomeChange > 0 ? "+" : ""}${formatMoney(incomeChange)}`;
+				document.getElementById("econBuyerCost").innerText =
+					formatMoney(buyerProcurementCost);
+				document.getElementById("econCommissionValue").innerText =
+					formatMoney(commissionValue);
+				document.getElementById("econBreakEven").innerText =
+					formatPercent(breakEvenPremium, true);
+
+				const changeDetail = document.getElementById("econIncomeChangePct");
+				if (volume === 0) {
+					changeDetail.innerText = i18next.t("econ_zero_volume");
+				} else if (traditionalIncome === 0) {
+					changeDetail.innerText = i18next.t("econ_zero_baseline");
+				} else {
+					changeDetail.innerText =
+						`${formatPercent((incomeChange / traditionalIncome) * 100, true)} ${i18next.t("econ_change_percent")}`;
+				}
+
+				const chartScale = Math.max(
+					1,
+					traditionalIncome,
+					platformIncome,
+				);
+				document.getElementById("econTraditionalBar").style.width =
+					`${Math.max(0, (traditionalIncome / chartScale) * 100)}%`;
+				document.getElementById("econPlatformBar").style.width =
+					`${Math.max(0, (platformIncome / chartScale) * 100)}%`;
+				document.getElementById("econTraditionalBarValue").innerText =
+					formatMoney(traditionalIncome);
+				document.getElementById("econPlatformBarValue").innerText =
+					formatMoney(platformIncome);
+			}
+
 			function renderTables() {
 				const data = getDB();
 				const farmerTbody = document.getElementById("farmerTableBody");
@@ -3057,6 +3695,10 @@
 					document
 						.getElementById("btn-nav-business")
 						.classList.add("active");
+				if (pageId === "page-economics")
+					document
+						.getElementById("btn-nav-economics")
+						.classList.add("active");
 				if (pageId === "page-contact")
 					document
 						.getElementById("btn-nav-contact")
@@ -3066,6 +3708,7 @@
 						.getElementById("btn-nav-resource")
 						.classList.add("active");
 				window.scrollTo({ top: 0, behavior: "smooth" });
+				if (pageId === "page-economics") renderEconomicSimulation();
 
 				if (pageId === "page-business" && supplyMap) {
 					setTimeout(() => {
@@ -3087,6 +3730,7 @@
 				).addTo(supplyMap);
 
 				renderTables();
+				initializeEconomicSimulation();
 			};
 		</script>
 	</body>

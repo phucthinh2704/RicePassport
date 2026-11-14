@@ -1,0 +1,3093 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0" />
+		<title>RiceTrace Mekong - Traceability & ESG Platform</title>
+
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+			rel="stylesheet" />
+
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/23.10.0/i18next.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+		<style>
+			:root {
+				--primary-green: #2e7d32;
+				--dark-green: #1b5e20;
+				--light-green: #e8f5e9;
+				--accent-gold: #f39c12;
+				--dark-text: #2c3e50;
+				--gray-bg: #f4f6f8;
+				--border-color: #e0e0e0;
+				--info-blue: #2980b9;
+			}
+
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+			}
+			body {
+				background-color: var(--gray-bg);
+				color: var(--dark-text);
+				overflow-x: hidden;
+				display: flex;
+				flex-direction: column;
+				min-height: 100vh;
+			}
+
+			header {
+				background: white;
+				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+				position: sticky;
+				top: 0;
+				z-index: 1000;
+			}
+			.nav-container {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				max-width: 1400px;
+				margin: 0 auto;
+				padding: 0 20px;
+				gap: 15px;
+			}
+			.logo {
+				font-size: 22px;
+				font-weight: bold;
+				color: var(--primary-green);
+				text-decoration: none;
+				display: flex;
+				align-items: center;
+				cursor: pointer;
+				flex-shrink: 0;
+			}
+
+			.logo img {
+				height: 80px;
+				width: auto;
+				object-fit: contain;
+				border-radius: 4px;
+				transform: scale(2.35);
+				transform-origin: left center;
+				margin-left: 60px;
+				margin-right: 110px;
+				margin-top: 7px;
+				transition: all 0.3s ease;
+			}
+
+			.nav-menu {
+				display: flex;
+				gap: 8px;
+				align-items: center;
+				flex-wrap: wrap;
+				justify-content: flex-end;
+			}
+
+			@media (max-width: 1250px) {
+				.logo img {
+					transform: scale(1.75);
+					margin-left: 20px;
+					margin-right: 70px;
+				}
+				.nav-btn {
+					padding: 8px 12px;
+					font-size: 13px;
+				}
+				.data-tools {
+					margin-left: 8px;
+					padding-left: 8px;
+				}
+			}
+
+			@media (max-width: 992px) {
+				.nav-container {
+					flex-direction: column;
+					padding: 12px 15px;
+					gap: 10px;
+				}
+				.logo img {
+					height: 60px;
+					transform: scale(1.6);
+					transform-origin: center center;
+					margin: 5px 0;
+				}
+				.nav-menu {
+					justify-content: center;
+					width: 100%;
+				}
+			}
+
+			@media (max-width: 576px) {
+				.logo img {
+					height: 50px;
+					transform: scale(1.35);
+				}
+				.data-tools {
+					border-left: none;
+					margin-left: 0;
+					padding-left: 0;
+					width: 100%;
+					justify-content: center;
+					margin-top: 5px;
+				}
+			}
+			.nav-btn {
+				background: none;
+				border: none;
+				padding: 10px 16px;
+				font-size: 14px;
+				font-weight: 600;
+				color: var(--dark-text);
+				border-radius: 6px;
+				cursor: pointer;
+				transition: 0.3s;
+				display: flex;
+				align-items: center;
+				gap: 6px;
+			}
+			.nav-btn:hover {
+				background: var(--light-green);
+				color: var(--primary-green);
+			}
+			.nav-btn.active {
+				background: var(--primary-green);
+				color: white;
+			}
+
+			.lang-switch-btn {
+				background: #fff;
+				border: 1.5px solid var(--primary-green);
+				color: var(--primary-green);
+				padding: 7px 14px;
+				font-size: 13px;
+				font-weight: 700;
+				border-radius: 20px;
+				cursor: pointer;
+				transition: 0.2s;
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				margin-left: 10px;
+			}
+			.lang-switch-btn:hover {
+				background: var(--primary-green);
+				color: white;
+			}
+
+			.data-tools {
+				display: flex;
+				gap: 8px;
+				margin-left: 15px;
+				border-left: 2px solid var(--border-color);
+				padding-left: 15px;
+			}
+
+			.page-section {
+				display: none;
+				animation: fadeIn 0.35s ease;
+				flex: 1;
+			}
+			.page-section.active {
+				display: block;
+			}
+			@keyframes fadeIn {
+				from {
+					opacity: 0;
+					transform: translateY(8px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			.dashboard-layout {
+				display: flex;
+				max-width: 1400px;
+				margin: 25px auto;
+				padding: 0 20px;
+				gap: 25px;
+				min-height: 70vh;
+			}
+			.sidebar {
+				width: 225px;
+				background: white;
+				border-radius: 10px;
+				padding: 20px 0;
+				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+				height: fit-content;
+			}
+			.sidebar-menu li {
+				list-style: none;
+			}
+			.sidebar-menu a {
+				display: flex;
+				align-items: center;
+				gap: 15px;
+				padding: 14px 20px;
+				color: var(--dark-text);
+				text-decoration: none;
+				font-weight: 600;
+				font-size: 14px;
+				border-left: 4px solid transparent;
+			}
+			.sidebar-menu a:hover,
+			.sidebar-menu a.active {
+				background: var(--light-green);
+				color: var(--primary-green);
+				border-left-color: var(--primary-green);
+			}
+
+			.main-content {
+				flex: 1;
+			}
+			.grid-cards {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: 20px;
+				margin-bottom: 25px;
+			}
+			.content-section {
+				background: white;
+				border-radius: 10px;
+				padding: 25px;
+				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+				margin-bottom: 25px;
+			}
+
+			.why-card {
+				background: white;
+				border-radius: 10px;
+				padding: 25px 15px;
+				text-align: center;
+				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+				border-bottom: 4px solid var(--primary-green);
+				transition: transform 0.3s ease;
+			}
+			.why-card:hover {
+				transform: translateY(-8px);
+			}
+			.why-icon {
+				font-size: 36px;
+				color: var(--primary-green);
+				margin-bottom: 15px;
+			}
+
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 15px;
+			}
+			th,
+			td {
+				padding: 13px;
+				text-align: left;
+				border-bottom: 1px solid var(--border-color);
+				font-size: 14px;
+			}
+			th {
+				background: var(--gray-bg);
+				font-weight: 600;
+				color: #4b6584;
+			}
+			tr {
+				cursor: pointer;
+				transition: background 0.15s;
+			}
+			tr:hover {
+				background-color: #f7faf7;
+			}
+
+			.form-group {
+				margin-bottom: 15px;
+			}
+			.form-group label {
+				display: block;
+				margin-bottom: 6px;
+				font-weight: 600;
+				font-size: 13.5px;
+				color: #34495e;
+			}
+			.form-group input,
+			.form-group select,
+			.form-group textarea {
+				width: 100%;
+				padding: 10px 12px;
+				border: 1px solid var(--border-color);
+				border-radius: 6px;
+				outline: none;
+				font-size: 14px;
+				transition: 0.3s;
+			}
+			.form-group input:focus,
+			.form-group select:focus,
+			.form-group textarea:focus {
+				border-color: var(--primary-green);
+			}
+			.highlight-autofill {
+				background-color: #e8f5e9 !important;
+				border-color: #27ae60 !important;
+			}
+
+			.btn-action {
+				padding: 10px 18px;
+				border: none;
+				border-radius: 6px;
+				cursor: pointer;
+				font-weight: 600;
+				color: white;
+				background: var(--primary-green);
+				transition: 0.2s;
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				justify-content: center;
+				font-size: 14px;
+			}
+			.btn-action:hover {
+				opacity: 0.92;
+			}
+			.btn-action.small {
+				padding: 6px 12px;
+				font-size: 12.5px;
+			}
+			.btn-outline {
+				background: transparent;
+				border: 1.5px solid var(--primary-green);
+				color: var(--primary-green);
+			}
+			.btn-warning {
+				background: #f39c12;
+				color: white;
+			}
+			.btn-danger {
+				background: #e74c3c;
+				color: white;
+			}
+
+			.badge {
+				padding: 4px 10px;
+				border-radius: 12px;
+				font-size: 12px;
+				font-weight: 700;
+				display: inline-block;
+			}
+
+			.recording {
+				animation: pulseRecord 1s infinite;
+				background-color: #ffebee;
+				border-color: #e53935;
+				color: #e53935;
+			}
+			@keyframes pulseRecord {
+				0% {
+					box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.4);
+				}
+				70% {
+					box-shadow: 0 0 0 10px rgba(229, 57, 53, 0);
+				}
+				100% {
+					box-shadow: 0 0 0 0 rgba(229, 57, 53, 0);
+				}
+			}
+
+			.map-legend {
+				display: flex;
+				gap: 20px;
+				padding: 12px 18px;
+				background: white;
+				border-top: 1px solid #eee;
+				font-size: 13px;
+				font-weight: 600;
+			}
+			.legend-item {
+				display: flex;
+				align-items: center;
+				gap: 6px;
+			}
+			.dot {
+				width: 12px;
+				height: 12px;
+				border-radius: 50%;
+				display: inline-block;
+			}
+
+			.modal-overlay {
+				display: none;
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.6);
+				z-index: 2000;
+				justify-content: center;
+				align-items: center;
+			}
+			.modal-content {
+				background: white;
+				padding: 30px;
+				border-radius: 15px;
+				text-align: center;
+				max-width: 420px;
+				width: 90%;
+				position: relative;
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+			}
+			.close-modal {
+				position: absolute;
+				top: 15px;
+				right: 15px;
+				cursor: pointer;
+				font-size: 20px;
+				color: #7f8c8d;
+			}
+			.qr-image-container {
+				margin: 18px 0;
+				display: inline-block;
+				padding: 10px;
+				background: #fff;
+				border: 2px dashed var(--primary-green);
+				border-radius: 10px;
+			}
+
+			.contact-grid {
+				display: grid;
+				grid-template-columns: 1fr 1.6fr;
+				gap: 30px;
+				width: 100%;
+				margin-bottom: 30px;
+			}
+			@media (max-width: 850px) {
+				.contact-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+			.direct-contact-item {
+				display: flex;
+				align-items: flex-start;
+				gap: 15px;
+				margin-bottom: 22px;
+			}
+			.direct-contact-icon {
+				width: 44px;
+				height: 44px;
+				border-radius: 50%;
+				background: var(--light-green);
+				color: var(--primary-green);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 18px;
+				flex-shrink: 0;
+			}
+
+			.faq-item {
+				border: 1px solid var(--border-color);
+				border-radius: 8px;
+				margin-bottom: 12px;
+				overflow: hidden;
+				background: #fff;
+				transition: 0.2s;
+			}
+			.faq-question {
+				padding: 16px 20px;
+				font-weight: 600;
+				font-size: 15px;
+				color: var(--dark-text);
+				cursor: pointer;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				background: #fafafa;
+				transition: background 0.2s;
+			}
+			.faq-question:hover {
+				background: var(--light-green);
+				color: var(--primary-green);
+			}
+			.faq-question i {
+				transition: transform 0.3s ease;
+				color: var(--primary-green);
+			}
+			.faq-item.active {
+				border-color: var(--primary-green);
+			}
+			.faq-item.active .faq-question {
+				background: var(--light-green);
+				color: var(--dark-green);
+			}
+			.faq-item.active .faq-question i {
+				transform: rotate(180deg);
+			}
+			.faq-answer {
+				max-height: 0;
+				opacity: 0;
+				overflow: hidden;
+				padding: 0 20px;
+				font-size: 14.5px;
+				line-height: 1.7;
+				color: #4b6584;
+				background: #fff;
+				border-top: 1px solid transparent;
+				transition:
+					max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+					padding 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+					opacity 0.25s ease,
+					border-color 0.25s ease;
+			}
+			.faq-item.active .faq-answer {
+				opacity: 1;
+				padding: 16px 20px;
+				max-height: 300px;
+				border-top-color: var(--border-color);
+			}
+
+			.site-footer {
+				background: #192a20;
+				color: #ecf0f1;
+				padding: 55px 20px 20px;
+				margin-top: auto;
+			}
+			.footer-container {
+				max-width: 1400px;
+				margin: 0 auto;
+				display: grid;
+				grid-template-columns: 1.4fr 1fr 1.2fr;
+				gap: 40px;
+				padding-bottom: 35px;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+			}
+			@media (max-width: 850px) {
+				.footer-container {
+					grid-template-columns: 1fr;
+				}
+			}
+			.footer-brand h3 {
+				color: #2ecc71;
+				font-size: 22px;
+				margin-bottom: 12px;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+			.footer-brand p {
+				color: #bdc3c7;
+				font-size: 14.5px;
+				line-height: 1.6;
+				margin-bottom: 20px;
+				max-width: 380px;
+			}
+			.social-links {
+				display: flex;
+				gap: 12px;
+			}
+			.social-icon {
+				width: 38px;
+				height: 38px;
+				border-radius: 50%;
+				background: rgba(255, 255, 255, 0.1);
+				color: white;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				text-decoration: none;
+				font-weight: bold;
+				font-size: 14px;
+				transition: 0.25s;
+			}
+			.social-icon:hover {
+				background: var(--primary-green);
+				transform: translateY(-3px);
+			}
+			.footer-links h4,
+			.footer-contact h4 {
+				color: white;
+				font-size: 16px;
+				margin-bottom: 18px;
+				position: relative;
+			}
+			.footer-links ul {
+				list-style: none;
+			}
+			.footer-links li {
+				margin-bottom: 11px;
+			}
+			.footer-links a {
+				color: #bdc3c7;
+				text-decoration: none;
+				font-size: 14px;
+				transition: 0.2s;
+				cursor: pointer;
+			}
+			.footer-links a:hover {
+				color: #2ecc71;
+				padding-left: 5px;
+			}
+			.footer-contact p {
+				color: #bdc3c7;
+				font-size: 14px;
+				margin-bottom: 12px;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+			.footer-bottom {
+				max-width: 1400px;
+				margin: 20px auto 0;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				font-size: 13px;
+				color: #95a5a6;
+				flex-wrap: wrap;
+				gap: 15px;
+			}
+			.footer-bottom-links {
+				display: flex;
+				gap: 20px;
+			}
+			.footer-bottom-links a {
+				color: #95a5a6;
+				text-decoration: none;
+				transition: 0.2s;
+			}
+			.footer-bottom-links a:hover {
+				color: white;
+			}
+			.hero-resource {
+				background:
+					linear-gradient(
+						rgba(27, 94, 32, 0.85),
+						rgba(46, 125, 50, 0.85)
+					),
+					url("./images/hero-bg.jpg") center/cover;
+				color: white;
+				padding: 60px 30px;
+				border-radius: 12px;
+				text-align: center;
+				margin-bottom: 30px;
+				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+			}
+			.hero-tag {
+				background: var(--accent-gold);
+				color: white;
+				padding: 6px 16px;
+				border-radius: 20px;
+				font-size: 13px;
+				font-weight: bold;
+				display: inline-block;
+				margin-bottom: 18px;
+				letter-spacing: 0.5px;
+			}
+			.hero-resource h1 {
+				font-size: 26px;
+				margin-bottom: 15px;
+				line-height: 1.5;
+				font-weight: 800;
+			}
+			.hero-resource p {
+				font-size: 16px;
+				color: #e8f5e9;
+				max-width: 850px;
+				margin: 0 auto;
+				line-height: 1.6;
+			}
+
+			.tabs-container {
+				display: flex;
+				gap: 10px;
+				flex-wrap: wrap;
+				justify-content: center;
+				margin-bottom: 35px;
+			}
+			.tab-btn {
+				padding: 8px 18px;
+				background: white;
+				border: 1.5px solid var(--border-color);
+				border-radius: 25px;
+				font-size: 14px;
+				font-weight: 600;
+				color: #555;
+				cursor: pointer;
+				transition: 0.3s;
+			}
+			.tab-btn:hover,
+			.tab-btn.active {
+				background: var(--primary-green);
+				color: white;
+				border-color: var(--primary-green);
+			}
+
+			.resource-card {
+				background: white;
+				border-radius: 12px;
+				overflow: hidden;
+				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+				transition:
+					transform 0.3s,
+					box-shadow 0.3s;
+				display: flex;
+				flex-direction: column;
+				border: 1px solid #f0f0f0;
+			}
+			.resource-card:hover {
+				transform: translateY(-8px);
+				box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+			}
+			.resource-img {
+				width: 100%;
+				height: 210px;
+				object-fit: cover;
+			}
+			.resource-content {
+				padding: 25px;
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+			}
+			.resource-title {
+				font-size: 17px;
+				font-weight: 800;
+				color: #1b5e20;
+				margin-bottom: 15px;
+				line-height: 1.5;
+				text-transform: uppercase;
+			}
+			.resource-desc {
+				font-size: 14px;
+				color: #555;
+				margin-bottom: 20px;
+				line-height: 1.6;
+			}
+			.resource-meta {
+				margin-top: auto;
+				border-top: 1px solid #eee;
+				padding-top: 15px;
+			}
+			.resource-meta-top {
+				display: flex;
+				gap: 15px;
+				color: #7f8c8d;
+				font-size: 13.5px;
+				margin-bottom: 10px;
+			}
+			.resource-meta-bottom {
+				color: #7f8c8d;
+				font-size: 13.5px;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<div class="nav-container">
+				<div
+					class="logo"
+					onclick="nav('page-home')">
+					<img
+						src="./logo/Landscape.png"
+						alt="Logo" />
+				</div>
+				<nav class="nav-menu">
+					<button
+						class="nav-btn active"
+						id="btn-nav-home"
+						onclick="nav('page-home')">
+						<i class="fa-solid fa-house"></i>
+						<span data-i18n="nav_home">Trang chủ</span>
+					</button>
+					<button
+						class="nav-btn"
+						id="btn-nav-farmer"
+						onclick="nav('page-farmer')">
+						<i class="fa-solid fa-tractor"></i>
+						<span data-i18n="nav_farmer">Nông dân</span>
+					</button>
+					<button
+						class="nav-btn"
+						id="btn-nav-business"
+						onclick="nav('page-business')">
+						<i class="fa-solid fa-building"></i>
+						<span data-i18n="nav_business">Doanh nghiệp</span>
+					</button>
+					<button
+						class="nav-btn"
+						id="btn-nav-contact"
+						onclick="nav('page-contact')">
+						<i class="fa-solid fa-envelope-open-text"></i>
+						<span data-i18n="nav_contact">Liên hệ & FAQ</span>
+					</button>
+					<button
+						class="nav-btn"
+						id="btn-nav-resource"
+						onclick="nav('page-resource')">
+						<i class="fa-solid fa-book-open"></i>
+						<span data-i18n="nav_resource">Tài Nguyên</span>
+					</button>
+
+					<button
+						class="lang-switch-btn"
+						onclick="toggleLanguage()">
+						<i class="fa-solid fa-globe"></i>
+						<span id="currentLangLabel">EN</span>
+					</button>
+
+					<div class="data-tools">
+						<button
+							class="btn-action btn-outline small"
+							onclick="exportData()">
+							<i class="fa-solid fa-download"></i>
+							<span data-i18n="btn_export">Xuất JSON</span>
+						</button>
+						<button
+							class="btn-action btn-outline small"
+							onclick="
+								document.getElementById('importFile').click()
+							">
+							<i class="fa-solid fa-upload"></i>
+							<span data-i18n="btn_import">Nhập JSON</span>
+						</button>
+						<input
+							type="file"
+							id="importFile"
+							style="display: none"
+							accept=".json"
+							onchange="importData(event)" />
+					</div>
+				</nav>
+			</div>
+		</header>
+
+		<!-- 0. TRANG CHỦ -->
+		<section
+			id="page-home"
+			class="page-section active">
+			<div
+				class="dashboard-layout"
+				style="
+					flex-direction: column;
+					align-items: center;
+					max-width: 1100px;
+				">
+				<div
+					class="content-section"
+					style="width: 100%; text-align: center; padding: 50px 30px">
+					<h1
+						style="
+							color: var(--primary-green);
+							margin-bottom: 20px;
+							font-size: 36px;
+						">
+						<i class="fa-solid fa-leaf"></i>
+						<span data-i18n="home_intro_title"
+							>Giới thiệu RiceTrace Mekong</span
+						>
+					</h1>
+					<p
+						style="
+							font-size: 17px;
+							line-height: 1.8;
+							color: #555;
+							max-width: 900px;
+							margin: 0 auto;
+						"
+						data-i18n="home_intro_desc">
+						RiceTrace Mekong là nền tảng số hóa vùng trồng và kết
+						nối trực tiếp nông dân Đồng bằng sông Cửu Long với doanh
+						nghiệp xuất khẩu. Thông qua "Hộ chiếu số" (Rice
+						Passport), chúng tôi minh bạch hóa dữ liệu canh tác, xóa
+						bỏ trung gian để giúp doanh nghiệp chủ động nguồn hàng
+						đạt chuẩn và nông dân bán lúa đúng giá trị.
+					</p>
+					<!-- Khối Tầm nhìn, Sứ mệnh & Trụ cột -->
+					<div
+						style="
+							margin-top: 35px;
+							text-align: left;
+							max-width: 900px;
+							margin-left: auto;
+							margin-right: auto;
+							background: white;
+							padding: 30px;
+							border-radius: 12px;
+							box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+							border-left: 6px solid var(--primary-green);
+						">
+						<h3
+							style="
+								color: var(--primary-green);
+								margin-bottom: 10px;
+								font-size: 20px;
+							">
+							<i class="fa-solid fa-eye"></i>
+							<span data-i18n="home_vision_title">Tầm nhìn</span>
+						</h3>
+						<p
+							style="
+								margin-bottom: 20px;
+								color: #444;
+								line-height: 1.6;
+								font-size: 16px;
+							"
+							data-i18n="home_vision_desc">
+							Trở thành nền tảng số hàng đầu kết nối chuỗi giá trị
+							lúa gạo bền vững tại Đồng bằng sông Cửu Long.
+						</p>
+
+						<h3
+							style="
+								color: var(--primary-green);
+								margin-bottom: 10px;
+								font-size: 20px;
+							">
+							<i class="fa-solid fa-bullseye"></i>
+							<span data-i18n="home_mission_title">Sứ mệnh</span>
+						</h3>
+						<p
+							style="
+								margin-bottom: 20px;
+								color: #444;
+								line-height: 1.6;
+								font-size: 16px;
+							"
+							data-i18n="home_mission_desc">
+							Số hóa dữ liệu sản xuất lúa, nâng cao thu nhập nông
+							dân và tạo nền tảng minh bạch cho ngành lúa gạo Việt
+							Nam.
+						</p>
+
+						<h3
+							style="
+								color: var(--primary-green);
+								margin-bottom: 12px;
+								font-size: 20px;
+							">
+							<i class="fa-solid fa-layer-group"></i>
+							<span data-i18n="home_pillars_title"
+								>Các trụ cột chính</span
+							>
+						</h3>
+						<ul
+							style="
+								list-style-type: none;
+								padding-left: 0;
+								color: #444;
+								line-height: 1.8;
+								font-size: 15px;
+								display: grid;
+								grid-template-columns: repeat(
+									auto-fit,
+									minmax(280px, 1fr)
+								);
+								gap: 10px;
+							">
+							<li>
+								<i
+									class="fa-solid fa-circle-check"
+									style="
+										color: var(--accent-gold);
+										margin-right: 8px;
+									"></i>
+								<span data-i18n="home_pillar_1"
+									>Minh bạch dữ liệu</span
+								>
+							</li>
+							<li>
+								<i
+									class="fa-solid fa-circle-check"
+									style="
+										color: var(--accent-gold);
+										margin-right: 8px;
+									"></i>
+								<span data-i18n="home_pillar_2"
+									>Canh tác bền vững</span
+								>
+							</li>
+							<li>
+								<i
+									class="fa-solid fa-circle-check"
+									style="
+										color: var(--accent-gold);
+										margin-right: 8px;
+									"></i>
+								<span data-i18n="home_pillar_3"
+									>Xây dựng niềm tin giữa nông dân và doanh
+									nghiệp</span
+								>
+							</li>
+							<li>
+								<i
+									class="fa-solid fa-circle-check"
+									style="
+										color: var(--accent-gold);
+										margin-right: 8px;
+									"></i>
+								<span data-i18n="home_pillar_4"
+									>Ứng dụng công nghệ vào nông nghiệp</span
+								>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<div
+					style="
+						width: 100%;
+						text-align: center;
+						margin-bottom: 20px;
+					">
+					<h2
+						style="color: var(--dark-text); font-size: 28px"
+						data-i18n="home_why_title">
+						Tại sao chọn chúng tôi?
+					</h2>
+				</div>
+				<div
+					style="
+						width: 100%;
+						display: grid;
+						grid-template-columns: repeat(
+							auto-fit,
+							minmax(230px, 1fr)
+						);
+						gap: 25px;
+						margin-bottom: 20px;
+					">
+					<div class="why-card">
+						<i class="fa-solid fa-shield-halved why-icon"></i>
+						<h4
+							style="font-size: 16px; color: var(--dark-text)"
+							data-i18n="home_why_1">
+							Minh bạch tuyệt đối, rõ ràng và đáng tin cậy
+						</h4>
+					</div>
+					<div class="why-card">
+						<i class="fa-solid fa-clock-rotate-left why-icon"></i>
+						<h4
+							style="font-size: 16px; color: var(--dark-text)"
+							data-i18n="home_why_2">
+							Chủ động nguồn cung sớm 60 ngày
+						</h4>
+					</div>
+					<div class="why-card">
+						<i class="fa-solid fa-earth-americas why-icon"></i>
+						<h4
+							style="font-size: 16px; color: var(--dark-text)"
+							data-i18n="home_why_3">
+							Sẵn sàng chinh phục thị trường khó tính (EU, Mỹ)
+						</h4>
+					</div>
+					<div class="why-card">
+						<i class="fa-solid fa-chart-line why-icon"></i>
+						<h4
+							style="font-size: 16px; color: var(--dark-text)"
+							data-i18n="home_why_4">
+							Hệ sinh thái tăng trưởng lợi nhuận kép bền vững
+						</h4>
+					</div>
+				</div>
+
+				<div
+					class="content-section"
+					style="
+						width: 100%;
+						background: var(--light-green);
+						border-left: 6px solid var(--primary-green);
+						padding: 40px;
+					">
+					<h3
+						style="
+							margin-bottom: 20px;
+							color: var(--dark-green);
+							font-size: 22px;
+						">
+						<i
+							class="fa-solid fa-quote-left"
+							style="
+								color: rgba(46, 125, 50, 0.3);
+								font-size: 28px;
+								margin-right: 10px;
+							"></i>
+						<span data-i18n="home_story_title"
+							>Câu chuyện nhà nông</span
+						>
+					</h3>
+					<p
+						style="
+							font-style: italic;
+							line-height: 1.9;
+							font-size: 16px;
+							color: #2c3e50;
+							margin-bottom: 20px;
+						"
+						data-i18n="home_story_content">
+						"Làm ruộng ngặt lắm chú ơi! Cả vụ gồng gánh sâu bệnh,
+						tới chừng trúng mùa thì lại lo 'được mùa mất giá'. Sợ
+						nhất là sát ngày gặt, thương lái cứ neo ghe đè giá, viện
+						đủ lý do để bẻ cọc ép mình bán rẻ. Lúc nghe giới thiệu
+						cái web này tui thấy hay quá! Lúa mình xịt thuốc gì, bón
+						phân chi đều ghi rõ trên 'Hộ chiếu số', doanh nghiệp
+						nhìn vô là tin liền. Bán được trực tiếp cho công ty,
+						không qua cò lái nữa, vừa đỡ đau đầu lại cầm đồng tiền
+						xứng đáng với công sức bỏ ra."
+					</p>
+					<p
+						style="
+							font-weight: bold;
+							color: var(--primary-green);
+							text-align: right;
+							font-size: 15px;
+						"
+						data-i18n="home_story_author">
+						- Chú Ba Trung (Nông dân xã Vĩnh Hanh, tỉnh An Giang)
+					</p>
+				</div>
+
+				<div style="text-align: center; margin-bottom: 40px">
+					<button
+						class="btn-action"
+						style="
+							padding: 15px 30px;
+							font-size: 16px;
+							margin-right: 15px;
+						"
+						onclick="nav('page-farmer')">
+						<i class="fa-solid fa-seedling"></i>
+						<span data-i18n="home_btn_farmer"
+							>Tham gia Khai báo Lô Lúa</span
+						>
+					</button>
+					<button
+						class="btn-action btn-outline"
+						style="
+							padding: 15px 30px;
+							font-size: 16px;
+							background: white;
+						"
+						onclick="nav('page-business')">
+						<i class="fa-solid fa-magnifying-glass-location"></i>
+						<span data-i18n="home_btn_business"
+							>Tìm Nguồn Cung Ngay</span
+						>
+					</button>
+				</div>
+			</div>
+		</section>
+
+		<!-- 1. FARMER PORTAL -->
+		<section
+			id="page-farmer"
+			class="page-section">
+			<div class="dashboard-layout">
+				<aside class="sidebar">
+					<ul class="sidebar-menu">
+						<li>
+							<a
+								href="#"
+								class="active">
+								<i class="fa-solid fa-pen-to-square"></i>
+								<span data-i18n="sidebar_farmer_log"
+									>Khai báo & Nhật ký</span
+								>
+							</a>
+						</li>
+					</ul>
+				</aside>
+				<main class="main-content">
+					<div
+						class="grid-cards"
+						style="grid-template-columns: 1.1fr 1.9fr">
+						<div class="content-section">
+							<h3>
+								<i
+									class="fa-solid fa-wand-magic-sparkles"
+									style="color: var(--accent-gold)"></i>
+								<span data-i18n="ai_form_title"
+									>Nhật Ký Tự Động Bằng AI</span
+								>
+							</h3>
+							<p
+								style="
+									font-size: 13px;
+									color: #7f8c8d;
+									margin-top: 4px;
+									margin-bottom: 18px;
+								"
+								data-i18n="ai_form_desc">
+								Nông dân không cần gõ phím. Chụp ảnh hóa đơn
+								hoặc đọc ghi âm để AI tự trích xuất dữ liệu.
+							</p>
+
+							<div
+								style="
+									display: flex;
+									gap: 10px;
+									margin-bottom: 18px;
+								">
+								<button
+									type="button"
+									class="btn-action btn-outline"
+									style="flex: 1"
+									onclick="
+										document
+											.getElementById('aiUpload')
+											.click()
+									">
+									<i class="fa-solid fa-camera"></i>
+									<span data-i18n="btn_upload_bill"
+										>Chụp hóa đơn</span
+									>
+								</button>
+								<button
+									type="button"
+									class="btn-action btn-outline"
+									style="flex: 1"
+									id="micBtn"
+									onclick="simulateVoiceRecord()">
+									<i class="fa-solid fa-microphone"></i>
+									<span
+										id="micLabel"
+										data-i18n="btn_voice_record"
+										>Ghi âm (Đọc)</span
+									>
+								</button>
+								<input
+									type="file"
+									id="aiUpload"
+									accept="image/*"
+									style="display: none"
+									onchange="simulateAIProcessing()" />
+							</div>
+
+							<div
+								id="aiLoader"
+								style="
+									display: none;
+									margin-bottom: 15px;
+									font-size: 13px;
+									color: var(--accent-gold);
+									font-weight: 600;
+								">
+								<i class="fa-solid fa-spinner fa-spin"></i>
+								<span data-i18n="ai_extracting"
+									>Trợ lý AI đang đọc chứng từ và tính
+									toán...</span
+								>
+							</div>
+
+							<div
+								id="aiResult"
+								style="
+									margin-bottom: 16px;
+									font-size: 13px;
+									background: var(--light-green);
+									padding: 12px;
+									border-radius: 6px;
+									border-left: 4px solid var(--primary-green);
+									display: none;
+								">
+								<i
+									class="fa-solid fa-robot"
+									style="color: var(--primary-green)"></i>
+								<span id="aiResultText"></span>
+							</div>
+
+							<form
+								id="farmForm"
+								onsubmit="handleFormSubmit(event)">
+								<div class="form-group">
+									<label data-i18n="form_seed"
+										>Giống lúa</label
+									>
+									<select
+										id="seedType"
+										required>
+										<option value="ST25">
+											ST25 (Chu kỳ 105 ngày)
+										</option>
+										<option value="OM18">
+											OM18 (Chu kỳ 95 ngày)
+										</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label data-i18n="form_sowing_date"
+										>Ngày xuống giống</label
+									>
+									<input
+										type="date"
+										id="sowDate"
+										required />
+								</div>
+								<div class="form-group">
+									<label data-i18n="form_fertilizer"
+										>Lượng phân bón Urea (kg/ha)</label
+									>
+									<input
+										type="number"
+										id="fertAmount"
+										placeholder="120"
+										required />
+								</div>
+								<div class="form-group">
+									<label data-i18n="form_water"
+										>Quản lý nước (Tiêu chuẩn ESG)</label
+									>
+									<select id="waterMgmt">
+										<option
+											value="AWD"
+											data-i18n="water_awd">
+											Tưới ngập khô xen kẽ AWD (Giảm
+											Carbon)
+										</option>
+										<option
+											value="Flood"
+											data-i18n="water_flood">
+											Ngập liên tục (Phát thải cao)
+										</option>
+									</select>
+								</div>
+								<button
+									type="submit"
+									class="btn-action"
+									style="width: 100%; margin-top: 5px">
+									<i class="fa-solid fa-cloud-arrow-up"></i>
+									<span data-i18n="btn_submit_lot"
+										>Khai Báo & Đưa Lên Bản Đồ</span
+									>
+								</button>
+							</form>
+						</div>
+
+						<div class="content-section">
+							<h3 data-i18n="farmer_table_title">
+								Danh sách Lô Lúa (Chờ Doanh Nghiệp Thu Mua)
+							</h3>
+							<table>
+								<thead>
+									<tr>
+										<th data-i18n="th_lot_id">Mã Lô</th>
+										<th data-i18n="th_seed">Giống Lúa</th>
+										<th data-i18n="th_harvest_date">
+											Ngày Gặt
+										</th>
+										<th data-i18n="th_carbon">
+											Dấu Chân Carbon
+										</th>
+										<th data-i18n="th_status">
+											Trạng Thái
+										</th>
+									</tr>
+								</thead>
+								<tbody id="farmerTableBody"></tbody>
+							</table>
+						</div>
+					</div>
+				</main>
+			</div>
+		</section>
+
+		<!-- 2. BUSINESS PORTAL -->
+		<section
+			id="page-business"
+			class="page-section">
+			<div class="dashboard-layout">
+				<aside class="sidebar">
+					<ul class="sidebar-menu">
+						<li>
+							<a
+								href="#"
+								class="active">
+								<i class="fa-solid fa-satellite"></i>
+								<span data-i18n="sidebar_business_map"
+									>Bản đồ Vùng Nguyên Liệu</span
+								>
+							</a>
+						</li>
+					</ul>
+				</aside>
+				<main class="main-content">
+					<div
+						class="content-section"
+						style="
+							padding: 0;
+							overflow: hidden;
+							border: 2px solid var(--primary-green);
+							border-radius: 10px;
+						">
+						<div
+							id="realMap"
+							style="height: 450px; width: 100%"></div>
+						<div class="map-legend">
+							<div class="legend-item">
+								<span
+									class="dot"
+									style="background: #2ecc71"></span
+								><span data-i18n="map_legend_ready"
+									>Sẵn sàng giao dịch</span
+								>
+							</div>
+							<div class="legend-item">
+								<span
+									class="dot"
+									style="background: #f1c40f"></span
+								><span data-i18n="map_legend_nego"
+									>Đang đàm phán</span
+								>
+							</div>
+							<div class="legend-item">
+								<span
+									class="dot"
+									style="background: #e74c3c"></span
+								><span data-i18n="map_legend_depo"
+									>Đã chốt cọc</span
+								>
+							</div>
+						</div>
+					</div>
+
+					<div class="content-section">
+						<h3
+							style="margin-bottom: 8px"
+							data-i18n="business_table_title">
+							Bảng Nguồn Cung Trực Tiếp (Click dòng để phóng to
+							trên Bản đồ)
+						</h3>
+						<table>
+							<thead>
+								<tr>
+									<th data-i18n="th_farmer">
+										Hợp Tác Xã / Nông Dân
+									</th>
+									<th data-i18n="th_yield">Sản Lượng</th>
+									<th data-i18n="th_harvest_date">
+										Ngày Gặt
+									</th>
+									<th data-i18n="th_status">Trạng Thái</th>
+									<th data-i18n="th_actions">Thao Tác Mua</th>
+								</tr>
+							</thead>
+							<tbody id="businessTableBody"></tbody>
+						</table>
+					</div>
+				</main>
+			</div>
+		</section>
+
+		<!-- 3. TRANG LIÊN HỆ & FAQ -->
+		<section
+			id="page-contact"
+			class="page-section">
+			<div
+				class="dashboard-layout"
+				style="
+					flex-direction: column;
+					align-items: center;
+					max-width: 1150px;
+				">
+				<!-- 1. Hero Section -->
+				<div
+					class="content-section"
+					style="
+						width: 100%;
+						text-align: center;
+						padding: 45px 30px;
+						background: linear-gradient(
+							135deg,
+							#1b5e20 0%,
+							#2e7d32 100%
+						);
+						color: white;
+					">
+					<h1
+						style="margin-bottom: 15px; font-size: 32px"
+						data-i18n="contact_hero_title">
+						Kết nối cùng RiceTrace Mekong - Nâng tầm giá trị hạt gạo
+					</h1>
+					<p
+						style="
+							font-size: 16px;
+							line-height: 1.6;
+							max-width: 800px;
+							margin: 0 auto;
+							color: #e8f5e9;
+						"
+						data-i18n="contact_hero_sub">
+						Dù bạn là Nông dân muốn tăng thu nhập hay Doanh nghiệp
+						đang tìm kiếm vùng nguyên liệu đạt chuẩn xuất khẩu,
+						chúng tôi luôn sẵn sàng hỗ trợ.
+					</p>
+				</div>
+
+				<!-- 2 & 3. Direct Contact + Lead Generation Form -->
+				<div class="contact-grid">
+					<!-- Thông tin liên hệ trực tiếp -->
+					<div
+						class="content-section"
+						style="margin-bottom: 0">
+						<h3
+							style="
+								color: var(--primary-green);
+								margin-bottom: 20px;
+								font-size: 20px;
+							"
+							data-i18n="contact_direct_title">
+							Thông tin liên hệ trực tiếp
+						</h3>
+
+						<div class="direct-contact-item">
+							<div class="direct-contact-icon">
+								<i class="fa-solid fa-location-dot"></i>
+							</div>
+							<div>
+								<h4
+									style="margin-bottom: 4px; font-size: 15px"
+									data-i18n="contact_hq_label">
+									Trụ sở chính
+								</h4>
+								<p
+									style="color: #555; font-size: 14px"
+									data-i18n="contact_hq_val">
+									TP. Long Xuyên, Tỉnh An Giang
+								</p>
+							</div>
+						</div>
+
+						<div class="direct-contact-item">
+							<div class="direct-contact-icon">
+								<i class="fa-solid fa-envelope"></i>
+							</div>
+							<div>
+								<h4 style="margin-bottom: 4px; font-size: 15px">
+									Email
+								</h4>
+								<p style="color: #555; font-size: 14px">
+									contact@ricetrace.vn<br />sales@ricetrace.vn
+								</p>
+							</div>
+						</div>
+
+						<div class="direct-contact-item">
+							<div class="direct-contact-icon">
+								<i class="fa-solid fa-phone-volume"></i>
+							</div>
+							<div>
+								<h4 style="margin-bottom: 4px; font-size: 15px">
+									Hotline / Zalo OA
+								</h4>
+								<p style="color: #555; font-size: 14px">
+									+84 XXXXXXXXX
+								</p>
+							</div>
+						</div>
+
+						<div
+							style="
+								margin-top: 30px;
+								padding: 20px;
+								background: var(--light-green);
+								border-radius: 8px;
+								border-left: 4px solid var(--primary-green);
+							">
+							<h4
+								style="
+									color: var(--dark-green);
+									margin-bottom: 6px;
+									font-size: 15px;
+								">
+								RICETRACE MEKONG
+							</h4>
+							<p
+								style="
+									font-size: 13.5px;
+									font-style: italic;
+									color: #2c3e50;
+									line-height: 1.6;
+								"
+								data-i18n="footer_slogan">
+								Nơi mỗi hạt gạo đều có câu chuyện, và mỗi người
+								nông dân đều được ghi nhận.
+							</p>
+						</div>
+					</div>
+
+					<!-- Biểu mẫu đăng ký tư vấn -->
+					<div
+						class="content-section"
+						style="margin-bottom: 0">
+						<h3
+							style="
+								color: var(--primary-green);
+								margin-bottom: 6px;
+								font-size: 20px;
+							"
+							data-i18n="contact_form_title">
+							Đăng ký tư vấn & Hợp tác
+						</h3>
+						<p
+							style="
+								font-size: 13px;
+								color: #7f8c8d;
+								margin-bottom: 20px;
+							"
+							data-i18n="contact_form_commit">
+							Cam kết: Chúng tôi sẽ liên hệ lại qua Zalo/SĐT trong
+							vòng 24h.
+						</p>
+
+						<form
+							id="leadForm"
+							onsubmit="handleContactSubmit(event)">
+							<div
+								style="
+									display: grid;
+									grid-template-columns: 1fr 1fr;
+									gap: 15px;
+								">
+								<div class="form-group">
+									<label data-i18n="contact_f_name"
+										>Họ và Tên / Tên Doanh nghiệp *</label
+									>
+									<input
+										type="text"
+										id="leadName"
+										required
+										placeholder="Nguyễn Văn A / Công ty B" />
+								</div>
+								<div class="form-group">
+									<label data-i18n="contact_f_phone"
+										>Số điện thoại / Zalo *</label
+									>
+									<input
+										type="tel"
+										id="leadPhone"
+										required
+										placeholder="09xx xxx xxx" />
+								</div>
+							</div>
+
+							<div
+								style="
+									display: grid;
+									grid-template-columns: 1fr 1fr;
+									gap: 15px;
+								">
+								<div class="form-group">
+									<label data-i18n="contact_f_role"
+										>Bạn là ai? *</label
+									>
+									<select
+										id="leadRole"
+										required>
+										<option
+											value="farmer"
+											data-i18n="role_farmer">
+											Nông dân / Hợp tác xã
+										</option>
+										<option
+											value="sme"
+											data-i18n="role_sme">
+											Doanh nghiệp thu mua / Xuất khẩu
+											(SMEs)
+										</option>
+										<option
+											value="partner"
+											data-i18n="role_partner">
+											Nhà cung cấp dịch vụ (Drone, Vật tư,
+											Logistics...)
+										</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label data-i18n="contact_f_region"
+										>Khu vực canh tác / Thu mua *</label
+									>
+									<input
+										type="text"
+										id="leadRegion"
+										list="mekongRegions"
+										required
+										placeholder="An Giang, Đồng Tháp, Cần Thơ..." />
+									<datalist id="mekongRegions">
+										<option value="An Giang"></option>
+										<option value="Đồng Tháp"></option>
+										<option value="Cần Thơ"></option>
+										<option value="Kiên Giang"></option>
+										<option value="Sóc Trăng"></option>
+										<option value="Long An"></option>
+									</datalist>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label data-i18n="contact_f_need"
+									>Nhu cầu của bạn là gì? *</label
+								>
+								<select
+									id="leadNeed"
+									required>
+									<option
+										value="passport"
+										data-i18n="need_passport">
+										Tạo Rice Passport (Hộ chiếu số) cho lúa
+									</option>
+									<option
+										value="sourcing"
+										data-i18n="need_sourcing">
+										Tìm kiếm vùng nguyên liệu đạt chuẩn
+									</option>
+									<option
+										value="partner"
+										data-i18n="need_partner">
+										Trở thành đối tác
+									</option>
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label data-i18n="contact_f_msg"
+									>Lời nhắn bổ sung (Không bắt buộc)</label
+								>
+								<textarea
+									id="leadMsg"
+									rows="3"
+									placeholder="Ghi chú thêm về diện tích, sản lượng cần mua..."></textarea>
+							</div>
+
+							<button
+								type="submit"
+								class="btn-action"
+								style="
+									width: 100%;
+									padding: 13px;
+									font-size: 15px;
+								">
+								<i class="fa-solid fa-paper-plane"></i>
+								<span data-i18n="contact_btn_submit"
+									>Nhận Tư Vấn Miễn Phí Ngay</span
+								>
+							</button>
+						</form>
+					</div>
+				</div>
+
+				<!-- 4. Câu hỏi thường gặp (FAQ Section) -->
+				<div
+					class="content-section"
+					style="width: 100%; padding: 35px">
+					<div style="text-align: center; margin-bottom: 25px">
+						<h2
+							style="color: var(--primary-green); font-size: 26px"
+							data-i18n="faq_title">
+							Câu hỏi thường gặp (FAQ)
+						</h2>
+						<p
+							style="
+								color: #7f8c8d;
+								font-size: 14px;
+								margin-top: 5px;
+							"
+							data-i18n="faq_subtitle">
+							Giải đáp nhanh các thắc mắc về quy trình, chi phí và
+							cam kết minh bạch tại RiceTrace Mekong
+						</p>
+					</div>
+
+					<div class="faq-list">
+						<div class="faq-item active">
+							<div
+								class="faq-question"
+								onclick="toggleFaq(this)">
+								<span data-i18n="faq_q1"
+									>1. RiceTrace Mekong có trực tiếp thu mua
+									lúa của nông dân không?</span
+								>
+								<i class="fa-solid fa-chevron-down"></i>
+							</div>
+							<div
+								class="faq-answer"
+								data-i18n="faq_a1">
+								Không. RiceTrace Mekong là nền tảng công nghệ số
+								hóa vùng trồng và kết nối trực tiếp
+								(Marketplace). Chúng tôi cung cấp công cụ "Rice
+								Passport" để nông dân chứng minh chất lượng lúa,
+								từ đó kết nối thẳng đến các Doanh nghiệp thu mua
+								(SMEs) trên nền tảng mà không cần qua nhiều tầng
+								thương lái trung gian, giúp nông dân bán được
+								giá cao hơn và không lo bị bẻ cọc.
+							</div>
+						</div>
+
+						<div class="faq-item">
+							<div
+								class="faq-question"
+								onclick="toggleFaq(this)">
+								<span data-i18n="faq_q2"
+									>2. Tôi là nông dân không rành công nghệ,
+									việc ghi nhật ký sản xuất có khó
+									không?</span
+								>
+								<i class="fa-solid fa-chevron-down"></i>
+							</div>
+							<div
+								class="faq-answer"
+								data-i18n="faq_a2">
+								Rất đơn giản. Ứng dụng RiceTrace được thiết kế
+								tối giản, dễ thao tác trên điện thoại thông
+								minh. Trong giai đoạn đầu, đội ngũ kỹ sư nông
+								nghiệp và nhân viên hiện trường (field agents)
+								tại An Giang sẽ trực tiếp xuống đồng để hướng
+								dẫn, đồng hành và hỗ trợ bà con nhập liệu cho
+								đến khi thành thạo.
+							</div>
+						</div>
+
+						<div class="faq-item">
+							<div
+								class="faq-question"
+								onclick="toggleFaq(this)">
+								<span data-i18n="faq_q3"
+									>3. Doanh nghiệp của tôi có được đảm bảo
+									nguồn lúa trên RiceTrace đạt chuẩn xuất khẩu
+									(EU, Mỹ) không?</span
+								>
+								<i class="fa-solid fa-chevron-down"></i>
+							</div>
+							<div
+								class="faq-answer"
+								data-i18n="faq_a3">
+								Có. Điểm khác biệt của RiceTrace là cơ chế Xác
+								thực 3 bên (Tri-Verification). Dữ liệu nhật ký
+								canh tác không chỉ do nông dân tự nhập mà còn
+								được đối chiếu, xác nhận bởi Kỹ sư khuyến nông
+								địa phương và Hóa đơn vật tư đầu vào. Hệ thống
+								sẽ cấp mã QR (Rice Passport) minh bạch về dư
+								lượng, giống lúa và quy trình, giúp doanh nghiệp
+								an tâm đặt cọc sớm và đủ điều kiện xuất khẩu.
+							</div>
+						</div>
+
+						<div class="faq-item">
+							<div
+								class="faq-question"
+								onclick="toggleFaq(this)">
+								<span data-i18n="faq_q4"
+									>4. Chi phí để sử dụng nền tảng RiceTrace là
+									bao nhiêu?</span
+								>
+								<i class="fa-solid fa-chevron-down"></i>
+							</div>
+							<div
+								class="faq-answer"
+								data-i18n="faq_a4">
+								<b>Đối với Nông dân:</b> Được miễn phí sử dụng
+								ứng dụng trong thời gian đầu (Pilot) để tạo lập
+								dữ liệu vùng trồng.<br />
+								<b>Đối với Doanh nghiệp (SMEs):</b> Chúng tôi áp
+								dụng mô hình Trả phí gói (Subscription) theo năm
+								để truy cập "Bản đồ vùng nguyên liệu" (Rice
+								Sourcing Map), kết hợp phí hoa hồng (1-2%) trên
+								các giao dịch thành công. Khách hàng đăng ký
+								trong giai đoạn Pilot tại An Giang sẽ được ưu
+								đãi giảm 30% chi phí năm đầu tiên.
+							</div>
+						</div>
+
+						<div class="faq-item">
+							<div
+								class="faq-question"
+								onclick="toggleFaq(this)">
+								<span data-i18n="faq_q5"
+									>5. Nếu có rủi ro về thời tiết hoặc dịch
+									bệnh làm ảnh hưởng đến sản lượng, hệ thống
+									sẽ xử lý thế nào?</span
+								>
+								<i class="fa-solid fa-chevron-down"></i>
+							</div>
+							<div
+								class="faq-answer"
+								data-i18n="faq_a5">
+								Dữ liệu trên Rice Passport được cập nhật theo
+								thời gian thực (Real-time). Khi có biến động về
+								thời tiết hay cảnh báo dịch bệnh từ kỹ sư nông
+								nghiệp, tình trạng lô ruộng sẽ được cập nhật
+								ngay trên hệ thống. Điều này giúp Doanh nghiệp
+								thu mua nắm bắt tình hình sớm để điều chỉnh kế
+								hoạch gom hàng, đồng thời hỗ trợ Nông dân có
+								phương án xử lý kịp thời để bảo vệ năng suất.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4. TRANG TÀI NGUYÊN (CASE STUDY) -->
+		<section
+			id="page-resource"
+			class="page-section">
+			<div
+				class="dashboard-layout"
+				style="
+					flex-direction: column;
+					align-items: center;
+					max-width: 1250px;
+				">
+				<!-- Hero Banner -->
+				<div
+					class="hero-resource"
+					style="width: 100%">
+					<span
+						class="hero-tag"
+						data-i18n="resource_hero_tag"
+						>NGHIÊN CỨU ĐIỂN HÌNH (CASE STUDY)</span
+					>
+					<h1 data-i18n="resource_hero_title">
+						RICETRACE MEKONG GIÚP HTX LÚA GẠO AN GIANG TĂNG 20% GIÁ
+						TRỊ NHỜ TRUY XUẤT NGUỒN GỐC VÀ LƯU KHO THÔNG MINH
+					</h1>
+					<p data-i18n="resource_hero_desc">
+						Khám phá cách hệ sinh thái RiceTrace Mekong giúp nông
+						dân bán lúa giá cao, doanh nghiệp an tâm về nguồn gốc và
+						tối ưu chi phí kho bãi.
+					</p>
+				</div>
+
+				<!-- Tabs -->
+				<div class="tabs-container">
+					<button
+						class="tab-btn active"
+						data-i18n="tab_all">
+						Tất cả danh mục
+					</button>
+					<button
+						class="tab-btn"
+						data-i18n="tab_price">
+						Giá lúa & Thị trường
+					</button>
+					<button
+						class="tab-btn"
+						data-i18n="tab_trace">
+						Truy xuất nguồn gốc
+					</button>
+					<button
+						class="tab-btn"
+						data-i18n="tab_emission">
+						Lúa phát thải thấp
+					</button>
+					<button
+						class="tab-btn"
+						data-i18n="tab_export">
+						Tiêu chuẩn xuất khẩu
+					</button>
+					<button
+						class="tab-btn"
+						data-i18n="tab_warehouse">
+						Quản lý kho hàng
+					</button>
+				</div>
+
+				<!-- Grid Cards -->
+				<div
+					class="grid-cards"
+					style="
+						width: 100%;
+						grid-template-columns: repeat(
+							auto-fit,
+							minmax(340px, 1fr)
+						);
+						gap: 30px;
+					">
+					<!-- Card 1 -->
+					<div class="resource-card">
+						<img
+							src="./images/1.jpg"
+							alt="Truy xuất nguồn gốc"
+							class="resource-img"
+							onerror="
+								this.src =
+									'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?q=80&w=600&auto=format&fit=crop'
+							" />
+						<div class="resource-content">
+							<h3
+								class="resource-title"
+								data-i18n="card1_title">
+								HƯỚNG DẪN ĐĂNG KÝ MÃ VÙNG TRỒNG VÀ TRUY XUẤT
+								NGUỒN GỐC TRÊN RICETRACE MEKONG
+							</h3>
+							<div class="resource-meta">
+								<div class="resource-meta-top">
+									<span
+										><i class="fa-regular fa-calendar"></i>
+										10/11/2026</span
+									>
+									<span
+										><i
+											class="fa-solid fa-folder-closed"></i>
+										<span data-i18n="tab_trace"
+											>Truy xuất nguồn gốc</span
+										></span
+									>
+								</div>
+								<div class="resource-meta-bottom">
+									<span
+										><i class="fa-regular fa-clock"></i>
+										<span data-i18n="time_8min"
+											>8 phút đọc</span
+										></span
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card 2 -->
+					<div class="resource-card">
+						<img
+							src="./images/2.jpg"
+							alt="Giá lúa"
+							class="resource-img"
+							onerror="
+								this.src =
+									'https://images.unsplash.com/photo-1586201375761-83865001e8ac?q=80&w=600&auto=format&fit=crop'
+							" />
+						<div class="resource-content">
+							<h3
+								class="resource-title"
+								data-i18n="card2_title">
+								CẬP NHẬT GIÁ LÚA HÔM NAY: XU HƯỚNG TĂNG NHỜ NHU
+								CẦU TỪ THỊ TRƯỜNG EU VÀ PHILIPPINES
+							</h3>
+							<div class="resource-meta">
+								<div class="resource-meta-top">
+									<span
+										><i class="fa-regular fa-calendar"></i>
+										09/11/2026</span
+									>
+									<span
+										><i
+											class="fa-solid fa-folder-closed"></i>
+										<span data-i18n="tab_price"
+											>Giá lúa & Thị trường</span
+										></span
+									>
+								</div>
+								<div class="resource-meta-bottom">
+									<span
+										><i class="fa-regular fa-clock"></i>
+										<span data-i18n="time_5min"
+											>5 phút đọc</span
+										></span
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card 3 -->
+					<div class="resource-card">
+						<img
+							src="./images/3.jpg"
+							alt="Lúa phát thải thấp"
+							class="resource-img"
+							onerror="
+								this.src =
+									'https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=600&auto=format&fit=crop'
+							" />
+						<div class="resource-content">
+							<h3
+								class="resource-title"
+								data-i18n="card3_title">
+								ĐỀ ÁN 1 TRIỆU HA LÚA PHÁT THẢI THẤP: CƠ HỘI VÀ
+								THÁCH THỨC CHO NÔNG DÂN ĐỒNG BẰNG SÔNG CỬU LONG
+							</h3>
+							<div class="resource-meta">
+								<div class="resource-meta-top">
+									<span
+										><i class="fa-regular fa-calendar"></i>
+										05/11/2026</span
+									>
+									<span
+										><i
+											class="fa-solid fa-folder-closed"></i>
+										<span data-i18n="tab_emission"
+											>Lúa phát thải thấp</span
+										></span
+									>
+								</div>
+								<div class="resource-meta-bottom">
+									<span
+										><i class="fa-regular fa-clock"></i>
+										<span data-i18n="time_12min"
+											>12 phút đọc</span
+										></span
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- QR MODAL -->
+		<div
+			id="qrModal"
+			class="modal-overlay">
+			<div class="modal-content">
+				<i
+					class="fa-solid fa-times close-modal"
+					onclick="closeQRModal()"></i>
+				<h3
+					style="color: var(--primary-green)"
+					data-i18n="qr_modal_title">
+					Hộ Chiếu Lúa Gạo Kỹ Thuật Số
+				</h3>
+				<p
+					style="font-size: 13px; color: #7f8c8d; margin-top: 4px"
+					id="qrLotTitle"></p>
+				<div class="qr-image-container">
+					<img
+						id="qrImage"
+						src=""
+						alt="QR Code"
+						width="220"
+						height="220" />
+				</div>
+				<div
+					style="
+						text-align: left;
+						font-size: 13px;
+						background: var(--gray-bg);
+						padding: 12px;
+						border-radius: 8px;
+						line-height: 1.6;
+					"
+					id="qrDetails"></div>
+			</div>
+		</div>
+
+		<!-- FOOTER TOÀN TRANG -->
+		<footer class="site-footer">
+			<div class="footer-container">
+				<div class="footer-brand">
+					<h3><i class="fa-solid fa-leaf"></i> RICETRACE MEKONG</h3>
+					<p data-i18n="footer_slogan">
+						Nơi mỗi hạt gạo đều có câu chuyện, và mỗi người nông dân
+						đều được ghi nhận.
+					</p>
+					<div class="social-links">
+						<a
+							href="#"
+							class="social-icon"
+							title="Facebook"
+							><i class="fa-brands fa-facebook-f"></i
+						></a>
+						<a
+							href="#"
+							class="social-icon"
+							title="Zalo OA"
+							>Zalo</a
+						>
+					</div>
+				</div>
+
+				<div class="footer-links">
+					<h4 data-i18n="footer_quick_links">Liên kết nhanh</h4>
+					<ul>
+						<li>
+							<a
+								onclick="nav('page-home')"
+								data-i18n="nav_home"
+								>Trang chủ</a
+							>
+						</li>
+						<li>
+							<a
+								onclick="nav('page-farmer')"
+								data-i18n="footer_link_farmer"
+								>Dành cho Nông dân (Hướng dẫn tạo Rice
+								Passport)</a
+							>
+						</li>
+						<li>
+							<a
+								onclick="nav('page-business')"
+								data-i18n="footer_link_biz"
+								>Dành cho Doanh nghiệp (Truy cập Sourcing
+								Map)</a
+							>
+						</li>
+						<li>
+							<a
+								onclick="nav('page-contact')"
+								data-i18n="nav_contact"
+								>Liên hệ & FAQ</a
+							>
+						</li>
+					</ul>
+				</div>
+
+				<div class="footer-contact">
+					<h4 data-i18n="contact_direct_title">Thông tin liên hệ</h4>
+					<p>
+						<span>📍</span>
+						<span data-i18n="footer_addr"
+							>Trụ sở chính: TP. Long Xuyên, Tỉnh An Giang</span
+						>
+					</p>
+					<p>
+						<span>✉️</span>
+						<span
+							>Email: contact@ricetrace.vn /
+							sales@ricetrace.vn</span
+						>
+					</p>
+					<p>
+						<span>📞</span>
+						<span>Hotline/Zalo OA: +84 XXXXXXXXX</span>
+					</p>
+				</div>
+			</div>
+
+			<div class="footer-bottom">
+				<div>© 2026 RiceTrace Mekong. All Rights Reserved.</div>
+				<div class="footer-bottom-links">
+					<a
+						href="#"
+						data-i18n="footer_privacy"
+						>Chính sách bảo mật (Privacy Policy)</a
+					>
+					<a
+						href="#"
+						data-i18n="footer_terms"
+						>Điều khoản sử dụng (Terms of Service)</a
+					>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			// Định nghĩa DB_KEY ngay từ đầu
+			const DB_KEY = "riceTraceData_i18n_v2";
+
+			// ==========================================
+			// 1. TẬP TRUNG TỪ ĐIỂN i18next (JSON RESOURCES)
+			// ==========================================
+			const resources = {
+				vi: {
+					translation: {
+						nav_home: "Trang chủ",
+						nav_farmer: "Nông dân",
+						nav_business: "Doanh nghiệp",
+						nav_contact: "Liên hệ & FAQ",
+						nav_resource: "Tài Nguyên",
+						btn_export: "Xuất JSON",
+						btn_import: "Nhập JSON",
+						// Phần Tầm nhìn & Sứ mệnh
+						home_vision_title: "Tầm nhìn",
+						home_vision_desc:
+							"Trở thành nền tảng số hàng đầu kết nối chuỗi giá trị lúa gạo bền vững tại Đồng bằng sông Cửu Long.",
+						home_mission_title: "Sứ mệnh",
+						home_mission_desc:
+							"Số hóa dữ liệu sản xuất lúa, nâng cao thu nhập nông dân và tạo nền tảng minh bạch cho ngành lúa gạo Việt Nam.",
+						home_pillars_title: "Các trụ cột chính",
+						home_pillar_1: "Minh bạch dữ liệu",
+						home_pillar_2: "Canh tác bền vững",
+						home_pillar_3:
+							"Xây dựng niềm tin giữa nông dân và doanh nghiệp",
+						home_pillar_4: "Ứng dụng công nghệ vào nông nghiệp",
+
+						// Phần Tài Nguyên (Case Study)
+						resource_hero_tag: "NGHIÊN CỨU ĐIỂN HÌNH (CASE STUDY)",
+						resource_hero_title:
+							"RICETRACE MEKONG GIÚP HTX LÚA GẠO AN GIANG TĂNG 20% GIÁ TRỊ NHỜ TRUY XUẤT NGUỒN GỐC VÀ LƯU KHO THÔNG MINH",
+						resource_hero_desc:
+							"Khám phá cách hệ sinh thái RiceTrace Mekong giúp nông dân bán lúa giá cao, doanh nghiệp an tâm về nguồn gốc và tối ưu chi phí kho bãi.",
+						tab_all: "Tất cả danh mục",
+						tab_price: "Giá lúa & Thị trường",
+						tab_trace: "Truy xuất nguồn gốc",
+						tab_emission: "Lúa phát thải thấp",
+						tab_export: "Tiêu chuẩn xuất khẩu",
+						tab_warehouse: "Quản lý kho hàng",
+						card1_title:
+							"HƯỚNG DẪN ĐĂNG KÝ MÃ VÙNG TRỒNG VÀ TRUY XUẤT NGUỒN GỐC TRÊN RICETRACE MEKONG",
+						card2_title:
+							"CẬP NHẬT GIÁ LÚA HÔM NAY: XU HƯỚNG TĂNG NHỜ NHU CẦU TỪ THỊ TRƯỜNG EU VÀ PHILIPPINES",
+						card3_title:
+							"ĐỀ ÁN 1 TRIỆU HA LÚA PHÁT THẢI THẤP: CƠ HỘI VÀ THÁCH THỨC CHO NÔNG DÂN ĐỒNG BẰNG SÔNG CỬU LONG",
+						time_8min: "8 phút đọc",
+						time_5min: "5 phút đọc",
+						time_12min: "12 phút đọc",
+
+						// Phần Landing Page
+						home_intro_title: "Giới thiệu RiceTrace Mekong",
+						home_intro_desc:
+							"RiceTrace Mekong là nền tảng số hóa vùng trồng và kết nối trực tiếp nông dân Đồng bằng sông Cửu Long với doanh nghiệp xuất khẩu. Thông qua 'Hộ chiếu số' (Rice Passport), chúng tôi minh bạch hóa dữ liệu canh tác, xóa bỏ trung gian để giúp doanh nghiệp chủ động nguồn hàng đạt chuẩn và nông dân bán lúa đúng giá trị.",
+						home_why_title: "Tại sao chọn chúng tôi?",
+						home_why_1:
+							"Minh bạch tuyệt đối, rõ ràng và đáng tin cậy",
+						home_why_2: "Chủ động nguồn cung sớm 60 ngày",
+						home_why_3:
+							"Sẵn sàng chinh phục thị trường khó tính (EU, Mỹ)",
+						home_why_4:
+							"Hệ sinh thái tăng trưởng lợi nhuận kép bền vững",
+						home_story_title: "Câu chuyện nhà nông",
+						home_story_content:
+							"\"Làm ruộng ngặt lắm chú ơi! Cả vụ gồng gánh sâu bệnh, tới chừng trúng mùa thì lại lo 'được mùa mất giá'. Sợ nhất là sát ngày gặt, thương lái cứ neo ghe đè giá, viện đủ lý do để bẻ cọc ép mình bán rẻ.<br><br>Lúc nghe giới thiệu cái web này tui thấy hay quá! Lúa mình xịt thuốc gì, bón phân chi đều ghi rõ trên 'Hộ chiếu số', doanh nghiệp nhìn vô là tin liền. Bán được trực tiếp cho công ty, không qua cò lái nữa, vừa đỡ đau đầu lại cầm đồng tiền xứng đáng với công sức bỏ ra.\"",
+						home_story_author:
+							"- Chú Ba Trung (Nông dân xã Vĩnh Hanh, tỉnh An Giang)",
+						home_btn_farmer: "Tham gia Khai báo Lô Lúa",
+						home_btn_business: "Tìm Nguồn Cung Ngay",
+
+						// Phần Portal
+						sidebar_farmer_log: "Khai báo & Nhật ký",
+						sidebar_business_map: "Bản đồ Nguồn cung",
+						ai_form_title: "Nhật Ký Tự Động Bằng AI",
+						ai_form_desc:
+							"Nông dân không cần gõ phím. Chụp ảnh hóa đơn hoặc đọc ghi âm để AI tự trích xuất dữ liệu.",
+						btn_upload_bill: "Chụp hóa đơn",
+						btn_voice_record: "Ghi âm (Đọc)",
+						ai_listening: "Đang lắng nghe...",
+						ai_extracting:
+							"Trợ lý AI đang đọc chứng từ và tính toán...",
+						ai_extracted_msg:
+							"Trợ lý AI: Đã tự động điền {{amount}}kg phân Urea và thiết lập tưới AWD giảm phát thải.",
+						form_seed: "Giống lúa",
+						form_sowing_date: "Ngày xuống giống",
+						form_fertilizer: "Lượng phân bón Urea (kg/ha)",
+						form_water: "Quản lý nước (Tiêu chuẩn ESG)",
+						water_awd: "Tưới ngập khô xen kẽ AWD (Giảm Carbon)",
+						water_flood: "Ngập liên tục (Phát thải cao)",
+						btn_submit_lot: "Khai Báo & Đưa Lên Bản Đồ",
+						farmer_table_title:
+							"Danh sách Lô Lúa (Chờ Doanh Nghiệp Thu Mua)",
+						business_table_title:
+							"Bảng Nguồn Cung Trực Tiếp (Click dòng để phóng to trên Bản đồ)",
+						th_lot_id: "Mã Lô",
+						th_seed: "Giống Lúa",
+						th_harvest_date: "Ngày Gặt",
+						th_carbon: "Dấu Chân Carbon",
+						th_status: "Trạng Thái",
+						th_farmer: "Hợp Tác Xã / Nông Dân",
+						th_yield: "Sản Lượng",
+						th_actions: "Thao Tác Mua",
+						map_legend_ready: "Sẵn sàng giao dịch",
+						map_legend_nego: "Đang đàm phán",
+						map_legend_depo: "Đã chốt cọc",
+						status_ready: "Sẵn sàng",
+						status_nego: "Đang đàm phán",
+						status_depo: "Đã chốt cọc",
+						badge_waiting: "Chờ người mua",
+						badge_in_talks: "Có DN hỏi mua",
+						badge_sold: "Đã bán (Khóa)",
+						btn_negotiate: "Thương lượng",
+						btn_deposit: "Chốt cọc",
+						btn_view_qr: "Hộ chiếu QR",
+						qr_modal_title: "Hộ Chiếu Lúa Gạo Kỹ Thuật Số",
+						default_coop_name:
+							"Hợp Tác Xã Nông Nghiệp Thoại Sơn (An Giang)",
+						alert_submit_success:
+							"✅ Đã tải dữ liệu lô lúa lên hệ thống minh bạch!",
+						alert_nego_sent:
+							"📞 Đã gửi đề xuất thương lượng trực tiếp đến Nông dân!",
+						alert_depo_success:
+							"💰 Đặt cọc thành công! Lô lúa đã được giữ chỗ cho Doanh nghiệp.",
+
+						// Phần Trang Liên hệ & FAQ & Footer
+						contact_hero_title:
+							"Kết nối cùng RiceTrace Mekong - Nâng tầm giá trị hạt gạo",
+						contact_hero_sub:
+							"Dù bạn là Nông dân muốn tăng thu nhập hay Doanh nghiệp đang tìm kiếm vùng nguyên liệu đạt chuẩn xuất khẩu, chúng tôi luôn sẵn sàng hỗ trợ.",
+						contact_direct_title: "Thông tin liên hệ trực tiếp",
+						contact_hq_label: "Trụ sở chính",
+						contact_hq_val: "TP. Long Xuyên, Tỉnh An Giang",
+						contact_form_title: "Biểu mẫu đăng ký tư vấn",
+						contact_form_commit:
+							"Cam kết: Chúng tôi sẽ liên hệ lại qua Zalo/SĐT trong vòng 24h.",
+						contact_f_name: "Họ và Tên / Tên Doanh nghiệp *",
+						contact_f_phone: "Số điện thoại / Zalo *",
+						contact_f_role: "Bạn là ai? *",
+						role_farmer: "Nông dân / Hợp tác xã",
+						role_sme: "Doanh nghiệp thu mua / Xuất khẩu (SMEs)",
+						role_partner:
+							"Nhà cung cấp dịch vụ (Drone, Vật tư, Logistics...)",
+						contact_f_region: "Khu vực canh tác / Thu mua *",
+						contact_f_need: "Nhu cầu của bạn là gì? *",
+						need_passport:
+							"Tạo Rice Passport (Hộ chiếu số) cho lúa",
+						need_sourcing: "Tìm kiếm vùng nguyên liệu đạt chuẩn",
+						need_partner: "Trở thành đối tác",
+						contact_f_msg: "Lời nhắn bổ sung (Không bắt buộc)",
+						contact_btn_submit: "Nhận Tư Vấn Miễn Phí Ngay",
+						alert_contact_ok:
+							"🎉 Đã gửi thông tin đăng ký! Đội ngũ RiceTrace Mekong sẽ liên hệ với bạn qua Zalo/SĐT trong vòng 24h.",
+						faq_title: "Câu hỏi thường gặp (FAQ)",
+						faq_subtitle:
+							"Giải đáp nhanh các thắc mắc về quy trình, chi phí và cam kết minh bạch tại RiceTrace Mekong",
+						faq_q1: "1. RiceTrace Mekong có trực tiếp thu mua lúa của nông dân không?",
+						faq_a1: 'Không. RiceTrace Mekong là nền tảng công nghệ số hóa vùng trồng và kết nối trực tiếp (Marketplace). Chúng tôi cung cấp công cụ "Rice Passport" để nông dân chứng minh chất lượng lúa, từ đó kết nối thẳng đến các Doanh nghiệp thu mua (SMEs) trên nền tảng mà không cần qua nhiều tầng thương lái trung gian, giúp nông dân bán được giá cao hơn và không lo bị bẻ cọc.',
+						faq_q2: "2. Tôi là nông dân không rành công nghệ, việc ghi nhật ký sản xuất có khó không?",
+						faq_a2: "Rất đơn giản. Ứng dụng RiceTrace được thiết kế tối giản, dễ thao tác trên điện thoại thông minh. Trong giai đoạn đầu, đội ngũ kỹ sư nông nghiệp và nhân viên hiện trường (field agents) tại An Giang sẽ trực tiếp xuống đồng để hướng dẫn, đồng hành và hỗ trợ bà con nhập liệu cho đến khi thành thạo.",
+						faq_q3: "3. Doanh nghiệp của tôi có được đảm bảo nguồn lúa trên RiceTrace đạt chuẩn xuất khẩu (EU, Mỹ) không?",
+						faq_a3: "Có. Điểm khác biệt của RiceTrace là cơ chế Xác thực 3 bên (Tri-Verification). Dữ liệu nhật ký canh tác không chỉ do nông dân tự nhập mà còn được đối chiếu, xác nhận bởi Kỹ sư khuyến nông địa phương và Hóa đơn vật tư đầu vào. Hệ thống sẽ cấp mã QR (Rice Passport) minh bạch về dư lượng, giống lúa và quy trình, giúp doanh nghiệp an tâm đặt cọc sớm và đủ điều kiện xuất khẩu.",
+						faq_q4: "4. Chi phí để sử dụng nền tảng RiceTrace là bao nhiêu?",
+						faq_a4: '<b>Đối với Nông dân:</b> Được miễn phí sử dụng ứng dụng trong thời gian đầu (Pilot) để tạo lập dữ liệu vùng trồng.<br><b>Đối với Doanh nghiệp (SMEs):</b> Chúng tôi áp dụng mô hình Trả phí gói (Subscription) theo năm để truy cập "Bản đồ vùng nguyên liệu" (Rice Sourcing Map), kết hợp phí hoa hồng (1-2%) trên các giao dịch thành công. Khách hàng đăng ký trong giai đoạn Pilot tại An Giang sẽ được ưu đãi giảm 30% chi phí năm đầu tiên.',
+						faq_q5: "5. Nếu có rủi ro về thời tiết hoặc dịch bệnh làm ảnh hưởng đến sản lượng, hệ thống sẽ xử lý thế nào?",
+						faq_a5: "Dữ liệu trên Rice Passport được cập nhật theo thời gian thực (Real-time). Khi có biến động về thời tiết hay cảnh báo dịch bệnh từ kỹ sư nông nghiệp, tình trạng lô ruộng sẽ được cập nhật ngay trên hệ thống. Điều này giúp Doanh nghiệp thu mua nắm bắt tình hình sớm để điều chỉnh kế hoạch gom hàng, đồng thời hỗ trợ Nông dân có phương án xử lý kịp thời để bảo vệ năng suất.",
+						footer_slogan:
+							"Nơi mỗi hạt gạo đều có câu chuyện, và mỗi người nông dân đều được ghi nhận.",
+						footer_quick_links: "Liên kết nhanh",
+						footer_link_farmer:
+							"Dành cho Nông dân (Hướng dẫn tạo Rice Passport)",
+						footer_link_biz:
+							"Dành cho Doanh nghiệp (Truy cập Sourcing Map)",
+						footer_addr:
+							"Trụ sở chính: TP. Long Xuyên, Tỉnh An Giang",
+						footer_privacy: "Chính sách bảo mật (Privacy Policy)",
+						footer_terms: "Điều khoản sử dụng (Terms of Service)",
+					},
+				},
+				en: {
+					translation: {
+						nav_home: "Home",
+						nav_farmer: "Farmer Portal",
+						nav_business: "Business Portal",
+						nav_contact: "Contact & FAQ",
+						nav_resource: "Resources",
+						btn_export: "Export JSON",
+						btn_import: "Import JSON",
+
+						// Vision & Mission
+						home_vision_title: "Vision",
+						home_vision_desc:
+							"To become the leading digital platform connecting the sustainable rice value chain in the Mekong Delta.",
+						home_mission_title: "Mission",
+						home_mission_desc:
+							"Digitize rice production data, improve farmer incomes, and create a transparent platform for the Vietnamese rice industry.",
+						home_pillars_title: "Core Pillars",
+						home_pillar_1: "Data Transparency",
+						home_pillar_2: "Sustainable Farming",
+						home_pillar_3:
+							"Building Trust between Farmers and Enterprises",
+						home_pillar_4: "Applying Technology in Agriculture",
+
+						// Resources (Case Study)
+						resource_hero_tag: "CASE STUDY",
+						resource_hero_title:
+							"RICETRACE MEKONG HELPS AN GIANG RICE COOP INCREASE VALUE BY 20% THROUGH TRACEABILITY AND SMART WAREHOUSING",
+						resource_hero_desc:
+							"Discover how the RiceTrace Mekong ecosystem helps farmers sell rice at premium prices, ensures sourcing peace of mind for businesses, and optimizes warehouse costs.",
+						tab_all: "All Categories",
+						tab_price: "Rice Prices & Market",
+						tab_trace: "Traceability",
+						tab_emission: "Low Emission Rice",
+						tab_export: "Export Standards",
+						tab_warehouse: "Warehouse Management",
+						card1_title:
+							"GUIDE TO REGISTERING PLANTING AREA CODES AND TRACEABILITY ON RICETRACE MEKONG",
+						card2_title:
+							"TODAY'S RICE PRICE UPDATE: UPWARD TREND DUE TO DEMAND FROM EU AND PHILIPPINES MARKETS",
+						card3_title:
+							"1 MILLION HECTARES OF LOW EMISSION RICE PROJECT: OPPORTUNITIES AND CHALLENGES FOR MEKONG DELTA FARMERS",
+						time_8min: "8 min read",
+						time_5min: "5 min read",
+						time_12min: "12 min read",
+
+						// Landing Page Translation
+						home_intro_title: "About RiceTrace Mekong",
+						home_intro_desc:
+							"RiceTrace Mekong is a digital farming platform connecting Mekong Delta farmers directly with export enterprises. Through the 'Digital Rice Passport', we ensure cultivation data transparency and eliminate middlemen, helping businesses secure qualified sourcing and allowing farmers to sell at true value.",
+						home_why_title: "Why Choose Us?",
+						home_why_1: "Absolute Transparency",
+						home_why_2: "Proactive Sourcing 60 Days Ahead",
+						home_why_3: "Ready for Strict Markets (EU, US)",
+						home_why_4: "Dual-Profit Ecosystem",
+						home_story_title: "Farmer's Story",
+						home_story_content:
+							"\"Farming is tough, son! We bear the burden of pests all season, and even when the harvest is good, we fear 'good harvest, bad price'. The scariest part is near harvest day, when traders anchor their boats and force the price down, making excuses to break the deposit and squeeze us into selling cheap.<br><br>When I heard about this web platform, I thought it was amazing! Whatever pesticides or fertilizers we use are clearly recorded on the 'Digital Passport', and companies trust it right away. Selling directly to the company, bypassing brokers, saves me headaches and earns me money worthy of my hard work.\"",
+						home_story_author:
+							"- Mr. Ba Trung (Farmer in Vinh Hanh commune, An Giang province)",
+						home_btn_farmer: "Join & Declare Rice Lots",
+						home_btn_business: "Find Sourcing Now",
+
+						// Portal Translation
+						sidebar_farmer_log: "Farming Logbook",
+						sidebar_business_map: "Sourcing Map",
+						ai_form_title: "AI-Powered Logbook",
+						ai_form_desc:
+							"Hands-free farming input. Take a receipt photo or use voice input for automated AI extraction.",
+						btn_upload_bill: "Scan Receipt",
+						btn_voice_record: "Voice Input",
+						ai_listening: "Listening...",
+						ai_extracting:
+							"AI is parsing receipts and computing emissions...",
+						ai_extracted_msg:
+							"AI Assistant: Auto-populated {{amount}}kg Urea fertilizer with low-emission AWD protocol.",
+						form_seed: "Rice Variety",
+						form_sowing_date: "Sowing Date",
+						form_fertilizer: "Urea Fertilizer (kg/ha)",
+						form_water: "Water Management (ESG Standard)",
+						water_awd:
+							"Alternate Wetting & Drying - AWD (Low Carbon)",
+						water_flood: "Continuous Flooding (High Emissions)",
+						btn_submit_lot: "Declare & Publish to Sourcing Map",
+						farmer_table_title:
+							"Registered Rice Lots (Open for Sourcing)",
+						business_table_title:
+							"Live Sourcing Directory (Click row to zoom on Map)",
+						th_lot_id: "Lot ID",
+						th_seed: "Rice Variety",
+						th_harvest_date: "Harvest Date",
+						th_carbon: "Carbon Footprint",
+						th_status: "Status",
+						th_farmer: "Cooperative / Farmer",
+						th_yield: "Est. Yield",
+						th_actions: "Procurement Action",
+						map_legend_ready: "Available",
+						map_legend_nego: "Negotiating",
+						map_legend_depo: "Deposited",
+						status_ready: "Available",
+						status_nego: "Negotiating",
+						status_depo: "Deposited",
+						badge_waiting: "Awaiting Buyer",
+						badge_in_talks: "In Talks",
+						badge_sold: "Sold & Locked",
+						btn_negotiate: "Negotiate",
+						btn_deposit: "Place Deposit",
+						btn_view_qr: "QR Passport",
+						qr_modal_title: "Digital Rice Passport",
+						default_coop_name:
+							"Thoai Son Agri Cooperative (An Giang)",
+						alert_submit_success:
+							"✅ Farming lot data successfully published to the registry!",
+						alert_nego_sent:
+							"📞 Direct procurement negotiation request sent to the farmer!",
+						alert_depo_success:
+							"💰 Deposit confirmed! This lot is exclusively locked for your enterprise.",
+
+						// Contact & FAQ & Footer Translation
+						contact_hero_title:
+							"Connect with RiceTrace Mekong - Elevating Rice Value",
+						contact_hero_sub:
+							"Whether you are a Farmer looking to increase income or an Enterprise seeking export-standard sourcing regions, we are ready to support you.",
+						contact_direct_title: "Direct Contact Information",
+						contact_hq_label: "Headquarters",
+						contact_hq_val: "Long Xuyen City, An Giang Province",
+						contact_form_title: "Consultation Registration Form",
+						contact_form_commit:
+							"Commitment: We will contact you via Zalo/Phone within 24 hours.",
+						contact_f_name: "Full Name / Company Name *",
+						contact_f_phone: "Phone Number / Zalo *",
+						contact_f_role: "Who are you? *",
+						role_farmer: "Farmer / Cooperative",
+						role_sme: "Purchasing / Export Enterprise (SMEs)",
+						role_partner:
+							"Service Provider (Drone, Supplies, Logistics...)",
+						contact_f_region: "Farming / Purchasing Region *",
+						contact_f_need: "What is your need? *",
+						need_passport:
+							"Create Rice Passport (Digital Passport) for rice",
+						need_sourcing: "Find qualified sourcing regions",
+						need_partner: "Become a partner",
+						contact_f_msg: "Additional Message (Optional)",
+						contact_btn_submit: "Get Free Consultation Now",
+						alert_contact_ok:
+							"🎉 Registration submitted! Our team will contact you via Zalo/Phone within 24 hours.",
+						faq_title: "Frequently Asked Questions (FAQ)",
+						faq_subtitle:
+							"Quick answers about processes, pricing, and transparency commitments at RiceTrace Mekong",
+						faq_q1: "1. Does RiceTrace Mekong directly purchase rice from farmers?",
+						faq_a1: 'No. RiceTrace Mekong is a digital plantation platform and direct marketplace. We provide the "Rice Passport" tool for farmers to prove rice quality, connecting them directly to purchasing enterprises (SMEs) without middlemen, helping farmers sell at higher prices without fear of broken deposits.',
+						faq_q2: "2. I am a farmer not tech-savvy, is recording the farming logbook difficult?",
+						faq_a2: "Very simple. The RiceTrace app is minimalist and easy to use on smartphones. Initially, our agricultural engineers and field agents in An Giang will directly visit the fields to guide and support farmers until they are proficient.",
+						faq_q3: "3. Is my enterprise guaranteed that rice on RiceTrace meets export standards (EU, US)?",
+						faq_a3: "Yes. RiceTrace's differentiator is our Tri-Verification mechanism. Farming logs are not only entered by farmers but also cross-checked and verified by local agricultural extension engineers and input supply invoices. The system issues a transparent QR code (Rice Passport) on residues, varieties, and processes.",
+						faq_q4: "4. How much does it cost to use the RiceTrace platform?",
+						faq_a4: '<b>For Farmers:</b> Free to use during the initial Pilot phase to establish plantation data.<br><b>For Enterprises (SMEs):</b> We apply an annual Subscription model to access the "Rice Sourcing Map", combined with a 1-2% commission fee on successful transactions. Pilot registrants in An Giang receive a 30% discount for the first year.',
+						faq_q5: "5. If weather or pest risks affect yield, how does the system handle it?",
+						faq_a5: "Data on the Rice Passport is updated in real-time. When weather fluctuations or pest warnings occur from agricultural engineers, the lot status is immediately updated. This helps purchasing enterprises grasp the situation early to adjust plans and supports farmers with timely solutions.",
+						footer_slogan:
+							"Where every grain of rice has a story, and every farmer is recognized.",
+						footer_quick_links: "Quick Links",
+						footer_link_farmer: "For Farmers (Rice Passport Guide)",
+						footer_link_biz:
+							"For Enterprises (Access Sourcing Map)",
+						footer_addr:
+							"Headquarters: Long Xuyen City, An Giang Province",
+						footer_privacy: "Privacy Policy",
+						footer_terms: "Terms of Service",
+					},
+				},
+			};
+
+			// ==========================================
+			// 2. KHỞI TẠO i18next
+			// ==========================================
+			const savedLanguage =
+				localStorage.getItem("ricetrace_lang") || "vi";
+
+			i18next.init(
+				{
+					lng: savedLanguage,
+					fallbackLng: "vi",
+					resources: resources,
+				},
+				function (err, t) {
+					updateContent();
+				},
+			);
+
+			function updateContent() {
+				document.querySelectorAll("[data-i18n]").forEach((el) => {
+					const key = el.getAttribute("data-i18n");
+					el.innerHTML = i18next.t(key);
+				});
+				document.getElementById("currentLangLabel").innerText =
+					i18next.language === "vi" ? "EN" : "VI";
+			}
+
+			function toggleLanguage() {
+				const nextLang = i18next.language === "vi" ? "en" : "vi";
+				i18next.changeLanguage(nextLang, () => {
+					localStorage.setItem("ricetrace_lang", nextLang);
+					updateContent();
+					renderTables();
+				});
+			}
+
+			// ==========================================
+			// 3. LOGIC XỬ LÝ DỮ LIỆU & BẢN ĐỒ
+			// ==========================================
+			let supplyMap;
+			let mapMarkers = [];
+			let markerInstances = {};
+
+			function getDB() {
+				const data = localStorage.getItem(DB_KEY);
+				if (!data) {
+					const initData = [
+						{
+							id: "RP-1082",
+							farmerKey: "default_coop_name",
+							seedType: "ST25",
+							harvestDate: "2026-10-15",
+							carbon: "126.0",
+							area: "2.5",
+							yield: "15.0",
+							status: "available",
+							lat: 10.375,
+							lng: 105.428,
+						},
+						{
+							id: "RP-2049",
+							farmerKey: "default_coop_name",
+							seedType: "OM18",
+							harvestDate: "2026-09-28",
+							carbon: "115.5",
+							area: "3.0",
+							yield: "19.5",
+							status: "negotiating",
+							lat: 10.392,
+							lng: 105.445,
+						},
+					];
+					localStorage.setItem(DB_KEY, JSON.stringify(initData));
+					return initData;
+				}
+				return JSON.parse(data);
+			}
+
+			function saveDB(data) {
+				localStorage.setItem(DB_KEY, JSON.stringify(data));
+				renderTables();
+			}
+
+			function processAIExtraction() {
+				document.getElementById("aiLoader").style.display = "block";
+				document.getElementById("aiResult").style.display = "none";
+
+				setTimeout(() => {
+					document.getElementById("aiLoader").style.display = "none";
+					const randomAmount = 120;
+					document.getElementById("aiResultText").innerText =
+						i18next.t("ai_extracted_msg", { amount: randomAmount });
+					document.getElementById("aiResult").style.display = "block";
+
+					const seedEl = document.getElementById("seedType");
+					const sowEl = document.getElementById("sowDate");
+					const fertEl = document.getElementById("fertAmount");
+					const waterEl = document.getElementById("waterMgmt");
+
+					seedEl.value = "ST25";
+					const d = new Date();
+					d.setDate(d.getDate() - 3);
+					sowEl.value = d.toISOString().split("T")[0];
+					fertEl.value = randomAmount;
+					waterEl.value = "AWD";
+
+					[seedEl, sowEl, fertEl, waterEl].forEach((el) => {
+						el.classList.add("highlight-autofill");
+						setTimeout(
+							() => el.classList.remove("highlight-autofill"),
+							2200,
+						);
+					});
+				}, 1600);
+			}
+
+			function simulateAIProcessing() {
+				processAIExtraction();
+			}
+
+			function simulateVoiceRecord() {
+				const micBtn = document.getElementById("micBtn");
+				const micLabel = document.getElementById("micLabel");
+				if (micBtn.classList.contains("recording")) return;
+
+				micBtn.classList.add("recording");
+				micLabel.innerText = i18next.t("ai_listening");
+
+				setTimeout(() => {
+					micBtn.classList.remove("recording");
+					micLabel.innerText = i18next.t("btn_voice_record");
+					processAIExtraction();
+				}, 1800);
+			}
+
+			function handleFormSubmit(e) {
+				e.preventDefault();
+				const seedType = document.getElementById("seedType").value;
+				const sowDate = document.getElementById("sowDate").value;
+				const fertAmount = parseFloat(
+					document.getElementById("fertAmount").value,
+				);
+				const waterMgmt = document.getElementById("waterMgmt").value;
+
+				const cycleDays = seedType === "ST25" ? 105 : 95;
+				const harvestDateObj = new Date(sowDate);
+				harvestDateObj.setDate(harvestDateObj.getDate() + cycleDays);
+
+				let carbonEmissions = fertAmount * 1.5;
+				if (waterMgmt === "AWD") carbonEmissions *= 0.7;
+
+				const lat = 10.37 + (Math.random() - 0.5) * 0.08;
+				const lng = 105.43 + (Math.random() - 0.5) * 0.08;
+				const area = (Math.random() * 2 + 1.5).toFixed(1);
+				const yieldEst = (area * 6.2).toFixed(1);
+
+				const newLot = {
+					id: "RP-" + Math.floor(1000 + Math.random() * 9000),
+					farmerKey: "default_coop_name",
+					seedType,
+					harvestDate: harvestDateObj.toISOString().split("T")[0],
+					carbon: carbonEmissions.toFixed(1),
+					area: area,
+					yield: yieldEst,
+					status: "available",
+					lat: lat,
+					lng: lng,
+				};
+
+				const db = getDB();
+				db.unshift(newLot);
+				saveDB(db);
+
+				Swal.fire({
+					icon: "success",
+					text: i18next.t("alert_submit_success"),
+					confirmButtonColor: "#2e7d32",
+				});
+				e.target.reset();
+				document.getElementById("aiResult").style.display = "none";
+			}
+
+			// Xử lý gửi form tư vấn ở trang Liên hệ
+			function handleContactSubmit(e) {
+				e.preventDefault();
+				Swal.fire({
+					icon: "success",
+					text: i18next.t("alert_contact_ok"),
+					confirmButtonColor: "#2e7d32",
+				});
+				e.target.reset();
+			}
+
+			function toggleFaq(el) {
+				const item = el.parentElement;
+				const answer = el.nextElementSibling;
+				const isOpen = item.classList.contains("active");
+
+				if (isOpen) {
+					answer.style.maxHeight = answer.scrollHeight + "px";
+					answer.offsetHeight;
+					item.classList.remove("active");
+					answer.style.maxHeight = "0px";
+				} else {
+					item.classList.add("active");
+					answer.style.maxHeight = answer.scrollHeight + 32 + "px";
+				}
+			}
+
+			function updateStatus(lotId, newStatus) {
+				event.stopPropagation();
+				const db = getDB();
+				const index = db.findIndex((l) => l.id === lotId);
+				if (index > -1) {
+					db[index].status = newStatus;
+					saveDB(db);
+					if (newStatus === "negotiating") {
+						Swal.fire({
+							icon: "info",
+							text: i18next.t("alert_nego_sent"),
+							confirmButtonColor: "#2980b9",
+						});
+					}
+					if (newStatus === "deposited") {
+						Swal.fire({
+							icon: "success",
+							text: i18next.t("alert_depo_success"),
+							confirmButtonColor: "#e74c3c",
+						});
+					}
+				}
+			}
+
+			function viewQR(lotId) {
+				event.stopPropagation();
+				const db = getDB();
+				const lot = db.find((l) => l.id === lotId);
+				if (lot) {
+					const farmerName = i18next.t(lot.farmerKey);
+					const qrText = `${i18next.t("qr_modal_title").toUpperCase()}\n------------------------------------\n${i18next.t("th_lot_id")}: ${lot.id}\n${i18next.t("th_farmer")}: ${farmerName}\n${i18next.t("th_seed")}: ${lot.seedType}\n${i18next.t("th_harvest_date")}: ${lot.harvestDate}\n${i18next.t("th_carbon")}: ${lot.carbon} kg CO2e/ha\nESG Standard: PASSED`;
+					const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrText)}`;
+
+					document.getElementById("qrLotTitle").innerText =
+						`${i18next.t("th_lot_id")}: ${lot.id}`;
+					document.getElementById("qrImage").src = qrUrl;
+					document.getElementById("qrDetails").innerHTML = `
+                    <p><strong>${i18next.t("th_farmer")}:</strong> ${farmerName}</p>
+                    <p><strong>${i18next.t("th_seed")}:</strong> ${lot.seedType}</p>
+                    <p><strong>${i18next.t("th_harvest_date")}:</strong> ${lot.harvestDate}</p>
+                    <p><strong>${i18next.t("th_carbon")}:</strong> ${lot.carbon} kg CO2e/ha (Low Carbon)</p>`;
+					document.getElementById("qrModal").style.display = "flex";
+				}
+			}
+			function closeQRModal() {
+				document.getElementById("qrModal").style.display = "none";
+			}
+
+			function renderTables() {
+				const data = getDB();
+				const farmerTbody = document.getElementById("farmerTableBody");
+				const businessTbody =
+					document.getElementById("businessTableBody");
+
+				farmerTbody.innerHTML = "";
+				businessTbody.innerHTML = "";
+
+				mapMarkers.forEach((marker) => {
+					if (supplyMap) supplyMap.removeLayer(marker);
+				});
+				mapMarkers = [];
+				markerInstances = {};
+
+				data.forEach((lot) => {
+					let statusText = i18next.t("status_ready");
+					let statusColor = "#2ecc71";
+					let farmerStatusBadge = `<span class="badge" style="background:#e8f5e9; color:#2e7d32;">${i18next.t("badge_waiting")}</span>`;
+
+					if (lot.status === "negotiating") {
+						statusText = i18next.t("status_nego");
+						statusColor = "#f1c40f";
+						farmerStatusBadge = `<span class="badge" style="background:#fff3cd; color:#856404;">${i18next.t("badge_in_talks")}</span>`;
+					} else if (lot.status === "deposited") {
+						statusText = i18next.t("status_depo");
+						statusColor = "#e74c3c";
+						farmerStatusBadge = `<span class="badge" style="background:#f8d7da; color:#721c24;">${i18next.t("badge_sold")}</span>`;
+					}
+
+					farmerTbody.innerHTML += `<tr>
+                    <td><strong>${lot.id}</strong></td>
+                    <td>${lot.seedType}</td>
+                    <td style="font-weight:600; color: var(--info-blue);">${lot.harvestDate}</td>
+                    <td>${lot.carbon} kg CO2e</td>
+                    <td>${farmerStatusBadge}</td>
+                </tr>`;
+
+					let actionBtns = "";
+					if (lot.status === "available") {
+						actionBtns = `
+                        <button class="btn-action small btn-warning" onclick="updateStatus('${lot.id}', 'negotiating')">${i18next.t("btn_negotiate")}</button>
+                        <button class="btn-action small btn-danger" onclick="updateStatus('${lot.id}', 'deposited')">${i18next.t("btn_deposit")}</button>
+                    `;
+					} else if (lot.status === "negotiating") {
+						actionBtns = `
+                        <button class="btn-action small btn-danger" onclick="updateStatus('${lot.id}', 'deposited')">${i18next.t("btn_deposit")}</button>
+                    `;
+					} else {
+						actionBtns = `
+                        <button class="btn-action btn-outline small" onclick="viewQR('${lot.id}')">
+                            <i class="fa-solid fa-qrcode"></i> ${i18next.t("btn_view_qr")}
+                        </button>
+                    `;
+					}
+
+					const farmerDisplayName = i18next.t(lot.farmerKey);
+
+					businessTbody.innerHTML += `<tr onclick="focusOnMap('${lot.id}')">
+                    <td><strong>${farmerDisplayName}</strong><br><small style="color:#7f8c8d;">${i18next.t("th_seed")}: ${lot.seedType}</small></td>
+                    <td><strong>~${lot.yield} Tons</strong></td>
+                    <td style="color:var(--info-blue); font-weight:600;">${lot.harvestDate}</td>
+                    <td><span style="color:${statusColor}; font-weight:bold;"><i class="fa-solid fa-circle" style="font-size:10px;"></i> ${statusText}</span></td>
+                    <td>${actionBtns}</td>
+                </tr>`;
+
+					if (supplyMap && lot.lat && lot.lng) {
+						const customIcon = L.divIcon({
+							className: "custom-pin",
+							html: `<div style="background-color: ${statusColor}; width: 22px; height: 22px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 6px rgba(0,0,0,0.4);"></div>`,
+							iconSize: [22, 22],
+							iconAnchor: [11, 11],
+						});
+
+						const popupHtml = `
+                        <div style="font-size: 13px; line-height: 1.6; min-width: 200px;">
+                            <h4 style="color: var(--primary-green); border-bottom: 1px solid #ddd; padding-bottom: 4px; margin-bottom: 6px;">${farmerDisplayName}</h4>
+                            <b>${i18next.t("th_lot_id")}:</b> ${lot.id}<br>
+                            <b>${i18next.t("th_seed")}:</b> ${lot.seedType}<br>
+                            <b>${i18next.t("th_yield")}:</b> ~${lot.yield} Tons (${lot.area} ha)<br>
+                            <b>${i18next.t("th_harvest_date")}:</b> <span style="color:var(--info-blue); font-weight:600;">${lot.harvestDate}</span><br>
+                            <b>ESG:</b> ${lot.carbon} kg CO2e/ha <br>
+                            <div style="margin-top:6px; padding-top:6px; border-top:1px dashed #ccc;">
+                                <b>${i18next.t("th_status")}:</b> <span style="color:${statusColor}; font-weight:bold;">${statusText}</span>
+                            </div>
+                        </div>
+                    `;
+						const marker = L.marker([lot.lat, lot.lng], {
+							icon: customIcon,
+						})
+							.addTo(supplyMap)
+							.bindPopup(popupHtml);
+						mapMarkers.push(marker);
+						markerInstances[lot.id] = marker;
+					}
+				});
+			}
+
+			function focusOnMap(lotId) {
+				const marker = markerInstances[lotId];
+				if (marker && supplyMap) {
+					window.scrollTo({ top: 0, behavior: "smooth" });
+					supplyMap.flyTo(marker.getLatLng(), 14, {
+						animate: true,
+						duration: 1.2,
+					});
+					setTimeout(() => {
+						marker.openPopup();
+					}, 1200);
+				}
+			}
+
+			function exportData() {
+				const data = localStorage.getItem(DB_KEY) || "[]";
+				const a = document.createElement("a");
+				a.href = URL.createObjectURL(
+					new Blob([data], { type: "application/json" }),
+				);
+				a.download = "RiceTrace_DataBackup.json";
+				a.click();
+			}
+
+			function importData(event) {
+				const file = event.target.files[0];
+				if (!file) return;
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					try {
+						saveDB(JSON.parse(e.target.result));
+						Swal.fire({
+							icon: "success",
+							title: "Thành công",
+							text: "Import successful!",
+							confirmButtonColor: "#2e7d32",
+						});
+					} catch (err) {
+						Swal.fire({
+							icon: "error",
+							title: "Lỗi",
+							text: "Invalid JSON file!",
+							confirmButtonColor: "#e74c3c",
+						});
+					}
+				};
+				reader.readAsText(file);
+			}
+
+			function nav(pageId) {
+				document
+					.querySelectorAll(".page-section")
+					.forEach((p) => p.classList.remove("active"));
+				document.getElementById(pageId).classList.add("active");
+
+				document
+					.querySelectorAll(".nav-btn")
+					.forEach((b) => b.classList.remove("active"));
+
+				if (pageId === "page-home")
+					document
+						.getElementById("btn-nav-home")
+						.classList.add("active");
+				if (pageId === "page-farmer")
+					document
+						.getElementById("btn-nav-farmer")
+						.classList.add("active");
+				if (pageId === "page-business")
+					document
+						.getElementById("btn-nav-business")
+						.classList.add("active");
+				if (pageId === "page-contact")
+					document
+						.getElementById("btn-nav-contact")
+						.classList.add("active");
+				if (pageId === "page-resource")
+					document
+						.getElementById("btn-nav-resource")
+						.classList.add("active");
+				window.scrollTo({ top: 0, behavior: "smooth" });
+
+				if (pageId === "page-business" && supplyMap) {
+					setTimeout(() => {
+						supplyMap.invalidateSize();
+					}, 200);
+				}
+			}
+
+			// ==========================================
+			// 4. KICKSTART ỨNG DỤNG KHI TẢI TRANG
+			// ==========================================
+			window.onload = () => {
+				supplyMap = L.map("realMap").setView([10.375, 105.435], 11);
+				L.tileLayer(
+					"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+					{
+						attribution: "© OpenStreetMap contributors",
+					},
+				).addTo(supplyMap);
+
+				renderTables();
+			};
+		</script>
+	</body>
+</html>
