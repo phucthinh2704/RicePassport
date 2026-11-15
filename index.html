@@ -193,6 +193,63 @@
 				padding-left: 15px;
 			}
 
+			@media (min-width: 1251px) {
+				.nav-container {
+					max-width: 1550px;
+					gap: 8px;
+				}
+				.logo {
+					width: 210px;
+				}
+				.logo img {
+					height: 80px;
+					transform: scale(2.35);
+					transform-origin: left center;
+					margin: 0 0 0 15px;
+				}
+				.nav-menu {
+					flex: 1 1 auto;
+					flex-wrap: nowrap;
+					min-width: 0;
+					gap: 2px;
+				}
+				.nav-btn {
+					flex: 0 0 auto;
+					padding: 8px 8px;
+					font-size: 13px;
+					gap: 4px;
+					white-space: nowrap;
+				}
+				.lang-switch-btn {
+					flex: 0 0 auto;
+					margin-left: 3px;
+					padding: 6px 9px;
+					gap: 4px;
+					white-space: nowrap;
+				}
+				.data-tools {
+					flex: 0 0 auto;
+					gap: 5px;
+					margin-left: 4px;
+					padding-left: 8px;
+					white-space: nowrap;
+				}
+				.data-tools .btn-action {
+					padding: 6px 8px;
+					white-space: nowrap;
+				}
+			}
+
+			@media (min-width: 1500px) {
+				.nav-container {
+					position: relative;
+					left: clamp(0px, 5vw, 90px);
+				}
+				.nav-menu {
+					margin-right: clamp(0px, 10vw, 180px);
+				}
+			}
+
 			.page-section {
 				display: none;
 				animation: fadeIn 0.35s ease;
