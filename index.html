@@ -853,16 +853,6 @@
 			.simulation-field-row input[aria-invalid="true"] {
 				border-color: #e74c3c;
 			}
-			.simulation-note {
-				padding: 13px 15px;
-				border-left: 4px solid var(--accent-gold);
-				border-radius: 6px;
-				background: #fff8e8;
-				color: #684d1d;
-				font-size: 13px;
-				line-height: 1.6;
-				margin-bottom: 20px;
-			}
 			.simulation-results {
 				display: grid;
 				grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1684,14 +1674,11 @@
 							Mô phỏng hiệu quả kinh tế của RiceTrace
 						</h1>
 						<p class="simulation-intro" data-i18n="econ_intro">
-							Điều chỉnh giả định để so sánh khoản thu từ bán lúa qua kênh truyền thống và qua nền tảng RiceTrace trong một vụ của HTX Thoại Sơn, An Giang.
+							Điều chỉnh các thông số để so sánh khoản thu từ bán lúa qua kênh truyền thống và qua nền tảng RiceTrace trong một vụ của HTX Thoại Sơn, An Giang.
 						</p>
-						<div class="simulation-note" role="note" data-i18n="econ_disclaimer">
-							Dữ liệu dưới đây hoàn toàn là giả định minh họa, không phải kết quả khảo sát hay giá thị trường. Hãy thay bằng dữ liệu có nguồn khi dùng để kết luận trong luận văn.
-						</div>
 						<div class="simulation-grid">
 							<div class="content-section" style="margin-bottom: 0; padding: 20px">
-								<h3 style="margin-bottom: 16px" data-i18n="econ_inputs_title">Giả định kịch bản</h3>
+								<h3 style="margin-bottom: 16px" data-i18n="econ_inputs_title">Thông số mô phỏng</h3>
 								<div class="simulation-fields">
 									<div class="simulation-field-row">
 										<label class="simulation-label-one" for="econVolume" data-i18n="econ_volume">Sản lượng vụ (tấn)</label>
@@ -2239,10 +2226,8 @@
 						TRỰC TIẾP VỚI DOANH NGHIỆP
 					</h1>
 					<p data-i18n="resource_hero_desc">
-						Kịch bản minh họa để so sánh thu ròng và chi phí giao dịch
-						khi HTX kết nối trực tiếp với doanh nghiệp. Các con số cần
-						được thay bằng dữ liệu có nguồn trước khi dùng làm kết quả
-						nghiên cứu.
+						So sánh khoản thu từ bán lúa của nông dân, chi phí mua hàng
+						của doanh nghiệp và tác động của hình thức kết nối trực tiếp.
 					</p>
 				</div>
 
@@ -2607,7 +2592,7 @@
 						resource_hero_title:
 							"KỊCH BẢN MÔ PHỎNG: SO SÁNH THU RÒNG KHI HTX AN GIANG KẾT NỐI TRỰC TIẾP VỚI DOANH NGHIỆP",
 						resource_hero_desc:
-							"Kịch bản minh họa để so sánh thu ròng và chi phí giao dịch khi HTX kết nối trực tiếp với doanh nghiệp. Các con số cần được thay bằng dữ liệu có nguồn trước khi dùng làm kết quả nghiên cứu.",
+							"So sánh khoản thu từ bán lúa của nông dân, chi phí mua hàng của doanh nghiệp và tác động của hình thức kết nối trực tiếp.",
 						tab_all: "Tất cả danh mục",
 						tab_price: "Giá lúa & Thị trường",
 						tab_trace: "Truy xuất nguồn gốc",
@@ -2647,10 +2632,8 @@
 						// Phần Portal
 						econ_title: "Mô phỏng hiệu quả kinh tế RiceTrace",
 						econ_intro:
-							"Điều chỉnh giả định để so sánh khoản thu từ bán lúa qua kênh truyền thống và qua nền tảng RiceTrace trong một vụ của HTX Thoại Sơn, An Giang.",
-						econ_disclaimer:
-							"Dữ liệu dưới đây hoàn toàn là giả định minh họa, không phải kết quả khảo sát hay giá thị trường. Hãy thay bằng dữ liệu có nguồn khi dùng để kết luận trong luận văn.",
-						econ_inputs_title: "Giả định kịch bản",
+							"Điều chỉnh các thông số để so sánh khoản thu từ bán lúa qua kênh truyền thống và qua nền tảng RiceTrace trong một vụ của HTX Thoại Sơn, An Giang.",
+						econ_inputs_title: "Thông số mô phỏng",
 						econ_volume: "Sản lượng vụ (tấn)",
 						econ_reference_price: "Giá tham chiếu (VND/kg)",
 						econ_platform_share: "Tỷ lệ sản lượng qua RiceTrace (%)",
@@ -2821,7 +2804,7 @@
 						resource_hero_title:
 							"SIMULATION SCENARIO: COMPARING NET RICE SALES PROCEEDS WHEN AN AN GIANG COOPERATIVE SELLS DIRECTLY TO BUYERS",
 						resource_hero_desc:
-							"An illustrative scenario for comparing net proceeds and transaction costs when a cooperative connects directly with buyers. Replace these assumptions with sourced data before using them as research findings.",
+							"Compare farmers' rice-sale proceeds, buyer procurement costs, and the effects of direct sourcing.",
 						tab_all: "All Categories",
 						tab_price: "Rice Prices & Market",
 						tab_trace: "Traceability",
@@ -2858,10 +2841,8 @@
 						// Portal Translation
 						econ_title: "RiceTrace Economic Simulation",
 						econ_intro:
-							"Adjust the assumptions to compare rice-sale proceeds through a traditional channel and RiceTrace for one crop season at Thoai Son Cooperative, An Giang.",
-						econ_disclaimer:
-							"All figures below are illustrative assumptions, not survey results or market prices. Replace them with sourced data before drawing conclusions in a thesis.",
-						econ_inputs_title: "Scenario Assumptions",
+							"Adjust the parameters to compare rice-sale proceeds through a traditional channel and RiceTrace for one crop season at Thoai Son Cooperative, An Giang.",
+						econ_inputs_title: "Simulation Parameters",
 						econ_volume: "Seasonal volume (tons)",
 						econ_reference_price: "Reference price (VND/kg)",
 						econ_platform_share: "Volume sold through RiceTrace (%)",
